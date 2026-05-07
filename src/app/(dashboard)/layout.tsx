@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   if (!profile) redirect('/login');
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB]">
+    <div className="flex min-h-screen bg-[#F0F5FB]">
       <DashboardNav role={profile.role} profile={profile} />
       <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
         {children}

@@ -3,25 +3,163 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Vulkaneifel Blau Palette */
+  --vke-50:  #EEF2F8;
+  --vke-100: #DDEAF4;
+  --vke-200: #C8D8EC;
+  --vke-300: #A8C0DC;
+  --vke-400: #7A9DBF;
+  --vke-500: #4E779F;
+  --vke-600: #3A5A80;
+  --vke-700: #2E4A6B;
+  --vke-800: #1E3249;
+  --vke-900: #111E2E;
+
+  /* Akzent */
+  --vke-accent: #F4A261;
+  --vke-accent-dark: #E07B30;
+
+  /* Semantisch */
+  --color-primary: var(--vke-700);
+  --color-primary-hover: var(--vke-600);
+  --color-primary-dark: var(--vke-800);
+  --color-bg-page: var(--vke-50);
+  --color-bg-gradient-start: #F0F5FB;
+  --color-bg-gradient-end: #D4E3F0;
+  --color-text-heading: var(--vke-800);
+  --color-text-body: var(--vke-700);
+  --color-text-muted: var(--vke-500);
+  --color-border: var(--vke-300);
+  --color-card-bg: #FFFFFF;
+
+  /* Portal Layout */
+  --vke-blue: #2E4A6B;
+  --vke-blue-light: #3A5A80;
+  --vke-blue-dark: #1E3249;
+  --vke-blue-faint: #E8EEF5;
+  --vke-text-on-blue: #FFFFFF;
+  --vke-text-secondary: #CBD5E1;
+  --sidebar-width-left: 220px;
+  --sidebar-width-right: 280px;
+  --header-height: 60px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Globaler Seiten-Hintergrund */
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(
+    135deg,
+    #F0F5FB 0%,
+    #E2EDF6 40%,
+    #D4E3F0 100%
+  );
+  background-attachment: fixed;
+  color: var(--vke-800);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--vke-800);
+  font-weight: 600;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--vke-200);
+  box-shadow: 0 1px 3px rgba(46, 74, 107, 0.08),
+              0 4px 12px rgba(46, 74, 107, 0.04);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--vke-700);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-primary:hover {
+  background: var(--vke-600);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--vke-700);
+  border: 1.5px solid var(--vke-700);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  background: var(--vke-700);
+  color: white;
+}
+
+/* Badge/Pills */
+.badge-blue {
+  background: var(--vke-100);
+  color: var(--vke-700);
+  border: 1px solid var(--vke-300);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Section backgrounds */
+.section-white {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.section-blue {
+  background: var(--vke-700);
+  color: white;
+  border-radius: 16px;
+}
+
+.section-blue h2,
+.section-blue h3,
+.section-blue p {
+  color: white;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Portal Layout Responsive */
+.portal-sidebar-left {
+  display: flex;
+}
+
+.portal-sidebar-right {
+  display: flex;
+}
+
+.portal-search-wrap {
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .portal-sidebar-left {
+    display: none;
+  }
+
+  .portal-sidebar-right {
+    display: none;
+  }
+
+  .portal-search-wrap {
+    display: none;
   }
 }

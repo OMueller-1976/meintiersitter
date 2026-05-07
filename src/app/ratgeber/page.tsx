@@ -5,21 +5,21 @@ import Footer from '@/components/layout/Footer';
 const kategorien = [
   {
     icon: '🥾',
-    iconBg: 'bg-green-100',
-    iconColor: 'text-[#2D6A4F]',
+    iconBg: 'bg-[#EEF2F8]',
+    iconColor: 'text-[#2E4A6B]',
     title: 'Wandern & Gassi',
     desc: 'Die schönsten Routen in der Vulkaneifel – von der kurzen Abendrunde bis zur Tageswanderung.',
     badge: '5 Routen',
-    badgeColor: 'bg-green-100 text-[#2D6A4F]',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
   },
   {
     icon: '🏖',
-    iconBg: 'bg-blue-100',
-    iconColor: 'text-blue-600',
+    iconBg: 'bg-[#EEF2F8]',
+    iconColor: 'text-[#2E4A6B]',
     title: 'Bademöglichkeiten',
     desc: 'Wo Hunde planschen dürfen – Seen und Bäche in der Region mit Hundebereich.',
     badge: '3 Spots',
-    badgeColor: 'bg-blue-100 text-blue-600',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
   },
   {
     icon: '🏨',
@@ -28,34 +28,34 @@ const kategorien = [
     title: 'Hundefreundliche Unterkünfte',
     desc: 'Hotels, Pensionen und Ferienhäuser im Kreis Daun und Umgebung.',
     badge: 'Coming soon',
-    badgeColor: 'bg-gray-100 text-gray-400',
+    badgeColor: 'bg-[#EEF2F8] text-[#7A9DBF]',
   },
   {
     icon: '🍖',
-    iconBg: 'bg-red-100',
-    iconColor: 'text-red-500',
+    iconBg: 'bg-[#EEF2F8]',
+    iconColor: 'text-[#2E4A6B]',
     title: 'Ernährung & Gesundheit',
     desc: 'Richtige Fütterung, häufige Krankheiten und Erste Hilfe beim Hund.',
     badge: '4 Artikel',
-    badgeColor: 'bg-red-100 text-red-500',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
   },
   {
     icon: '⚖',
-    iconBg: 'bg-purple-100',
-    iconColor: 'text-purple-600',
+    iconBg: 'bg-[#EEF2F8]',
+    iconColor: 'text-[#2E4A6B]',
     title: 'Recht & Regeln',
     desc: 'Leinenpflicht in RLP, Naturschutzgebiete, Maulkorbpflicht – was gilt wo?',
     badge: '3 Artikel',
-    badgeColor: 'bg-purple-100 text-purple-600',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
   },
   {
     icon: '🗺',
-    iconBg: 'bg-yellow-100',
-    iconColor: 'text-yellow-600',
+    iconBg: 'bg-[#EEF2F8]',
+    iconColor: 'text-[#2E4A6B]',
     title: 'Ausflugsziele',
     desc: 'Burgen, Maare, Cafés – hundefreundliche Ausflugsziele rund um Daun.',
     badge: '6 Tipps',
-    badgeColor: 'bg-yellow-100 text-yellow-600',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
   },
 ];
 
@@ -89,25 +89,25 @@ export default function RatgeberPage() {
       <Navbar />
       <main>
         {/* ── Hero klein ────────────────────────────────────────── */}
-        <section className="bg-[#F0FDF4] py-14 px-4">
+        <section className="bg-[#EEF2F8] py-14 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#1E3249] mb-4">
               Ratgeber für Hundebesitzer in der Vulkaneifel
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-[#4E779F] text-lg">
               Ausflugstipps, Wanderrouten und nützliches Basiswissen für Dich und Deinen Hund.
             </p>
           </div>
         </section>
 
         {/* ── Kategorie-Grid ────────────────────────────────────── */}
-        <section className="py-16 px-4 bg-white">
+        <section className="py-16 px-4 bg-white/70 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {kategorien.map((k) => (
                 <div
                   key={k.title}
-                  className="border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+                  className="border border-[#C8D8EC] hover:border-[#2E4A6B] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col bg-white"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div
@@ -121,9 +121,9 @@ export default function RatgeberPage() {
                       {k.badge}
                     </span>
                   </div>
-                  <h2 className="font-bold text-gray-900 mb-2">{k.title}</h2>
-                  <p className="text-sm text-gray-500 flex-1">{k.desc}</p>
-                  <button className="mt-4 text-sm text-[#2D6A4F] font-medium hover:underline text-left">
+                  <h2 className="font-bold text-[#1E3249] mb-2">{k.title}</h2>
+                  <p className="text-sm text-[#4E779F] flex-1">{k.desc}</p>
+                  <button className="mt-4 text-sm text-[#2E4A6B] font-medium hover:underline text-left">
                     Zur Kategorie →
                   </button>
                 </div>
@@ -133,18 +133,18 @@ export default function RatgeberPage() {
         </section>
 
         {/* ── Highlight-Box Freilinger See ──────────────────────── */}
-        <section className="py-16 px-4 bg-gray-50">
+        <section className="py-16 px-4 bg-[#EEF2F8]">
           <div className="max-w-4xl mx-auto">
-            <div className="border-2 border-[#2D6A4F] rounded-2xl p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <div className="border-2 border-[#2E4A6B] rounded-2xl p-8 bg-[#EEF2F8]">
+              <h2 className="text-xl font-bold text-[#1E3249] mb-4">
                 🏖 Tipp: Hundestrand Freilinger See
               </h2>
-              <p className="text-gray-700 mb-4 leading-relaxed">
+              <p className="text-[#1E3249] mb-4 leading-relaxed">
                 Der Freilinger See bei Blankenheim (Ortsteil Freilingen, 53945 Blankenheim) ist
                 einer der wenigen Seen in der Region mit offiziellem Hundestrand und Hundewiese.
                 Eintritt frei, Kiosk vor Ort. Leinenpflicht gilt auch im Wasserbereich.
               </p>
-              <p className="text-gray-600 text-sm mb-4">
+              <p className="text-[#4E779F] text-sm mb-4">
                 <strong>Adresse:</strong> Am Freilinger See, 53945 Blankenheim · ca. 45 Min. von Daun
               </p>
               <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800">
@@ -156,23 +156,23 @@ export default function RatgeberPage() {
         </section>
 
         {/* ── Wanderrouten ──────────────────────────────────────── */}
-        <section className="py-16 px-4 bg-white">
+        <section className="py-16 px-4 bg-white/70 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Featured Wanderrouten</h2>
-            <p className="text-gray-500 mb-10">
+            <h2 className="text-2xl font-bold text-[#1E3249] mb-3">Featured Wanderrouten</h2>
+            <p className="text-[#4E779F] mb-10">
               Die beliebtesten Touren für Hund und Halter in der Vulkaneifel
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {wanderrouten.map((r) => (
                 <div
                   key={r.title}
-                  className="bg-[#F0FDF4] rounded-2xl p-6 hover:shadow-md transition-shadow"
+                  className="bg-[#EEF2F8] rounded-2xl p-6 hover:shadow-md transition-shadow border-t-[3px] border-t-[#2E4A6B]"
                 >
                   <div className="text-3xl mb-3">{r.icon}</div>
-                  <h3 className="font-bold text-gray-900 mb-1">{r.title}</h3>
-                  <p className="text-sm text-[#2D6A4F] font-medium mb-3">{r.subtitle}</p>
-                  <p className="text-sm text-gray-600 mb-1">{r.meta}</p>
-                  {r.detail && <p className="text-xs text-gray-400">{r.detail}</p>}
+                  <h3 className="font-bold text-[#1E3249] mb-1">{r.title}</h3>
+                  <p className="text-sm text-[#2E4A6B] font-medium mb-3">{r.subtitle}</p>
+                  <p className="text-sm text-[#4E779F] mb-1">{r.meta}</p>
+                  {r.detail && <p className="text-xs text-[#7A9DBF]">{r.detail}</p>}
                 </div>
               ))}
             </div>
@@ -180,17 +180,17 @@ export default function RatgeberPage() {
         </section>
 
         {/* ── CTA-Banner ────────────────────────────────────────── */}
-        <section className="py-16 px-4 bg-gray-50">
+        <section className="py-16 px-4 bg-[#2E4A6B]">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-white mb-4">
               Kennst Du einen Geheimtipp für Hundebesitzer in der Region?
             </h2>
-            <p className="text-gray-500 mb-8">
+            <p className="text-[#A8C0DC] mb-8">
               Teile Dein Wissen mit der Community – wir nehmen jeden Tipp gerne auf.
             </p>
             <Link
               href="/kontakt"
-              className="inline-block bg-[#2D6A4F] text-white px-8 py-3 rounded-2xl font-medium hover:bg-[#245a42] transition-colors"
+              className="inline-block bg-[#F4A261] text-white px-8 py-3 rounded-2xl font-medium hover:bg-[#E07B30] transition-colors"
             >
               Tipp einreichen
             </Link>

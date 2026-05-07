@@ -54,7 +54,7 @@ export default function DashboardNav({ role, profile }: Props) {
   const navItems = role === 'sitter' ? getSitterNav() : getTierhalterNav();
   const roleName = role === 'sitter' ? 'Sitter' : 'Tierhalter';
   const roleBadgeColor =
-    role === 'sitter' ? 'bg-orange-100 text-[#F4A261]' : 'bg-green-100 text-[#2D6A4F]';
+    role === 'sitter' ? 'bg-orange-100 text-[#F4A261]' : 'bg-[#DDEAF4] text-[#2E4A6B]';
 
   function isActive(href: string): boolean {
     if (href === '/dashboard') return pathname === '/dashboard';
@@ -64,12 +64,12 @@ export default function DashboardNav({ role, profile }: Props) {
   return (
     <>
       {/* ── Desktop Sidebar ─────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 bg-white border-r border-gray-100 z-40">
+      <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 bg-[#2E4A6B] z-40">
         {/* Logo */}
-        <div className="px-5 py-4 border-b border-gray-100">
-          <Link href="/" className="flex flex-col leading-tight">
-            <span className="text-lg font-bold text-[#2D6A4F]">🐾 MeinTiersitter</span>
-            <span className="text-xs text-gray-400">Kreis Daun · Vulkaneifel</span>
+        <div className="px-5 py-4 border-b border-[#1E3249]">
+          <Link href="/daun" className="flex flex-col leading-tight">
+            <span className="text-lg font-bold text-white">🐾 MeinTiersitter</span>
+            <span className="text-xs text-[#A8C0DC]">Kreis Daun · Vulkaneifel</span>
           </Link>
         </div>
 
@@ -82,8 +82,8 @@ export default function DashboardNav({ role, profile }: Props) {
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
                     isActive(item.href)
-                      ? 'bg-[#F0FDF4] text-[#2D6A4F] font-medium'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-[#3A5A80] text-white font-medium border-l-2 border-[#F4A261]'
+                      : 'text-white/80 hover:bg-[#1E3249]/50 hover:text-white'
                   }`}
                 >
                   <span className="text-base">{item.icon}</span>
@@ -95,13 +95,13 @@ export default function DashboardNav({ role, profile }: Props) {
         </nav>
 
         {/* User section */}
-        <div className="px-3 py-4 border-t border-gray-100">
+        <div className="px-3 py-4 border-t border-[#1E3249]">
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#F0FDF4] text-[#2D6A4F] font-bold flex items-center justify-center text-xs flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#F4A261] text-white font-bold flex items-center justify-center text-xs flex-shrink-0">
               {getInitials(profile.full_name)}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{profile.full_name}</p>
+              <p className="text-sm font-medium text-white truncate">{profile.full_name}</p>
               <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${roleBadgeColor}`}>
                 {roleName}
               </span>
@@ -109,25 +109,25 @@ export default function DashboardNav({ role, profile }: Props) {
           </div>
           <button
             onClick={async () => { await logoutAction(); }}
-            className="w-full text-left px-3 py-2 text-sm text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+            className="w-full text-left px-3 py-2 text-sm text-[#A8C0DC] hover:text-red-400 hover:bg-[#1E3249]/50 rounded-xl transition-colors"
           >
             ← Abmelden
           </button>
         </div>
       </aside>
 
-      {/* Spacer for desktop (pushes main content) */}
+      {/* Spacer for desktop */}
       <div className="hidden md:block w-60 flex-shrink-0" />
 
       {/* ── Mobile Bottom Nav ───────────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#2E4A6B] border-t border-[#1E3249] shadow-lg">
         <ul className="flex items-center justify-around px-2 py-2">
           {navItems.slice(0, 5).map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
                 className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-colors ${
-                  isActive(item.href) ? 'text-[#2D6A4F]' : 'text-gray-400'
+                  isActive(item.href) ? 'text-[#F4A261]' : 'text-[#A8C0DC]'
                 }`}
               >
                 <span className="text-xl">{item.icon}</span>

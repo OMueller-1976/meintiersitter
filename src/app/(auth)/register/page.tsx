@@ -99,57 +99,57 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#EEF2F8] to-[#D4E3F0] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
-            <span className="text-2xl font-bold text-[#2D6A4F]">🐾 MeinTiersitter</span>
+            <span className="text-2xl font-bold text-[#2E4A6B]">🐾 MeinTiersitter</span>
           </Link>
-          <p className="text-gray-500 text-sm mt-1">Kreis Daun · Vulkaneifel</p>
+          <p className="text-[#4E779F] text-sm mt-1">Kreis Daun · Vulkaneifel</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div className="bg-white rounded-2xl shadow-md border border-[#C8D8EC] p-8">
           {/* ── STEP 1: Rolle wählen ─────────────────────────── */}
           {step === 1 && (
             <>
-              <h1 className="text-xl font-bold text-gray-900 mb-2 text-center">
+              <h1 className="text-xl font-bold text-[#1E3249] mb-2 text-center">
                 Kostenlos registrieren
               </h1>
-              <p className="text-gray-500 text-sm text-center mb-8">
+              <p className="text-[#4E779F] text-sm text-center mb-8">
                 Wähle zunächst Deine Rolle:
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {/* Tierhalter */}
                 <button
                   onClick={() => handleRoleSelect('tierhalter')}
-                  className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-gray-200 hover:border-[#2D6A4F] hover:bg-[#F0FDF4] transition-all text-center group"
+                  className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[#C8D8EC] hover:border-[#2E4A6B] hover:bg-[#EEF2F8] transition-all text-center group"
                 >
                   <span className="text-4xl">🐾</span>
                   <div>
-                    <div className="font-semibold text-gray-900 text-sm group-hover:text-[#2D6A4F]">
+                    <div className="font-semibold text-[#1E3249] text-sm group-hover:text-[#2E4A6B]">
                       Ich suche einen Sitter
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">Tierhalter · €1,90/Monat</div>
+                    <div className="text-xs text-[#7A9DBF] mt-0.5">Tierhalter · €1,90/Monat</div>
                   </div>
                 </button>
                 {/* Sitter */}
                 <button
                   onClick={() => handleRoleSelect('sitter')}
-                  className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-gray-200 hover:border-[#F4A261] hover:bg-orange-50 transition-all text-center group"
+                  className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[#C8D8EC] hover:border-[#F4A261] hover:bg-orange-50 transition-all text-center group"
                 >
                   <span className="text-4xl">🤝</span>
                   <div>
-                    <div className="font-semibold text-gray-900 text-sm group-hover:text-[#F4A261]">
+                    <div className="font-semibold text-[#1E3249] text-sm group-hover:text-[#F4A261]">
                       Ich biete Sitter-Dienste an
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">Sitter · Kostenlos</div>
+                    <div className="text-xs text-[#7A9DBF] mt-0.5">Sitter · Kostenlos</div>
                   </div>
                 </button>
               </div>
-              <p className="text-center text-sm text-gray-500 mt-8">
+              <p className="text-center text-sm text-[#4E779F] mt-8">
                 Bereits registriert?{' '}
-                <Link href="/login" className="text-[#2D6A4F] font-medium hover:underline">
+                <Link href="/login" className="text-[#2E4A6B] font-medium hover:underline">
                   Anmelden →
                 </Link>
               </p>
@@ -163,18 +163,18 @@ export default function RegisterPage() {
               <div className="flex items-center gap-3 mb-6">
                 <button
                   onClick={() => setStep(1)}
-                  className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+                  className="text-[#7A9DBF] hover:text-[#2E4A6B] text-lg leading-none"
                   aria-label="Zurück"
                 >
                   ←
                 </button>
                 <div>
-                  <h1 className="text-lg font-bold text-gray-900">Konto erstellen</h1>
-                  <p className="text-xs text-gray-400">
+                  <h1 className="text-lg font-bold text-[#1E3249]">Konto erstellen</h1>
+                  <p className="text-xs text-[#7A9DBF]">
                     Als{' '}
                     <span
                       className={`font-medium ${
-                        role === 'tierhalter' ? 'text-[#2D6A4F]' : 'text-[#F4A261]'
+                        role === 'tierhalter' ? 'text-[#2E4A6B]' : 'text-[#F4A261]'
                       }`}
                     >
                       {role === 'tierhalter' ? 'Tierhalter' : 'Sitter'}
@@ -187,7 +187,7 @@ export default function RegisterPage() {
               <div className="flex flex-col gap-4">
                 {/* Vollständiger Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     Vollständiger Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -195,8 +195,8 @@ export default function RegisterPage() {
                     value={fields.full_name}
                     onChange={(e) => set('full_name', e.target.value)}
                     placeholder="Max Mustermann"
-                    className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                      errors.full_name ? 'border-red-400' : 'border-gray-200'
+                    className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                      errors.full_name ? 'border-red-400' : 'border-[#C8D8EC]'
                     }`}
                   />
                   {errors.full_name && (
@@ -206,7 +206,7 @@ export default function RegisterPage() {
 
                 {/* E-Mail */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     E-Mail <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -214,8 +214,8 @@ export default function RegisterPage() {
                     value={fields.email}
                     onChange={(e) => set('email', e.target.value)}
                     placeholder="max@beispiel.de"
-                    className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                      errors.email ? 'border-red-400' : 'border-gray-200'
+                    className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                      errors.email ? 'border-red-400' : 'border-[#C8D8EC]'
                     }`}
                   />
                   {errors.email && (
@@ -225,7 +225,7 @@ export default function RegisterPage() {
 
                 {/* Passwort */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     Passwort <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -234,14 +234,14 @@ export default function RegisterPage() {
                       value={fields.password}
                       onChange={(e) => set('password', e.target.value)}
                       placeholder="Mindestens 8 Zeichen"
-                      className={`w-full border rounded-xl px-3 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                        errors.password ? 'border-red-400' : 'border-gray-200'
+                      className={`w-full border rounded-xl px-3 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                        errors.password ? 'border-red-400' : 'border-[#C8D8EC]'
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A9DBF] hover:text-[#2E4A6B] text-xs"
                     >
                       {showPassword ? 'Verbergen' : 'Zeigen'}
                     </button>
@@ -253,7 +253,7 @@ export default function RegisterPage() {
 
                 {/* Passwort bestätigen */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     Passwort bestätigen <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
@@ -262,14 +262,14 @@ export default function RegisterPage() {
                       value={fields.password_confirm}
                       onChange={(e) => set('password_confirm', e.target.value)}
                       placeholder="Passwort wiederholen"
-                      className={`w-full border rounded-xl px-3 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                        errors.password_confirm ? 'border-red-400' : 'border-gray-200'
+                      className={`w-full border rounded-xl px-3 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                        errors.password_confirm ? 'border-red-400' : 'border-[#C8D8EC]'
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirm(!showConfirm)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A9DBF] hover:text-[#2E4A6B] text-xs"
                     >
                       {showConfirm ? 'Verbergen' : 'Zeigen'}
                     </button>
@@ -282,7 +282,7 @@ export default function RegisterPage() {
                 {/* PLZ + Ort */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-[#1E3249] mb-1">
                       PLZ <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -291,8 +291,8 @@ export default function RegisterPage() {
                       onChange={(e) => set('plz', e.target.value)}
                       placeholder="54550"
                       maxLength={5}
-                      className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                        errors.plz ? 'border-red-400' : 'border-gray-200'
+                      className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                        errors.plz ? 'border-red-400' : 'border-[#C8D8EC]'
                       }`}
                     />
                     {errors.plz && (
@@ -300,7 +300,7 @@ export default function RegisterPage() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-[#1E3249] mb-1">
                       Ort <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -308,8 +308,8 @@ export default function RegisterPage() {
                       value={fields.ort}
                       onChange={(e) => set('ort', e.target.value)}
                       placeholder="Daun"
-                      className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30 ${
-                        errors.ort ? 'border-red-400' : 'border-gray-200'
+                      className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
+                        errors.ort ? 'border-red-400' : 'border-[#C8D8EC]'
                       }`}
                     />
                     {errors.ort && (
@@ -320,31 +320,31 @@ export default function RegisterPage() {
 
                 {/* Ortschaft */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     Ortschaft{' '}
-                    <span className="text-gray-400 font-normal">(optional)</span>
+                    <span className="text-[#7A9DBF] font-normal">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={fields.ortschaft}
                     onChange={(e) => set('ortschaft', e.target.value)}
                     placeholder="z.B. Gillenfeld, Manderscheid, Daun..."
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30"
+                    className="w-full border border-[#C8D8EC] rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30"
                   />
                 </div>
 
                 {/* Telefon */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-[#1E3249] mb-1">
                     Telefon{' '}
-                    <span className="text-gray-400 font-normal">(optional)</span>
+                    <span className="text-[#7A9DBF] font-normal">(optional)</span>
                   </label>
                   <input
                     type="tel"
                     value={fields.phone}
                     onChange={(e) => set('phone', e.target.value)}
                     placeholder="+49 6592 ..."
-                    className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30"
+                    className="w-full border border-[#C8D8EC] rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30"
                   />
                 </div>
 
@@ -355,15 +355,15 @@ export default function RegisterPage() {
                       type="checkbox"
                       checked={fields.agb}
                       onChange={(e) => set('agb', e.target.checked)}
-                      className="mt-0.5 w-4 h-4 accent-[#2D6A4F] flex-shrink-0"
+                      className="mt-0.5 w-4 h-4 accent-[#2E4A6B] flex-shrink-0"
                     />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-[#4E779F]">
                       Ich akzeptiere die{' '}
-                      <Link href="/agb" className="text-[#2D6A4F] hover:underline">
+                      <Link href="/agb" className="text-[#2E4A6B] hover:underline">
                         AGB
                       </Link>{' '}
                       und die{' '}
-                      <Link href="/datenschutz" className="text-[#2D6A4F] hover:underline">
+                      <Link href="/datenschutz" className="text-[#2E4A6B] hover:underline">
                         Datenschutzerklärung
                       </Link>
                       .
@@ -378,7 +378,7 @@ export default function RegisterPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={isLoading}
-                  className="w-full bg-[#2D6A4F] text-white py-3 rounded-2xl font-medium hover:bg-[#245a42] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+                  className="w-full bg-[#2E4A6B] text-white py-3 rounded-2xl font-medium hover:bg-[#3A5A80] transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
                 >
                   {isLoading ? (
                     <>
@@ -391,9 +391,9 @@ export default function RegisterPage() {
                 </button>
               </div>
 
-              <p className="text-center text-sm text-gray-500 mt-6">
+              <p className="text-center text-sm text-[#4E779F] mt-6">
                 Bereits registriert?{' '}
-                <Link href="/login" className="text-[#2D6A4F] font-medium hover:underline">
+                <Link href="/login" className="text-[#2E4A6B] font-medium hover:underline">
                   Anmelden →
                 </Link>
               </p>
