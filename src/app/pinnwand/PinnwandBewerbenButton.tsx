@@ -22,7 +22,7 @@ export default function PinnwandBewerbenButton({ postingId, isLoggedIn, hasBewer
     return (
       <a
         href="/login"
-        className="inline-block bg-[#2D6A4F] text-white text-sm font-medium px-5 py-2 rounded-xl hover:bg-[#245a42] transition-colors"
+        className="inline-block bg-[#2E4A6B] text-white text-sm font-medium px-5 py-2 rounded-xl hover:bg-[#1E3249] transition-colors"
       >
         Anmelden &amp; bewerben
       </a>
@@ -31,7 +31,7 @@ export default function PinnwandBewerbenButton({ postingId, isLoggedIn, hasBewer
 
   if (applied) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm text-green-700 bg-green-50 px-4 py-2 rounded-xl font-medium">
+      <span className="inline-flex items-center gap-1.5 text-sm text-[#2E4A6B] bg-[#EEF2F8] px-4 py-2 rounded-xl font-medium">
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
@@ -48,7 +48,7 @@ export default function PinnwandBewerbenButton({ postingId, isLoggedIn, hasBewer
           onChange={(e) => setNachricht(e.target.value)}
           placeholder="Kurze Nachricht (optional)"
           rows={3}
-          className="border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]"
+          className="border border-[#C8D8EC] rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2E4A6B]"
         />
         <div className="flex gap-2">
           <button
@@ -66,13 +66,13 @@ export default function PinnwandBewerbenButton({ postingId, isLoggedIn, hasBewer
                 router.refresh();
               }
             }}
-            className="flex-1 bg-[#2D6A4F] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#245a42] transition-colors disabled:opacity-50"
+            className="flex-1 bg-[#2E4A6B] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#3A5A80] transition-colors disabled:opacity-50"
           >
             {loading ? 'Senden…' : 'Absenden'}
           </button>
           <button
             onClick={() => setShowForm(false)}
-            className="border border-gray-200 text-gray-600 text-sm px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors"
+            className="border border-[#C8D8EC] text-[#4E779F] text-sm px-3 py-2 rounded-xl hover:bg-[#EEF2F8] transition-colors"
           >
             Abbruch
           </button>
@@ -84,7 +84,7 @@ export default function PinnwandBewerbenButton({ postingId, isLoggedIn, hasBewer
   return (
     <button
       onClick={() => setShowForm(true)}
-      className="bg-[#F4A261] text-white text-sm font-medium px-5 py-2 rounded-xl hover:bg-[#e08a44] transition-colors"
+      className="bg-[#F4A261] text-white text-sm font-medium px-5 py-2 rounded-xl hover:bg-[#E07B30] transition-colors"
     >
       Bewerben
     </button>

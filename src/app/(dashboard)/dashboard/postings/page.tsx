@@ -15,7 +15,7 @@ const LEISTUNG_LABEL: Record<string, string> = {
 };
 
 const STATUS_CONFIG: Record<PostingStatus, { label: string; color: string }> = {
-  offen: { label: 'Offen', color: 'bg-green-100 text-green-700' },
+  offen: { label: 'Offen', color: 'bg-[#DDEAF4] text-[#2E4A6B]' },
   besetzt: { label: 'Besetzt', color: 'bg-blue-100 text-blue-700' },
   abgeschlossen: { label: 'Abgeschlossen', color: 'bg-gray-100 text-gray-600' },
   abgebrochen: { label: 'Abgebrochen', color: 'bg-red-100 text-red-700' },
@@ -29,7 +29,7 @@ export default async function PostingsPage({
 }: {
   searchParams: { tab?: string };
 }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -72,27 +72,27 @@ export default async function PostingsPage({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Meine Gesuche</h1>
-          <p className="text-gray-500 text-sm mt-1">Verwalte deine Betreuungsgesuche</p>
+          <h1 className="text-2xl font-bold text-[#1E3249]">Meine Gesuche</h1>
+          <p className="text-[#4E779F] text-sm mt-1">Verwalte deine Betreuungsgesuche</p>
         </div>
         <Link
           href="/dashboard/postings/neu"
-          className="bg-[#2D6A4F] text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-[#245a42] transition-colors text-sm"
+          className="bg-[#2E4A6B] text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors text-sm"
         >
           + Neues Gesuch
         </Link>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-xl w-fit">
+      <div className="flex gap-1 mb-6 bg-[#EEF2F8] p-1 rounded-xl w-fit">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={`?tab=${t.key}`}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               tab === t.key
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-white text-[#1E3249] shadow-sm'
+                : 'text-[#4E779F] hover:text-[#2E4A6B]'
             }`}
           >
             {t.label}
@@ -102,13 +102,13 @@ export default async function PostingsPage({
 
       {/* Postings */}
       {rows.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
+        <div className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-12 text-center">
           <div className="text-4xl mb-4">📋</div>
-          <p className="text-gray-500 mb-4">Keine {STATUS_CONFIG[tab].label.toLowerCase()}en Gesuche.</p>
+          <p className="text-[#4E779F] mb-4">Keine {STATUS_CONFIG[tab].label.toLowerCase()}en Gesuche.</p>
           {tab === 'offen' && (
             <Link
               href="/dashboard/postings/neu"
-              className="inline-block bg-[#2D6A4F] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#245a42] transition-colors"
+              className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"
             >
               Erstes Gesuch erstellen
             </Link>
@@ -122,19 +122,19 @@ export default async function PostingsPage({
             const statusCfg = STATUS_CONFIG[posting.status];
 
             return (
-              <div key={posting.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+              <div key={posting.id} className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-6">
                 {/* Posting Header */}
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                   <div>
                     <div className="flex flex-wrap gap-2 items-center">
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-[#1E3249]">
                         {LEISTUNG_LABEL[posting.leistung]}
                       </span>
                       <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusCfg.color}`}>
                         {statusCfg.label}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-[#4E779F] mt-1">
                       {format(new Date(posting.datum_von), 'd. MMM yyyy', { locale: de })}
                       {posting.datum_von !== posting.datum_bis && (
                         <> – {format(new Date(posting.datum_bis), 'd. MMM yyyy', { locale: de })}</>
@@ -156,20 +156,20 @@ export default async function PostingsPage({
                 </div>
 
                 {posting.nachricht && (
-                  <p className="text-sm text-gray-600 mb-4 bg-gray-50 rounded-xl px-4 py-3">
+                  <p className="text-sm text-[#4E779F] mb-4 bg-[#EEF2F8] rounded-xl px-4 py-3">
                     {posting.nachricht}
                   </p>
                 )}
 
                 {/* Bewerber */}
                 {posting.bewerbungen.length === 0 ? (
-                  <p className="text-sm text-gray-400 italic">Noch keine Bewerbungen.</p>
+                  <p className="text-sm text-[#7A9DBF] italic">Noch keine Bewerbungen.</p>
                 ) : (
                   <div className="space-y-4">
                     {/* Empfohlene */}
                     {empfohlen.length > 0 && (
                       <div>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+                        <p className="text-xs font-semibold text-[#7A9DBF] uppercase tracking-wide mb-2">
                           Empfohlene Sitter
                         </p>
                         <div className="space-y-2">
@@ -183,7 +183,7 @@ export default async function PostingsPage({
                     {/* Organische */}
                     {organisch.length > 0 && (
                       <div>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+                        <p className="text-xs font-semibold text-[#7A9DBF] uppercase tracking-wide mb-2">
                           Weitere Bewerber (Pinnwand)
                         </p>
                         <div className="space-y-2">
@@ -215,7 +215,7 @@ function BewerberRow({
 }) {
   const statusBadge: Record<string, string> = {
     ausstehend: 'bg-yellow-50 text-yellow-700',
-    ausgewaehlt: 'bg-green-50 text-green-700',
+    ausgewaehlt: 'bg-[#EEF2F8] text-[#2E4A6B]',
     abgelehnt: 'bg-red-50 text-red-500',
   };
   const statusLabel: Record<string, string> = {
@@ -229,15 +229,15 @@ function BewerberRow({
     : '?';
 
   return (
-    <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-gray-50">
+    <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-[#EEF2F8]">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full bg-[#2D6A4F] flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+        <div className="w-9 h-9 rounded-full bg-[#2E4A6B] flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
           {initials}
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-900">{b.sitter?.full_name ?? 'Unbekannt'}</p>
-          {b.sitter?.ort && <p className="text-xs text-gray-500">{b.sitter.ort}</p>}
-          {b.nachricht && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{b.nachricht}</p>}
+          <p className="text-sm font-medium text-[#1E3249]">{b.sitter?.full_name ?? 'Unbekannt'}</p>
+          {b.sitter?.ort && <p className="text-xs text-[#4E779F]">{b.sitter.ort}</p>}
+          {b.nachricht && <p className="text-xs text-[#4E779F] mt-0.5 line-clamp-1">{b.nachricht}</p>}
         </div>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
@@ -251,14 +251,14 @@ function BewerberRow({
             <button
               name="status"
               value="ausgewaehlt"
-              className="text-xs bg-[#2D6A4F] text-white px-3 py-1.5 rounded-lg hover:bg-[#245a42] transition-colors"
+              className="text-xs bg-[#2E4A6B] text-white px-3 py-1.5 rounded-lg hover:bg-[#3A5A80] transition-colors"
             >
               Auswählen
             </button>
             <button
               name="status"
               value="abgelehnt"
-              className="text-xs border border-gray-200 text-gray-500 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+              className="text-xs border border-[#C8D8EC] text-[#4E779F] px-3 py-1.5 rounded-lg hover:bg-[#EEF2F8] transition-colors"
             >
               Ablehnen
             </button>
