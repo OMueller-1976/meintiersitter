@@ -22,15 +22,8 @@ const navGroups: NavGroup[] = [
   {
     items: [
       { icon: '🏠', label: 'Portal Daun', href: '/daun' },
-      { icon: '📋', label: 'Gesuche Pinnwand', href: '/pinnwand' },
+      { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
       { icon: '🐾', label: 'Sitter entdecken', href: '/daun/sitter' },
-    ],
-  },
-  {
-    label: 'MITMACHEN',
-    items: [
-      { icon: '➕', label: 'Gesuch aufgeben', href: '/dashboard/postings/neu' },
-      { icon: '🤝', label: 'Als Sitter anbieten', href: '/register?role=sitter' },
     ],
   },
   {
@@ -77,7 +70,7 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
             {group.label && (
               <div
                 style={{
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: 600,
                   color: 'var(--vke-text-secondary)',
                   padding: '0.75rem 1rem 0.25rem',
@@ -97,8 +90,8 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.6rem',
-                    padding: '0.55rem 1rem',
-                    fontSize: 13,
+                    padding: '0.65rem 1rem',
+                    fontSize: 14.4,
                     textDecoration: 'none',
                     color: isActive ? 'white' : 'var(--vke-text-secondary)',
                     background: isActive ? 'var(--vke-blue-light)' : 'transparent',
@@ -118,7 +111,7 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
                     }
                   }}
                 >
-                  <span style={{ fontSize: 14 }}>{item.icon}</span>
+                  <span style={{ fontSize: 16 }}>{item.icon}</span>
                   <span>{item.label}</span>
                 </Link>
               );
@@ -142,7 +135,7 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
             <Link
               href={`/${label.toLowerCase()}`}
               style={{
-                fontSize: 10,
+                fontSize: 12,
                 color: 'var(--vke-text-secondary)',
                 textDecoration: 'none',
               }}

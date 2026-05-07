@@ -10,7 +10,6 @@ interface InfoKachel {
   text: string;
   link: string;
   link_label: string;
-  bg: string;
 }
 
 const INFO_KACHELN: InfoKachel[] = [
@@ -19,27 +18,24 @@ const INFO_KACHELN: InfoKachel[] = [
     emoji: '🥾',
     titel: 'Dauner Maare Runde',
     text: 'Ca. 12 km rund um Gemündener, Weinfelder und Schalkenmehrener Maar. Hund an der Leine.',
-    link: '/ratgeber',
+    link: '/ratgeber/wandern',
     link_label: 'Zur Route →',
-    bg: 'bg-[#EEF2F8]',
   },
   {
     kategorie: 'Hundestrand',
     emoji: '🏖',
     titel: 'Freilinger See',
     text: 'Offizieller Hundestrand bei Blankenheim — Liegewiese, Badebereich, Kiosk. Leinenpflicht.',
-    link: '/ratgeber',
+    link: '/ratgeber/hundestrand',
     link_label: 'Mehr erfahren →',
-    bg: 'bg-[#E8F0F8]',
   },
   {
-    kategorie: 'Ratgeber',
-    emoji: '📖',
+    kategorie: 'Wandertipp',
+    emoji: '🏆',
     titel: 'HeimatSpur MaareGlück',
     text: 'Nominiert für Deutschlands schönsten Wanderweg 2026. Ideal für Hundebesitzer.',
-    link: '/ratgeber',
+    link: '/ratgeber/wandern',
     link_label: 'Zur Route →',
-    bg: 'bg-[#EEF2F8]',
   },
   {
     kategorie: 'Marktplatz',
@@ -48,7 +44,6 @@ const INFO_KACHELN: InfoKachel[] = [
     text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
     link: '/marktplatz',
     link_label: 'Zum Marktplatz →',
-    bg: 'bg-[#FEF3E2]',
   },
   {
     kategorie: 'Tipp',
@@ -57,7 +52,6 @@ const INFO_KACHELN: InfoKachel[] = [
     text: 'Vor dem ersten Match empfehlen wir ein kurzes Kennenlernen — für Mensch und Tier.',
     link: '/ratgeber',
     link_label: 'Tipps lesen →',
-    bg: 'bg-[#E8F0F8]',
   },
 ];
 
@@ -70,14 +64,14 @@ const SCHNELLZUGRIFF = [
 
 export default function RightSidebar() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [fading, setFading] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setVisible(false);
+      setFading(true);
       setTimeout(() => {
         setActiveIndex((i) => (i + 1) % INFO_KACHELN.length);
-        setVisible(true);
+        setFading(false);
       }, 300);
     }, 6000);
     return () => clearInterval(interval);
@@ -86,93 +80,133 @@ export default function RightSidebar() {
   const current = INFO_KACHELN[activeIndex];
 
   return (
-    <aside
-      style={{
-        width: 'var(--sidebar-width-right)',
-        background: 'white',
-        borderLeft: '1px solid #E2E8F0',
-        overflowY: 'auto',
-        flexShrink: 0,
-        padding: '1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-      }}
+    <div
+      className="flex flex-col h-full border-l border-[#E2E8F0] bg-white"
+      style={{ width: 'var(--sidebar-width-right)' }}
     >
-      {/* Info-Kachel mit Auto-Rotate */}
-      <div>
-        <p className="text-xs font-semibold text-[#1E3249] mb-2 uppercase tracking-wide">
-          Tipps &amp; Entdecken
-        </p>
+      {/* ── Scrollbarer oberer Bereich ── */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
 
-        {/* Aktuelle Kachel */}
-        <div
-          className={`${current.bg} rounded-xl p-4 border border-[#C8D8EC] min-h-[140px] transition-opacity duration-300`}
-          style={{ opacity: visible ? 1 : 0 }}
-        >
-          <div className="flex items-center gap-1.5 mb-2">
-            <span className="text-[10px] font-medium text-[#4E779F] bg-white/70 px-2 py-0.5 rounded-full border border-[#C8D8EC]">
-              {current.kategorie}
+        {/* Kachel 1: Tipps & Entdecken — FESTE HÖHE */}
+        <div className="h-[200px] rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-3 py-2 border-b border-[#EEF2F8] flex-shrink-0">
+            <span className="text-sm font-medium text-[#4E779F] uppercase tracking-wide">
+              Tipps &amp; Entdecken
+            </span>
+            <div className="flex gap-1">
+              {INFO_KACHELN.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setActiveIndex(i); setFading(false); }}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    i === activeIndex ? 'bg-[#2E4A6B]' : 'bg-[#C8D8EC]'
+                  }`}
+                  aria-label={`Kachel ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 p-3 overflow-hidden">
+            <div
+              className={`transition-opacity duration-300 h-full flex flex-col ${
+                fading ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm font-medium text-[#4E779F] uppercase tracking-wide">
+                  {current.kategorie}
+                </span>
+                <span className="text-base">{current.emoji}</span>
+              </div>
+              <p className="font-semibold text-base text-[#1E3249] truncate mb-1">
+                {current.titel}
+              </p>
+              <p className="text-sm text-[#4E779F] leading-relaxed flex-1 overflow-hidden line-clamp-3">
+                {current.text}
+              </p>
+              <Link
+                href={current.link}
+                className="text-sm font-medium text-[#2E4A6B] hover:text-[#1E3249] mt-2 inline-block"
+              >
+                {current.link_label}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Kachel 2: Förderer — FESTE HÖHE */}
+        <div className="h-[120px] rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
+          {/* Header */}
+          <div className="px-3 py-2 border-b border-[#EEF2F8] flex-shrink-0">
+            <span className="text-sm font-medium text-[#4E779F] uppercase tracking-wide">
+              Förderer &amp; Partner
             </span>
           </div>
-          <div className="text-2xl mb-1">{current.emoji}</div>
-          <div className="font-semibold text-[#1E3249] text-sm mb-1">{current.titel}</div>
-          <p className="text-xs text-[#4E779F] leading-relaxed mb-2 line-clamp-3">{current.text}</p>
-          <Link href={current.link} className="text-xs text-[#2E4A6B] font-medium hover:underline">
-            {current.link_label}
+          {/* Logo + Text */}
+          <div className="flex items-center gap-3 px-3 flex-1">
+            <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-[#2E4A6B] flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/assets/images/logo-vulkaneifel.jpg"
+                alt="Landkreis Vulkaneifel"
+                className="w-full h-full object-cover"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-[#1E3249] leading-tight">
+                Landkreis Vulkaneifel
+              </p>
+              <p className="text-sm text-[#4E779F] leading-tight mt-0.5">
+                Unterstützt regionale<br />
+                Initiativen &amp; Community
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── Fixierter unterer Bereich ── */}
+      <div className="border-t border-[#E2E8F0] p-4 space-y-4 flex-shrink-0">
+
+        {/* Schnellzugriff */}
+        <div>
+          <p className="text-sm font-medium text-[#4E779F] uppercase tracking-wide mb-2">
+            Schnellzugriff
+          </p>
+          <nav>
+            {SCHNELLZUGRIFF.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-2 text-sm text-[#2E4A6B] hover:text-[#1E3249] py-1.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F8FAFC] rounded px-1 transition-colors"
+              >
+                <span>{item.emoji}</span>
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Community Box */}
+        <div className="bg-[#2E4A6B] rounded-xl p-3 text-white">
+          <p className="font-semibold text-base mb-1">🐾 Werde Teil der Community</p>
+          <p className="text-sm text-white/70 mb-2 leading-relaxed">
+            Schon mehrere Mitglieder im Kreis Daun dabei!
+          </p>
+          <Link
+            href="/register"
+            className="block text-center text-sm font-medium bg-white text-[#2E4A6B] rounded-lg py-2 hover:bg-[#EEF2F8] transition-colors"
+          >
+            Jetzt mitmachen →
           </Link>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-1.5 mt-2">
-          {INFO_KACHELN.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setActiveIndex(i); setVisible(true); }}
-              className={`w-1.5 h-1.5 rounded-full transition-colors ${i === activeIndex ? 'bg-[#2E4A6B]' : 'bg-[#C8D8EC]'}`}
-              aria-label={`Kachel ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
-
-      <div className="border-t border-[#EEF2F8]" />
-
-      {/* Schnellzugriff */}
-      <div>
-        <p className="text-xs text-[#4E779F] uppercase tracking-wide mb-2 font-semibold">
-          Schnellzugriff
-        </p>
-        <ul>
-          {SCHNELLZUGRIFF.map((item) => (
-            <li key={item.href} className="border-b border-[#EEF2F8] last:border-0">
-              <Link
-                href={item.href}
-                className="flex items-center gap-2 text-sm text-[#2E4A6B] hover:text-[#1E3249] py-1.5 transition-colors"
-              >
-                <span>{item.emoji}</span>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="border-t border-[#EEF2F8]" />
-
-      {/* Community Box */}
-      <div className="bg-[#2E4A6B] rounded-xl p-4 text-white">
-        <div className="font-semibold text-sm mb-1">🐾 Werde Teil der Community</div>
-        <p className="text-xs text-[#A8C0DC] mb-3 leading-relaxed">
-          Schon mehrere Mitglieder im Kreis Daun
-        </p>
-        <Link
-          href="/register"
-          className="inline-block bg-white text-[#2E4A6B] text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-[#EEF2F8] transition-colors"
-        >
-          Jetzt mitmachen
-        </Link>
-      </div>
-    </aside>
+    </div>
   );
 }

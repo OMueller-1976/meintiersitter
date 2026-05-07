@@ -4,87 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Link from 'next/link';
-
-interface PostingMock {
-  id: string;
-  tier_name: string;
-  tier_rasse: string;
-  tier_emoji: string;
-  leistung: string;
-  leistung_label: string;
-  ortschaft: string;
-  datum_von: string;
-  datum_bis: string;
-  besitzer_name: string;
-  beschreibung: string;
-  avatar_initial: string;
-}
-
-const MOCK_POSTINGS: PostingMock[] = [
-  {
-    id: '1',
-    tier_name: 'Pippi',
-    tier_rasse: 'Golden Retriever',
-    tier_emoji: '🐕',
-    leistung: 'gassi',
-    leistung_label: 'Gassi gehen',
-    ortschaft: 'Kirchweiler',
-    datum_von: '2025-06-12',
-    datum_bis: '2025-06-14',
-    besitzer_name: 'Familie Schneider',
-    beschreibung: 'Pippi ist ein freundlicher Retriever, 3 Jahre alt. Sucht jemanden für tägliche Morgenspaziergänge.',
-    avatar_initial: 'FS',
-  },
-  {
-    id: '2',
-    tier_name: 'Milo',
-    tier_rasse: 'Dackel',
-    tier_emoji: '🐶',
-    leistung: 'tagesbetreuung',
-    leistung_label: 'Tagesbetreuung',
-    ortschaft: 'Daun',
-    datum_von: '2025-06-20',
-    datum_bis: '2025-06-20',
-    besitzer_name: 'Thomas K.',
-    beschreibung: 'Milo braucht an einem Werktag Gesellschaft — wir sind berufstätig und suchen jemanden mit Herz.',
-    avatar_initial: 'TK',
-  },
-  {
-    id: '3',
-    tier_name: 'Luna',
-    tier_rasse: 'Labrador Mix',
-    tier_emoji: '🐾',
-    leistung: 'uebernachtung',
-    leistung_label: 'Übernachtung',
-    ortschaft: 'Gillenfeld',
-    datum_von: '2025-07-01',
-    datum_bis: '2025-07-07',
-    besitzer_name: 'Sabine M.',
-    beschreibung: 'Luna ist sehr lieb und schläft die ganze Nacht durch. Urlaubszeit — brauchen eine Woche Betreuung.',
-    avatar_initial: 'SM',
-  },
-  {
-    id: '4',
-    tier_name: 'Rex',
-    tier_rasse: 'Schäferhund',
-    tier_emoji: '🐕‍🦺',
-    leistung: 'fuettern',
-    leistung_label: 'Füttern',
-    ortschaft: 'Manderscheid',
-    datum_von: '2025-06-15',
-    datum_bis: '2025-06-16',
-    besitzer_name: 'Peter W.',
-    beschreibung: 'Rex braucht 2x täglich Futter und kurze Gassi-Runde. Wir sind übers Wochenende weg.',
-    avatar_initial: 'PW',
-  },
-];
-
-const BADGE_COLORS: Record<string, string> = {
-  gassi: 'bg-[#DDEAF4] text-[#2E4A6B]',
-  fuettern: 'bg-[#FEF3E2] text-[#E07B30]',
-  tagesbetreuung: 'bg-[#E8F0F8] text-[#2E4A6B]',
-  uebernachtung: 'bg-[#EDE8F5] text-[#5B4A8A]',
-};
+import { MOCK_POSTINGS, LEISTUNGS_BADGE_CLASSES } from '@/lib/mock-data';
 
 function formatDateRange(von: string, bis: string): string {
   const fmt = (d: string) => {
@@ -123,8 +43,8 @@ export default function GesucheCarousel() {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-base font-semibold text-[#1E3249]">Aktuelle Gesuche</h2>
-          <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">
+          <h2 className="text-lg font-semibold text-[#1E3249]">Aktuelle Gesuche</h2>
+          <span className="bg-[#DDEAF4] text-[#2E4A6B] text-xs font-medium px-2 py-0.5 rounded-full">
             {MOCK_POSTINGS.length} offen
           </span>
         </div>
@@ -135,7 +55,6 @@ export default function GesucheCarousel() {
 
       {/* Carousel wrapper */}
       <div className="relative">
-        {/* Prev */}
         <button
           onClick={() => emblaApi?.scrollPrev()}
           disabled={!canScrollPrev}
@@ -154,23 +73,36 @@ export default function GesucheCarousel() {
                 style={{ width: 'calc(50% - 6px)' }}
               >
                 <div className="bg-white rounded-xl border border-[#C8D8EC] p-4 hover:border-[#2E4A6B] hover:shadow-md transition-all h-full flex flex-col">
-                  {/* Top row */}
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{p.tier_emoji}</span>
-                      <div>
-                        <div className="font-semibold text-[#1E3249] text-sm leading-tight">{p.tier_name}</div>
-                        <div className="text-xs text-[#7A9DBF]">{p.tier_rasse} · {p.ortschaft}</div>
-                      </div>
+                  {/* Top row: Foto + Info + Badge */}
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.tier_foto}
+                        alt={p.tier_name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
                     </div>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 ${BADGE_COLORS[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-[#1E3249] text-base leading-tight">{p.tier_name}</div>
+                      <div className="text-sm text-[#7A9DBF]">{p.tier_rasse}</div>
+                      <div className="text-sm text-[#4E779F]">📍 {p.ortschaft}</div>
+                    </div>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
                       {p.leistung_label}
                     </span>
                   </div>
 
-                  <p className="text-xs text-[#4E779F] leading-relaxed mb-3 line-clamp-2 flex-1">
+                  <p className="text-sm text-[#4E779F] leading-relaxed mb-3 line-clamp-2 flex-1">
                     {p.beschreibung}
                   </p>
+
+                  {/* Datum + Uhrzeit */}
+                  <div className="mb-3">
+                    <div className="text-sm text-[#7A9DBF]">📅 {formatDateRange(p.datum_von, p.datum_bis)}</div>
+                    <div className="text-sm text-[#4E779F]">🕐 {p.uhrzeit}</div>
+                  </div>
 
                   {/* Footer */}
                   <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#EEF2F8]">
@@ -178,23 +110,21 @@ export default function GesucheCarousel() {
                       <div className="w-6 h-6 rounded-full bg-[#2E4A6B] text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">
                         {p.avatar_initial}
                       </div>
-                      <span className="text-xs text-[#4E779F] truncate">{p.besitzer_name}</span>
+                      <span className="text-sm text-[#4E779F] truncate">{p.besitzer_name}</span>
                     </div>
-                    <span className="text-xs text-[#7A9DBF] flex-shrink-0">{formatDateRange(p.datum_von, p.datum_bis)}</span>
+                    <Link
+                      href="/register"
+                      className="text-sm text-[#2E4A6B] font-medium hover:underline flex-shrink-0"
+                    >
+                      Jetzt bewerben →
+                    </Link>
                   </div>
-                  <Link
-                    href="/register"
-                    className="mt-2 text-xs text-[#2E4A6B] font-medium hover:underline"
-                  >
-                    Jetzt bewerben →
-                  </Link>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Next */}
         <button
           onClick={() => emblaApi?.scrollNext()}
           disabled={!canScrollNext}

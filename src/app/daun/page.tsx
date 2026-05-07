@@ -39,12 +39,12 @@ export default async function DaunPortalPage() {
     <div className="flex flex-col gap-5">
       {/* Begrüßungs-Header */}
       <div>
-        <h1 className="text-xl font-semibold text-[#1E3249]">
+        <h1 className="text-2xl font-semibold text-[#1E3249]">
           {user && vorname
             ? `Guten Tag, ${vorname}! 🐾`
             : 'Willkommen bei MeinTiersitter 🐾'}
         </h1>
-        <p className="text-sm text-[#4E779F] mt-0.5">
+        <p className="text-base text-[#4E779F] mt-0.5">
           {user
             ? 'Hier ist was heute in der Vulkaneifel los ist.'
             : 'Finde oder werde ein Tiersitter im Kreis Daun.'}

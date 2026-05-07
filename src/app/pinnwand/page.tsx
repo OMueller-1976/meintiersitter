@@ -1,222 +1,196 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
-import type { Posting, Profile, TierProfile } from '@/types';
-import PinnwandBewerbenButton from './PinnwandBewerbenButton';
-
-const LEISTUNG_LABEL: Record<string, string> = {
-  gassi: 'Gassi gehen',
-  fuettern: 'Füttern',
-  tagesbetreuung: 'Tagesbetreuung',
-  uebernachtung: 'Übernachtung',
-};
-
-const LEISTUNG_COLOR: Record<string, string> = {
-  gassi: 'bg-[#DDEAF4] text-[#2E4A6B]',
-  fuettern: 'bg-[#FEF3E2] text-[#E07B30]',
-  tagesbetreuung: 'bg-[#E8F0F8] text-[#2E4A6B]',
-  uebernachtung: 'bg-[#EDE8F5] text-[#5B4A8A]',
-};
-
-type PostingRow = Posting & {
-  tierhalter: Pick<Profile, 'full_name' | 'ort'> | null;
-  tier: Pick<TierProfile, 'name' | 'tierart'> | null;
-};
+import Link from 'next/link';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import {
+  MOCK_POSTINGS,
+  LEISTUNGS_LABELS,
+  LEISTUNGS_BADGE_CLASSES,
+  ORTSCHAFTEN,
+} from '@/lib/mock-data';
 
 export const metadata = { title: 'Pinnwand – MeinTiersitter' };
 
 export default async function PinnwandPage({
   searchParams,
 }: {
-  searchParams: { leistung?: string; plz?: string };
+  searchParams: Promise<{ ort?: string; leistung?: string }>;
 }) {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: () => {},
-      },
-    }
-  );
+  const { ort, leistung } = await searchParams;
+  const filterOrt = ort && ort !== 'Alle Ortschaften' ? ort : '';
+  const filterLeistung = leistung ?? '';
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const postings = MOCK_POSTINGS.filter((p) => {
+    if (filterOrt && p.ortschaft !== filterOrt) return false;
+    if (filterLeistung && p.leistung !== filterLeistung) return false;
+    return true;
+  });
 
-  let query = supabase
-    .from('postings')
-    .select('*, tierhalter:profiles!tierhalter_id(full_name, ort), tier:tier_profiles(name, tierart)')
-    .eq('status', 'offen')
-    .eq('auf_pinnwand', true)
-    .order('created_at', { ascending: false });
-
-  if (searchParams.leistung) {
-    query = query.eq('leistung', searchParams.leistung);
-  }
-  if (searchParams.plz) {
-    query = query.eq('plz', searchParams.plz);
-  }
-
-  const { data: postings } = await query;
-  const rows = (postings ?? []) as PostingRow[];
-
-  let meineBewerbungen: Set<string> = new Set();
-  if (user) {
-    const { data: bew } = await supabase
-      .from('bewerbungen')
-      .select('posting_id')
-      .eq('sitter_id', user.id);
-    meineBewerbungen = new Set((bew ?? []).map((b) => b.posting_id));
-  }
+  const hasFilter = !!filterOrt || !!filterLeistung;
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      {/* Hero */}
       <div className="bg-[#2E4A6B]">
-        <div className="max-w-4xl mx-auto px-4 py-10">
-          <h1 className="text-3xl font-bold text-white">Pinnwand</h1>
-          <p className="text-[#A8C0DC] mt-1">
-            Offene Gesuche aus der Region – meld dich als Tiersitter!
+        <div className="max-w-5xl mx-auto px-4 py-10">
+          <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche im Kreis Daun</h1>
+          <p className="text-[#A8C0DC] mt-2 max-w-xl">
+            Alle offenen Tierbetreuungs-Gesuche in der Vulkaneifel. Melde Dich direkt beim Tierhalter.
           </p>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Filter */}
-        <form className="flex flex-wrap gap-3 mb-8 bg-white/80 backdrop-blur-sm border border-[#C8D8EC] rounded-2xl p-4">
-          <select
-            name="leistung"
-            defaultValue={searchParams.leistung ?? ''}
-            className="border border-[#C8D8EC] rounded-xl px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4A6B] text-[#1E3249]"
-          >
-            <option value="">Alle Leistungen</option>
-            <option value="gassi">Gassi gehen</option>
-            <option value="fuettern">Füttern</option>
-            <option value="tagesbetreuung">Tagesbetreuung</option>
-            <option value="uebernachtung">Übernachtung</option>
-          </select>
-          <input
-            name="plz"
-            type="text"
-            placeholder="PLZ filtern"
-            defaultValue={searchParams.plz ?? ''}
-            className="border border-[#C8D8EC] rounded-xl px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4A6B] w-32 text-[#1E3249]"
-          />
-          <button
-            type="submit"
-            className="bg-[#2E4A6B] text-white rounded-xl px-5 py-2 text-sm font-medium hover:bg-[#1E3249] transition-colors"
-          >
-            Filtern
-          </button>
-          {(searchParams.leistung || searchParams.plz) && (
-            <a
-              href="/pinnwand"
-              className="border border-[#C8D8EC] rounded-xl px-5 py-2 text-sm text-[#4E779F] hover:bg-[#EEF2F8] transition-colors"
+      {/* Filter */}
+      <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-[#C8D8EC] shadow-sm">
+        <div className="max-w-5xl mx-auto px-4 py-3">
+          <form className="flex flex-wrap gap-3 items-center">
+            <select
+              name="ort"
+              defaultValue={filterOrt || 'Alle Ortschaften'}
+              className="border border-[#C8D8EC] rounded-xl px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4A6B] text-[#1E3249]"
             >
-              Zurücksetzen
-            </a>
-          )}
-        </form>
-
-        {/* Postings */}
-        {rows.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-12 text-center">
-            <div className="text-4xl mb-4">🐾</div>
-            <p className="text-[#4E779F]">Keine offenen Gesuche gefunden.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {rows.map((posting) => (
-              <div
-                key={posting.id}
-                className="bg-white rounded-2xl border border-[#C8D8EC] hover:border-[#2E4A6B] shadow-sm p-6 transition-colors"
+              {ORTSCHAFTEN.map((o) => (
+                <option key={o} value={o}>{o}</option>
+              ))}
+            </select>
+            <select
+              name="leistung"
+              defaultValue={filterLeistung}
+              className="border border-[#C8D8EC] rounded-xl px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#2E4A6B] text-[#1E3249]"
+            >
+              <option value="">Alle Leistungen</option>
+              {Object.entries(LEISTUNGS_LABELS).map(([key, label]) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="bg-[#2E4A6B] text-white rounded-xl px-5 py-2 text-sm font-medium hover:bg-[#1E3249] transition-colors"
+            >
+              Filtern
+            </button>
+            {hasFilter && (
+              <Link
+                href="/pinnwand"
+                className="border border-[#C8D8EC] rounded-xl px-5 py-2 text-sm text-[#4E779F] hover:bg-[#EEF2F8] transition-colors"
               >
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    {/* Badge + Ort */}
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${LEISTUNG_COLOR[posting.leistung]}`}
-                      >
-                        {LEISTUNG_LABEL[posting.leistung]}
-                      </span>
-                      <span className="text-sm text-[#4E779F]">
-                        {posting.ort} · {posting.plz}
+                Zurücksetzen
+              </Link>
+            )}
+          </form>
+        </div>
+      </div>
+
+      {/* Inhalt */}
+      <div className="flex-1 bg-[#F1F5F9]">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          {postings.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-16 text-center">
+              <div className="text-5xl mb-4">🐾</div>
+              <p className="text-[#4E779F] font-medium mb-2">Noch keine Gesuche in dieser Region.</p>
+              <p className="text-sm text-[#7A9DBF] mb-6">Sei der Erste und gib ein Gesuch auf!</p>
+              <Link
+                href="/dashboard/postings/neu"
+                className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"
+              >
+                Jetzt Gesuch aufgeben
+              </Link>
+            </div>
+          ) : (
+            <>
+              <p className="text-sm text-[#4E779F] mb-5">
+                {postings.length} {postings.length === 1 ? 'Gesuch' : 'Gesuche'} gefunden
+                {hasFilter && <span className="ml-1">· gefiltert</span>}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {postings.map((p) => (
+                  <div
+                    key={p.id}
+                    className="bg-white rounded-2xl border border-[#C8D8EC] p-5 hover:border-[#2E4A6B] hover:shadow-md transition-all flex flex-col"
+                  >
+                    {/* Foto + Info + Badge */}
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={p.tier_foto}
+                          alt={p.tier_name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-[#1E3249] text-sm leading-tight">{p.tier_name}</div>
+                        <div className="text-xs text-[#7A9DBF]">{p.tier_rasse}</div>
+                        <div className="text-xs text-[#4E779F]">📍 {p.ortschaft}</div>
+                      </div>
+                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
+                        {p.leistung_label}
                       </span>
                     </div>
 
-                    {/* Tier */}
-                    {posting.tier && (
-                      <p className="text-sm font-medium text-[#1E3249] mb-1">
-                        {posting.tier.name}{' '}
-                        <span className="font-normal text-[#4E779F]">
-                          ({posting.tier.tierart})
-                        </span>
-                      </p>
-                    )}
+                    {/* Trennlinie */}
+                    <div className="border-t border-[#EEF2F8] my-3" />
 
-                    {/* Zeitraum */}
-                    <p className="text-sm text-[#4E779F] mb-1">
-                      {format(new Date(posting.datum_von), 'd. MMM yyyy', { locale: de })}
-                      {posting.datum_von !== posting.datum_bis && (
-                        <> – {format(new Date(posting.datum_bis), 'd. MMM yyyy', { locale: de })}</>
-                      )}
-                      {posting.uhrzeit_von && (
-                        <span className="ml-1 text-[#7A9DBF]">
-                          · {posting.uhrzeit_von}
-                          {posting.uhrzeit_bis && ` – ${posting.uhrzeit_bis}`} Uhr
-                        </span>
-                      )}
+                    <p className="text-xs text-[#4E779F] leading-relaxed line-clamp-3 flex-1 mb-3">
+                      {p.beschreibung}
                     </p>
 
-                    {/* Nachricht */}
-                    {posting.nachricht && (
-                      <p className="text-sm text-[#4E779F] mt-2 line-clamp-2">
-                        {posting.nachricht}
-                      </p>
-                    )}
+                    <div className="border-t border-[#EEF2F8] my-3" />
 
-                    {/* Tierhalter */}
-                    <p className="text-xs text-[#7A9DBF] mt-3">
-                      Gesucht von{' '}
-                      <span className="font-medium text-[#4E779F]">
-                        {posting.tierhalter?.full_name ?? 'Unbekannt'}
-                      </span>
-                    </p>
-                  </div>
+                    {/* Datum + Uhrzeit */}
+                    <div className="mb-3 space-y-0.5">
+                      <div className="text-xs text-[#4E779F]">
+                        📅 {format(new Date(p.datum_von), 'dd. MMM yyyy', { locale: de })}
+                        {p.datum_von !== p.datum_bis && (
+                          <> – {format(new Date(p.datum_bis), 'dd. MMM yyyy', { locale: de })}</>
+                        )}
+                      </div>
+                      <div className="text-xs text-[#4E779F]">🕐 {p.uhrzeit}</div>
+                    </div>
 
-                  {/* Bewerben-Button */}
-                  <div className="flex-shrink-0">
-                    <PinnwandBewerbenButton
-                      postingId={posting.id}
-                      isLoggedIn={!!user}
-                      hasBewerbung={meineBewerbungen.has(posting.id)}
-                    />
+                    <div className="border-t border-[#EEF2F8] my-3" />
+
+                    {/* Besitzer + Button */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-7 h-7 rounded-full bg-[#2E4A6B] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                          {p.avatar_initial}
+                        </div>
+                        <span className="text-xs text-[#4E779F] truncate">{p.besitzer_name}</span>
+                      </div>
+                      <Link
+                        href="/register"
+                        className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
+                      >
+                        Jetzt bewerben →
+                      </Link>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+            </>
+          )}
 
-        {/* CTA für nicht eingeloggte */}
-        {!user && rows.length > 0 && (
-          <div className="mt-8 bg-[#2E4A6B] rounded-2xl p-6 text-center text-white">
-            <p className="font-semibold mb-2">Du bist Tiersitter?</p>
-            <p className="text-sm text-[#A8C0DC] mb-4">
-              Registriere dich kostenlos und bewirb dich auf Gesuche in deiner Nähe.
+          {/* CTA Banner */}
+          <div className="mt-10 bg-[#2E4A6B] rounded-2xl p-8 text-center text-white">
+            <p className="text-xl font-bold mb-2">Du hast ein Tier das Betreuung braucht?</p>
+            <p className="text-[#A8C0DC] text-sm mb-5">
+              Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Kreis Daun.
             </p>
-            <a
+            <Link
               href="/register"
-              className="inline-block bg-[#F4A261] text-white font-semibold px-6 py-2 rounded-xl hover:bg-[#E07B30] transition-colors"
+              className="inline-block bg-[#F4A261] text-white font-semibold px-7 py-3 rounded-xl hover:bg-[#E07B30] transition-colors"
             >
-              Jetzt registrieren
-            </a>
+              Jetzt Gesuch aufgeben →
+            </Link>
           </div>
-        )}
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

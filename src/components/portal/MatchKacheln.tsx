@@ -32,16 +32,16 @@ function KachelCard({ k }: { k: Kachel }) {
         </span>
       )}
       <div>
-        <div className="text-2xl mb-2">{k.icon}</div>
+        <div className="text-3xl mb-2">{k.icon}</div>
         {k.matchScore !== undefined && (
           <div className="text-3xl font-bold text-[#2E4A6B] mb-1">{k.matchScore}%</div>
         )}
-        <div className="font-semibold text-[#1E3249] text-sm mb-1">{k.titel}</div>
-        <p className="text-xs text-[#4E779F] leading-relaxed">{k.text}</p>
+        <div className="font-semibold text-[#1E3249] text-base mb-1">{k.titel}</div>
+        <p className="text-sm text-[#4E779F] leading-relaxed">{k.text}</p>
       </div>
       <Link
         href={k.href}
-        className="mt-4 text-xs font-semibold text-[#2E4A6B] hover:text-[#1E3249] hover:underline"
+        className="mt-4 text-sm font-semibold text-[#2E4A6B] hover:text-[#1E3249] hover:underline py-1 inline-block"
       >
         {k.buttonLabel}
       </Link>

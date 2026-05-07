@@ -39,13 +39,13 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
         <Image
           src="/assets/images/logo-vulkaneifel.jpg"
           alt="Landkreis Vulkaneifel"
-          width={44}
-          height={44}
+          width={56}
+          height={56}
           className="rounded-lg object-cover"
           style={{ flexShrink: 0 }}
         />
-        <span className="hidden md:block" style={{ color: 'white', fontSize: 10, lineHeight: 1.3 }}>
-          Landkreis<br />Vulkaneifel
+        <span className="hidden md:block" style={{ color: 'white', fontSize: 14, fontWeight: 500, lineHeight: 1.3 }}>
+          Landkreis<br /><span style={{ fontSize: 12, fontWeight: 400 }}>Vulkaneifel</span>
         </span>
       </Link>
 
@@ -72,8 +72,8 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
       {/* Rechts: MTS Branding + Account */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ color: 'white', fontWeight: 600, fontSize: 14 }}>🐾 MeinTiersitter</div>
-          <div style={{ color: 'var(--vke-text-secondary)', fontSize: 10 }}>Kreis Daun</div>
+          <div style={{ color: 'white', fontWeight: 600, fontSize: 18 }}>🐾 MeinTiersitter</div>
+          <div style={{ color: 'var(--vke-text-secondary)', fontSize: 14 }}>Kreis Daun</div>
         </div>
 
         {user ? (
@@ -158,9 +158,9 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
               style={{
                 border: '1px solid white',
                 color: 'white',
-                padding: '5px 12px',
+                padding: '6px 16px',
                 borderRadius: 6,
-                fontSize: 12,
+                fontSize: 14,
                 textDecoration: 'none',
                 fontWeight: 500,
               }}
@@ -172,9 +172,9 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
               style={{
                 background: 'var(--vke-accent)',
                 color: 'white',
-                padding: '5px 12px',
+                padding: '6px 16px',
                 borderRadius: 6,
-                fontSize: 12,
+                fontSize: 14,
                 textDecoration: 'none',
                 fontWeight: 500,
               }}

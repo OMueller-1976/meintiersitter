@@ -9,8 +9,9 @@ const kategorien = [
     iconColor: 'text-[#2E4A6B]',
     title: 'Wandern & Gassi',
     desc: 'Die schönsten Routen in der Vulkaneifel – von der kurzen Abendrunde bis zur Tageswanderung.',
-    badge: '5 Routen',
+    badge: '4 Routen',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: '/ratgeber/wandern',
   },
   {
     icon: '🏖',
@@ -20,6 +21,7 @@ const kategorien = [
     desc: 'Wo Hunde planschen dürfen – Seen und Bäche in der Region mit Hundebereich.',
     badge: '3 Spots',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: '/ratgeber/hundestrand',
   },
   {
     icon: '🏨',
@@ -27,8 +29,9 @@ const kategorien = [
     iconColor: 'text-[#F4A261]',
     title: 'Hundefreundliche Unterkünfte',
     desc: 'Hotels, Pensionen und Ferienhäuser im Kreis Daun und Umgebung.',
-    badge: 'Coming soon',
-    badgeColor: 'bg-[#EEF2F8] text-[#7A9DBF]',
+    badge: '3 Tipps',
+    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: '/ratgeber/unterkuenfte',
   },
   {
     icon: '🍖',
@@ -38,6 +41,7 @@ const kategorien = [
     desc: 'Richtige Fütterung, häufige Krankheiten und Erste Hilfe beim Hund.',
     badge: '4 Artikel',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: null,
   },
   {
     icon: '⚖',
@@ -47,6 +51,7 @@ const kategorien = [
     desc: 'Leinenpflicht in RLP, Naturschutzgebiete, Maulkorbpflicht – was gilt wo?',
     badge: '3 Artikel',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: null,
   },
   {
     icon: '🗺',
@@ -56,6 +61,7 @@ const kategorien = [
     desc: 'Burgen, Maare, Cafés – hundefreundliche Ausflugsziele rund um Daun.',
     badge: '6 Tipps',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+    href: null,
   },
 ];
 
@@ -123,9 +129,18 @@ export default function RatgeberPage() {
                   </div>
                   <h2 className="font-bold text-[#1E3249] mb-2">{k.title}</h2>
                   <p className="text-sm text-[#4E779F] flex-1">{k.desc}</p>
-                  <button className="mt-4 text-sm text-[#2E4A6B] font-medium hover:underline text-left">
-                    Zur Kategorie →
-                  </button>
+                  {k.href ? (
+                    <Link
+                      href={k.href}
+                      className="mt-4 text-sm text-[#2E4A6B] font-medium hover:underline text-left"
+                    >
+                      Zur Kategorie →
+                    </Link>
+                  ) : (
+                    <span className="mt-4 text-sm text-[#C8D8EC] cursor-default">
+                      Bald verfügbar
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
