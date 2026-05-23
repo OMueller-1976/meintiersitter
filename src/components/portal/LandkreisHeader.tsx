@@ -94,7 +94,7 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
                 <div style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: 13, fontWeight: 600 }}>
                   {fullName}
                 </div>
-                {[['Profil', '/dashboard/profil'], ['Dashboard', '/dashboard'], ['Chat', '/chat']].map(([label, href]) => (
+                {[['Profil', '/dashboard/profil'], ['Dashboard', '/dashboard']].map(([label, href]) => (
                   <Link key={href} href={href} onClick={() => setDropdownOpen(false)}
                     style={{ display: 'block', padding: '10px 14px', fontSize: 13, color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}>
                     {label}

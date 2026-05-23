@@ -53,8 +53,6 @@ export default function DashboardNav({ role, profile }: Props) {
   const pathname = usePathname();
   const navItems = role === 'sitter' ? getSitterNav() : getTierhalterNav();
   const roleName = role === 'sitter' ? 'Sitter' : 'Tierhalter';
-  const roleBadgeColor =
-    role === 'sitter' ? 'bg-orange-100 text-[#F4A261]' : 'bg-[#DDEAF4] text-[#2E4A6B]';
 
   function isActive(href: string): boolean {
     if (href === '/dashboard') return pathname === '/dashboard';
@@ -64,12 +62,13 @@ export default function DashboardNav({ role, profile }: Props) {
   return (
     <>
       {/* ── Desktop Sidebar ─────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 bg-[#2E4A6B] z-40">
+      <aside className="hidden md:flex flex-col w-60 h-screen fixed left-0 top-0 z-40"
+        style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(14px)', borderRight: '1px solid rgba(255,255,255,0.15)' }}>
         {/* Logo */}
-        <div className="px-5 py-4 border-b border-[#1E3249]">
-          <Link href="/daun" className="flex flex-col leading-tight">
-            <span className="text-lg font-bold text-white">🐾 MeinTiersitter</span>
-            <span className="text-xs text-[#A8C0DC]">Kreis Daun · Vulkaneifel</span>
+        <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+          <Link href="/" className="flex flex-col leading-tight">
+            <span className="text-lg font-bold text-white">🐾 Tiersitti</span>
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>Mein Dashboard</span>
           </Link>
         </div>
 
@@ -82,9 +81,13 @@ export default function DashboardNav({ role, profile }: Props) {
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
                     isActive(item.href)
-                      ? 'bg-[#3A5A80] text-white font-medium border-l-2 border-[#F4A261]'
-                      : 'text-white/80 hover:bg-[#1E3249]/50 hover:text-white'
+                      ? 'text-white font-semibold'
+                      : 'text-white/70 hover:text-white'
                   }`}
+                  style={isActive(item.href) ? {
+                    background: 'rgba(74,222,128,0.18)',
+                    borderLeft: '3px solid var(--accent-green)',
+                  } : { borderLeft: '3px solid transparent' }}
                 >
                   <span className="text-base">{item.icon}</span>
                   {item.label}
@@ -95,21 +98,24 @@ export default function DashboardNav({ role, profile }: Props) {
         </nav>
 
         {/* User section */}
-        <div className="px-3 py-4 border-t border-[#1E3249]">
+        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}>
           <div className="flex items-center gap-3 px-3 py-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-[#F4A261] text-white font-bold flex items-center justify-center text-xs flex-shrink-0">
+            <div className="w-8 h-8 rounded-full font-bold flex items-center justify-center text-xs flex-shrink-0"
+              style={{ background: 'var(--accent-green)', color: '#0f172a' }}>
               {getInitials(profile.full_name)}
             </div>
             <div className="min-w-0">
               <p className="text-sm font-medium text-white truncate">{profile.full_name}</p>
-              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${roleBadgeColor}`}>
+              <span className="text-xs px-1.5 py-0.5 rounded-full font-medium"
+                style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.8)' }}>
                 {roleName}
               </span>
             </div>
           </div>
           <button
             onClick={async () => { await logoutAction(); }}
-            className="w-full text-left px-3 py-2 text-sm text-[#A8C0DC] hover:text-red-400 hover:bg-[#1E3249]/50 rounded-xl transition-colors"
+            className="w-full text-left px-3 py-2 text-sm rounded-xl transition-colors hover:text-red-400"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
           >
             ← Abmelden
           </button>
@@ -120,15 +126,17 @@ export default function DashboardNav({ role, profile }: Props) {
       <div className="hidden md:block w-60 flex-shrink-0" />
 
       {/* ── Mobile Bottom Nav ───────────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#2E4A6B] border-t border-[#1E3249] shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 shadow-lg"
+        style={{ background: 'rgba(15,76,129,0.9)', backdropFilter: 'blur(14px)', borderTop: '1px solid rgba(255,255,255,0.15)' }}>
         <ul className="flex items-center justify-around px-2 py-2">
           {navItems.slice(0, 5).map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
                 className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-colors ${
-                  isActive(item.href) ? 'text-[#F4A261]' : 'text-[#A8C0DC]'
+                  isActive(item.href) ? 'text-white' : 'text-white/50'
                 }`}
+                style={isActive(item.href) ? { color: 'var(--accent-green)' } : {}}
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="text-[10px] leading-none">{item.label.split(' ')[0]}</span>

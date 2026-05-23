@@ -19,7 +19,6 @@ export default function LandkreisLeftSidebar({ isLoggedIn, bundesland, landkreis
         { icon: '🏠', label: `Portal ${landkreis}`, href: base },
         { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
         { icon: '🐾', label: 'Sitter entdecken', href: `${base}/sitter` },
-        { icon: '💬', label: 'Chat', href: '/chat' },
       ],
     },
     {
