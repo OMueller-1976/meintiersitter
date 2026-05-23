@@ -7,6 +7,7 @@ import RegionFilter from '@/components/RegionFilter'
 import DonationProgress from '@/components/DonationProgress'
 import AdSlot from '@/components/AdSlot'
 import { MOCK_POSTINGS, MOCK_SITTER, LEISTUNGS_BADGE_CLASSES } from '@/lib/mock-data'
+import FallbackImg from '@/components/ui/FallbackImg'
 
 export default async function NationalHomepage() {
   let sitterCount = 0
@@ -114,8 +115,7 @@ export default async function NationalHomepage() {
                     <span className="dummy-badge">📌 Beispiel</span>
                     <div className="flex items-start gap-3 mb-2">
                       <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-white/20">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={p.tier_foto} alt={p.tier_name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                        <FallbackImg src={p.tier_foto} alt={p.tier_name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="font-bold text-sm">{p.tier_name} <span className="text-muted font-normal">· {p.tier_rasse}</span></div>
@@ -146,8 +146,7 @@ export default async function NationalHomepage() {
                     <span className="dummy-badge">📌 Beispiel</span>
                     <div className="flex items-center gap-3 mb-2">
                       <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-white/20">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={s.foto} alt={s.name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                        <FallbackImg src={s.foto} alt={s.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="min-w-0">
                         <div className="font-bold text-sm truncate">{s.name}</div>
