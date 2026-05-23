@@ -1,12 +1,11 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import GesucheCarousel from '@/components/portal/GesucheCarousel'
 import SitterCarousel from '@/components/portal/SitterCarousel'
 import MatchKacheln from '@/components/portal/MatchKacheln'
 import DonationProgress from '@/components/DonationProgress'
-import AdSlot from '@/components/AdSlot'
 import type { Profile } from '@/types'
 
 interface Props {

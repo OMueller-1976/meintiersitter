@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import Link from 'next/link'
 import LandkreisLeftSidebar from '@/components/portal/LandkreisLeftSidebar'
 import LandkreisRightSidebar from '@/components/portal/LandkreisRightSidebar'
 import LandkreisHeader from '@/components/portal/LandkreisHeader'
