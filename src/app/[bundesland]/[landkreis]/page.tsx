@@ -19,27 +19,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) throw new Error('Supabase env vars missing')
+  return createServerClient(url, key, {
+    cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} },
+  })
+}
+
 export default async function LandkreisPage({ params }: Props) {
   const { bundesland, landkreis } = await params
   const cookieStore = await cookies()
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  )
-
-  const { data: region } = await supabase
-    .from('regions')
-    .select('id, landkreis_name, is_active, bundesland_slug')
-    .eq('bundesland_slug', bundesland)
-    .eq('landkreis_slug', landkreis)
-    .maybeSingle()
+  // Region laden — notFound() wenn ungültig
+  let region: { id: string; landkreis_name: string; is_active: boolean } | null = null
+  try {
+    const supabase = buildSupabase(cookieStore)
+    const { data, error } = await supabase
+      .from('regions')
+      .select('id, landkreis_name, is_active')
+      .eq('bundesland_slug', bundesland)
+      .eq('landkreis_slug', landkreis)
+      .maybeSingle()
+    if (error) throw error
+    region = data
+  } catch (err) {
+    console.error('[LandkreisPage] Fehler beim Laden der Region:', err)
+  }
 
   if (!region) notFound()
 
   if (!region.is_active) {
-    // Bald verfügbar Template
     return (
       <div className="flex items-center justify-center min-h-full py-16">
         <div className="tile text-center p-12 max-w-lg">
@@ -70,23 +81,33 @@ export default async function LandkreisPage({ params }: Props) {
     )
   }
 
-  const { data: { user } } = await supabase.auth.getUser()
-
+  // User + Profil laden — graceful fallback wenn nicht eingeloggt oder DB-Fehler
+  let user: { id: string; user_metadata?: Record<string, string> } | null = null
   let profile: Profile | null = null
-  if (user) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single<Profile>()
-    profile = data
+
+  try {
+    const supabase = buildSupabase(cookieStore)
+    const { data: { user: authUser } } = await supabase.auth.getUser()
+    user = authUser
+
+    if (authUser) {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', authUser.id)
+        .single<Profile>()
+      if (error) throw error
+      profile = data
+    }
+  } catch (err) {
+    console.error('[LandkreisPage] Fehler beim Laden des Profils:', err)
+    // Graceful fallback: nicht-eingeloggter View anzeigen
   }
 
   const vorname = profile?.full_name?.split(' ')[0] ?? ''
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Begrüßungs-Header */}
       <div>
         <h1 className="text-2xl font-extrabold">
           {user && vorname
@@ -100,20 +121,16 @@ export default async function LandkreisPage({ params }: Props) {
         </p>
       </div>
 
-      {/* Match-Kacheln */}
       <MatchKacheln isLoggedIn={!!user} userRole={profile?.role} />
 
-      {/* Gesuche */}
       <div className="tile p-4">
         <GesucheCarousel />
       </div>
 
-      {/* Sitter */}
       <div className="tile p-4">
         <SitterCarousel bundesland={bundesland} landkreis={landkreis} />
       </div>
 
-      {/* Spendenbalken */}
       <DonationProgress regionId={region.id} />
     </div>
   )

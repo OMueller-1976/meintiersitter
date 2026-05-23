@@ -7,19 +7,32 @@ import AdSlot from '@/components/AdSlot'
 import { MOCK_POSTINGS, MOCK_SITTER, LEISTUNGS_BADGE_CLASSES } from '@/lib/mock-data'
 
 export default async function NationalHomepage() {
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  )
+  let sitterCount = 0
+  let requestCount = 0
+  let regionCount = 1
 
-  const [{ count: sitterCount }, { count: requestCount }, { count: regionCount }] =
-    await Promise.all([
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) throw new Error('Supabase env vars missing')
+
+    const cookieStore = await cookies()
+    const supabase = createServerClient(url, key, {
+      cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} },
+    })
+
+    const [s, r, reg] = await Promise.all([
       supabase.from('sitter_profiles').select('*', { count: 'exact', head: true }).eq('is_active', true),
       supabase.from('care_requests').select('*', { count: 'exact', head: true }).eq('status', 'offen'),
       supabase.from('regions').select('*', { count: 'exact', head: true }).eq('is_active', true),
     ])
+    sitterCount = s.count ?? 0
+    requestCount = r.count ?? 0
+    regionCount = reg.count ?? 1
+  } catch (err) {
+    console.error('[Homepage] Fehler beim Laden der Statistiken:', err)
+    // Graceful fallback: Nullwerte anzeigen
+  }
 
   return (
     <div className="min-h-screen">

@@ -9,18 +9,29 @@ export const metadata: Metadata = {
 }
 
 export default async function RheinlandPfalzPage() {
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  )
+  let landkreise: { landkreis_slug: string; landkreis_name: string; is_active: boolean; tierheim_name: string | null }[] = []
 
-  const { data: landkreise } = await supabase
-    .from('regions')
-    .select('landkreis_slug, landkreis_name, is_active, tierheim_name')
-    .eq('bundesland_slug', 'rheinland-pfalz')
-    .order('landkreis_name')
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) throw new Error('Supabase env vars missing')
+
+    const cookieStore = await cookies()
+    const supabase = createServerClient(url, key, {
+      cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} },
+    })
+
+    const { data, error } = await supabase
+      .from('regions')
+      .select('landkreis_slug, landkreis_name, is_active, tierheim_name')
+      .eq('bundesland_slug', 'rheinland-pfalz')
+      .order('landkreis_name')
+    if (error) throw error
+    landkreise = data ?? []
+  } catch (err) {
+    console.error('[RheinlandPfalzPage] Fehler beim Laden der Landkreise:', err)
+    // Graceful fallback: leere Liste anzeigen
+  }
 
   return (
     <div className="min-h-screen">

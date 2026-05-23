@@ -6,31 +6,46 @@ interface DonationProgressProps {
 }
 
 export default async function DonationProgress({ regionId }: DonationProgressProps) {
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  )
+  let current = 0
+  let milestone = 500
+  let tierheimName = 'das Tierheim'
 
-  let query = supabase.from('donation_stats').select(`
-    total_received_eur, milestone_eur,
-    regions ( tierheim_name, landkreis_name )
-  `)
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) throw new Error('Supabase env vars missing')
 
-  if (regionId) {
-    query = query.eq('region_id', regionId)
-  } else {
-    query = query.is('region_id', null)
+    const cookieStore = await cookies()
+    const supabase = createServerClient(url, key, {
+      cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} },
+    })
+
+    let query = supabase.from('donation_stats').select(`
+      total_received_eur, milestone_eur,
+      regions ( tierheim_name )
+    `)
+
+    if (regionId) {
+      query = query.eq('region_id', regionId)
+    } else {
+      query = query.is('region_id', null)
+    }
+
+    const { data, error } = await query.maybeSingle()
+    if (error) throw error
+
+    if (data) {
+      current = Number(data.total_received_eur ?? 0)
+      milestone = Number(data.milestone_eur ?? 500)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      tierheimName = (data as any)?.regions?.tierheim_name ?? 'das Tierheim'
+    }
+  } catch (err) {
+    console.error('[DonationProgress] Fehler beim Laden:', err)
+    // Graceful fallback: Nullstand anzeigen
   }
 
-  const { data } = await query.maybeSingle()
-
-  const current = Number(data?.total_received_eur ?? 0)
-  const milestone = Number(data?.milestone_eur ?? 500)
   const percent = Math.min((current / milestone) * 100, 100)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tierheimName = (data as any)?.regions?.tierheim_name ?? 'das Tierheim'
 
   return (
     <div className="tile p-5">

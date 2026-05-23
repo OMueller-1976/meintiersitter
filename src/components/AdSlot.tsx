@@ -8,47 +8,44 @@ interface AdSlotProps {
 }
 
 export default async function AdSlot({ slot, regionId }: AdSlotProps) {
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } }
-  )
+  let ad: { ad_link_url: string; ad_image_url: string; alt_text: string } | null = null
 
-  const now = new Date().toISOString()
-  let query = supabase
-    .from('ad_slots')
-    .select('*')
-    .eq('slot_name', slot)
-    .eq('is_active', true)
-    .or(`valid_from.is.null,valid_from.lte.${now}`)
-    .or(`valid_until.is.null,valid_until.gte.${now}`)
-    .limit(1)
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!url || !key) throw new Error('Supabase env vars missing')
 
-  if (regionId) {
-    query = query.eq('region_id', regionId)
+    const cookieStore = await cookies()
+    const supabase = createServerClient(url, key, {
+      cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} },
+    })
+
+    const now = new Date().toISOString()
+    let query = supabase
+      .from('ad_slots')
+      .select('ad_link_url, ad_image_url, alt_text')
+      .eq('slot_name', slot)
+      .eq('is_active', true)
+      .or(`valid_from.is.null,valid_from.lte.${now}`)
+      .or(`valid_until.is.null,valid_until.gte.${now}`)
+      .limit(1)
+
+    if (regionId) query = query.eq('region_id', regionId)
+
+    const { data, error } = await query.maybeSingle()
+    if (error) throw error
+    ad = data
+  } catch (err) {
+    console.error('[AdSlot] Fehler beim Laden:', err)
+    // Graceful fallback: Spenden-CTA anzeigen
   }
 
-  const { data } = await query.maybeSingle()
-
   return (
-    <div
-      className="tile overflow-hidden"
-      style={{ width: 300, minHeight: 250 }}
-    >
-      {data ? (
-        <a
-          href={data.ad_link_url}
-          target="_blank"
-          rel="noopener sponsored"
-          className="block w-full h-full"
-        >
+    <div className="tile overflow-hidden" style={{ width: 300, minHeight: 250 }}>
+      {ad ? (
+        <a href={ad.ad_link_url} target="_blank" rel="noopener sponsored" className="block w-full h-full">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={data.ad_image_url}
-            alt={data.alt_text ?? 'Werbung'}
-            className="w-full h-full object-cover"
-          />
+          <img src={ad.ad_image_url} alt={ad.alt_text ?? 'Werbung'} className="w-full h-full object-cover" />
         </a>
       ) : (
         <div className="p-6 flex flex-col items-center justify-center h-full text-center gap-3">
