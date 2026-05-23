@@ -13,35 +13,39 @@ interface Kachel {
   text: string;
   buttonLabel: string;
   href: string;
-  bg: string;
-  border: string;
-  badge?: string;
-  badgeColor?: string;
   highlight?: boolean;
+  badge?: string;
   matchScore?: number;
 }
 
 function KachelCard({ k }: { k: Kachel }) {
   return (
     <div
-      className={`${k.bg} ${k.border} rounded-xl p-5 border transition-all hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between h-full relative overflow-hidden`}
+      className="tile-sm p-4 flex flex-col justify-between h-full relative overflow-hidden transition-all hover:opacity-90"
+      style={k.highlight ? { border: '1.5px solid rgba(74,222,128,0.5)' } : {}}
     >
       {k.badge && (
-        <span className={`absolute top-3 right-3 text-xs font-bold px-2 py-0.5 rounded-full ${k.badgeColor ?? 'bg-[#F4A261] text-white'}`}>
+        <span
+          className="absolute top-3 right-3 text-xs font-bold px-2 py-0.5 rounded-full text-slate-900"
+          style={{ background: 'var(--accent-amber)' }}
+        >
           {k.badge}
         </span>
       )}
       <div>
-        <div className="text-3xl mb-2">{k.icon}</div>
+        <div className="text-2xl mb-2">{k.icon}</div>
         {k.matchScore !== undefined && (
-          <div className="text-3xl font-bold text-[#2E4A6B] mb-1">{k.matchScore}%</div>
+          <div className="text-2xl font-extrabold mb-1" style={{ color: 'var(--accent-green)' }}>
+            {k.matchScore}%
+          </div>
         )}
-        <div className="font-semibold text-[#1E3249] text-base mb-1">{k.titel}</div>
-        <p className="text-sm text-[#4E779F] leading-relaxed">{k.text}</p>
+        <div className="font-bold text-sm mb-1">{k.titel}</div>
+        <p className="text-xs text-secondary leading-relaxed">{k.text}</p>
       </div>
       <Link
         href={k.href}
-        className="mt-4 text-sm font-semibold text-[#2E4A6B] hover:text-[#1E3249] hover:underline py-1 inline-block"
+        className="mt-3 text-xs font-bold hover:opacity-80 transition-opacity inline-block"
+        style={{ color: 'var(--accent-green)' }}
       >
         {k.buttonLabel}
       </Link>
@@ -60,8 +64,6 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Lege ein Profil für Deinen Vierbeiner an',
         buttonLabel: 'Jetzt starten →',
         href: '/register?role=tierhalter',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#2E4A6B]',
       },
       {
         icon: '🤝',
@@ -69,17 +71,13 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Hilf Tierhaltern in Deiner Nachbarschaft',
         buttonLabel: 'Gratis registrieren →',
         href: '/register?role=sitter',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#2E4A6B]',
       },
       {
         icon: '🏪',
         titel: 'Marktplatz',
-        text: 'Tiergeschäfte und Tierärzte im Kreis Daun',
+        text: 'Tiergeschäfte und Tierärzte in der Region',
         buttonLabel: 'Zum Marktplatz →',
         href: '/marktplatz',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#2E4A6B]',
       },
     ];
   } else if (userRole === 'sitter') {
@@ -90,10 +88,8 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: '2 Gesuche passen zu Deinem Profil',
         buttonLabel: 'Jetzt ansehen →',
         href: '/dashboard/anfragen',
-        bg: 'bg-white',
-        border: 'border-2 border-[#F4A261]',
+        highlight: true,
         badge: '2',
-        badgeColor: 'bg-[#F4A261] text-white',
       },
       {
         icon: '🗓',
@@ -101,8 +97,6 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Trage Deine freien Zeiten ein',
         buttonLabel: 'Verfügbarkeit pflegen →',
         href: '/dashboard/verfuegbarkeit',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#C8D8EC]',
       },
       {
         icon: '⭐',
@@ -110,12 +104,9 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Vervollständige Dein Sitter-Profil',
         buttonLabel: 'Profil bearbeiten →',
         href: '/dashboard/profil',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#C8D8EC]',
       },
     ];
   } else {
-    // tierhalter (logged in)
     kacheln = [
       {
         icon: '✨',
@@ -123,10 +114,8 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Maria H. aus Gillenfeld passt perfekt zu Deinem Profil',
         buttonLabel: 'Match ansehen →',
         href: '/dashboard',
-        bg: 'bg-white',
-        border: 'border-2 border-[#2E4A6B]',
+        highlight: true,
         badge: 'NEU',
-        badgeColor: 'bg-[#F4A261] text-white',
         matchScore: 85,
       },
       {
@@ -135,17 +124,13 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         text: 'Du hast noch kein aktives Gesuch',
         buttonLabel: 'Gesuch aufgeben →',
         href: '/dashboard/postings/neu',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#C8D8EC]',
       },
       {
         icon: '💬',
         titel: 'Nachrichten',
-        text: '0 neue Nachrichten',
-        buttonLabel: 'Zu den Nachrichten →',
-        href: '/dashboard/nachrichten',
-        bg: 'bg-[#EEF2F8]',
-        border: 'border-[#C8D8EC]',
+        text: 'Schreibe direkt mit Sittern',
+        buttonLabel: 'Zum Chat →',
+        href: '/chat',
       },
     ];
   }

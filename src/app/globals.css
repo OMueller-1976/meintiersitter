@@ -3,152 +3,108 @@
 @tailwind utilities;
 
 :root {
-  /* Vulkaneifel Blau Palette */
-  --vke-50:  #EEF2F8;
-  --vke-100: #DDEAF4;
-  --vke-200: #C8D8EC;
-  --vke-300: #A8C0DC;
-  --vke-400: #7A9DBF;
-  --vke-500: #4E779F;
-  --vke-600: #3A5A80;
-  --vke-700: #2E4A6B;
-  --vke-800: #1E3249;
-  --vke-900: #111E2E;
+  --gradient-bg: linear-gradient(135deg, #0f4c81 0%, #1a7a5e 50%, #0d6e8a 100%);
+  --tile-bg: rgba(255, 255, 255, 0.10);
+  --tile-border: rgba(255, 255, 255, 0.18);
+  --tile-shadow: 0 8px 32px rgba(0, 0, 0, 0.20);
+  --accent-green: #4ade80;
+  --accent-blue: #38bdf8;
+  --accent-amber: #f59e0b;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --chat-bubble-own: rgba(74, 222, 128, 0.22);
+  --chat-bubble-other: rgba(255, 255, 255, 0.10);
 
-  /* Akzent */
-  --vke-accent: #F4A261;
-  --vke-accent-dark: #E07B30;
-
-  /* Semantisch */
-  --color-primary: var(--vke-700);
-  --color-primary-hover: var(--vke-600);
-  --color-primary-dark: var(--vke-800);
-  --color-bg-page: var(--vke-50);
-  --color-bg-gradient-start: #F0F5FB;
-  --color-bg-gradient-end: #D4E3F0;
-  --color-text-heading: var(--vke-800);
-  --color-text-body: var(--vke-700);
-  --color-text-muted: var(--vke-500);
-  --color-border: var(--vke-300);
-  --color-card-bg: #FFFFFF;
-
-  /* Portal Layout */
-  --vke-blue: #2E4A6B;
-  --vke-blue-light: #3A5A80;
-  --vke-blue-dark: #1E3249;
-  --vke-blue-faint: #E8EEF5;
-  --vke-text-on-blue: #FFFFFF;
-  --vke-text-secondary: #CBD5E1;
+  /* Portal layout dimensions */
   --sidebar-width-left: 220px;
   --sidebar-width-right: 280px;
-  --header-height: 72px;
+  --header-height: 64px;
 }
 
 html {
   font-size: 16px;
 }
 
-/* Portal-spezifische Schriftgrößen */
-.portal-text-base { font-size: 0.9375rem; }
-.portal-text-sm   { font-size: 0.875rem;  }
-.portal-text-xs   { font-size: 0.8125rem; }
-
-/* Globaler Seiten-Hintergrund */
 body {
-  background: linear-gradient(
-    135deg,
-    #F0F5FB 0%,
-    #E2EDF6 40%,
-    #D4E3F0 100%
-  );
+  background: var(--gradient-bg);
   background-attachment: fixed;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--vke-800);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Nunito', sans-serif;
+  color: var(--text-primary);
   min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--vke-800);
-  font-weight: 600;
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
-/* Cards */
-.card {
-  background: white;
+/* ── Glasmorphismus Tile ── */
+.tile {
+  background: var(--tile-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--tile-border);
+  border-radius: 16px;
+  box-shadow: var(--tile-shadow);
+}
+
+.tile-sm {
+  background: var(--tile-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--tile-border);
   border-radius: 12px;
-  border: 1px solid var(--vke-200);
-  box-shadow: 0 1px 3px rgba(46, 74, 107, 0.08),
-              0 4px 12px rgba(46, 74, 107, 0.04);
+  box-shadow: var(--tile-shadow);
 }
 
-/* Buttons */
-.btn-primary {
-  background: var(--vke-700);
+/* ── Dummy Badge ── */
+.dummy-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(245, 158, 11, 0.85);
   color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  z-index: 10;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  background: var(--accent-green);
+  color: #0f172a;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 10px 20px;
-  font-weight: 500;
-  transition: background 0.2s;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  transition: opacity 0.2s;
+  cursor: pointer;
 }
 .btn-primary:hover {
-  background: var(--vke-600);
+  opacity: 0.9;
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--vke-700);
-  border: 1.5px solid var(--vke-700);
-  border-radius: 8px;
+  color: var(--text-primary);
+  border: 1.5px solid var(--tile-border);
+  border-radius: 12px;
   padding: 10px 20px;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  transition: background 0.2s;
+  cursor: pointer;
 }
 .btn-outline:hover {
-  background: var(--vke-700);
-  color: white;
+  background: var(--tile-bg);
 }
 
-/* Badge/Pills */
-.badge-blue {
-  background: var(--vke-100);
-  color: var(--vke-700);
-  border: 1px solid var(--vke-300);
-  border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-/* Section backgrounds */
-.section-white {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-}
-
-.section-blue {
-  background: var(--vke-700);
-  color: white;
-  border-radius: 16px;
-}
-
-.section-blue h2,
-.section-blue h3,
-.section-blue p {
-  color: white;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-/* Portal Layout Responsive */
+/* ── Portal Layout ── */
 .portal-sidebar-left {
   display: flex;
 }
@@ -174,5 +130,42 @@ h1, h2, h3, h4, h5, h6 {
 
   .portal-search-wrap {
     display: none;
+  }
+}
+
+/* ── Input / Select Glass ── */
+.glass-input {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--tile-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.glass-input::placeholder {
+  color: var(--text-muted);
+}
+.glass-input:focus {
+  border-color: var(--accent-green);
+}
+.glass-input option {
+  background: #0f4c81;
+  color: white;
+}
+
+/* ── Text utilities ── */
+.text-muted {
+  color: var(--text-muted);
+}
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }

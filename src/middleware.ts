@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 const AUTH_ROUTES = ['/login', '/register'];
 
 function isProtectedRoute(pathname: string): boolean {
-  return pathname.startsWith('/dashboard');
+  return pathname.startsWith('/dashboard') || pathname.startsWith('/chat');
 }
 
 function isAuthRoute(pathname: string): boolean {
@@ -35,21 +35,18 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: Do not call supabase.auth.getSession() – use getUser() for security
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
 
-  // Wenn eingeloggt und auf Auth-Route → zum Dashboard
   if (user && isAuthRoute(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
 
-  // Wenn nicht eingeloggt und auf geschützter Route → zum Login
   if (!user && isProtectedRoute(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
