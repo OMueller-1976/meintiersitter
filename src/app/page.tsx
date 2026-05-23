@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import RegionFilter from '@/components/RegionFilter'
-import DonationProgress from '@/components/DonationProgress'
 import AdSlot from '@/components/AdSlot'
 import { MOCK_POSTINGS, MOCK_SITTER, LEISTUNGS_BADGE_CLASSES } from '@/lib/mock-data'
 import FallbackImg from '@/components/ui/FallbackImg'
@@ -109,8 +108,8 @@ export default async function NationalHomepage() {
                   Alle anzeigen →
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {MOCK_POSTINGS.map((p) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {MOCK_POSTINGS.slice(0, 2).map((p) => (
                   <div key={p.id} className="tile p-4 relative">
                     <span className="dummy-badge">📌 Beispiel</span>
                     <div className="flex items-start gap-3 mb-2">
@@ -129,6 +128,17 @@ export default async function NationalHomepage() {
                     <div className="text-xs text-muted">📅 {p.datum_von} · 🕐 {p.uhrzeit}</div>
                   </div>
                 ))}
+                {/* Tiersitti unterstützen – dritte Kachel, gleiche Zeile */}
+                <Link href="/spenden" className="tile p-4 flex flex-col justify-between hover:opacity-90 transition-opacity" style={{ borderColor: 'rgba(74,222,128,0.35)' }}>
+                  <div>
+                    <div className="text-3xl mb-3">🐾</div>
+                    <div className="font-bold text-sm mb-1">Tiersitti unterstützen</div>
+                    <p className="text-xs text-secondary">Hilf uns, Tiersitti in weiteren Regionen zu starten und lokale Tierheime zu fördern.</p>
+                  </div>
+                  <div className="mt-4 text-xs font-semibold" style={{ color: 'var(--accent-green)' }}>
+                    Jetzt spenden →
+                  </div>
+                </Link>
               </div>
             </section>
 
@@ -177,8 +187,6 @@ export default async function NationalHomepage() {
               </div>
             </section>
 
-            {/* Donation */}
-            <DonationProgress />
           </div>
 
           {/* Right Sidebar */}

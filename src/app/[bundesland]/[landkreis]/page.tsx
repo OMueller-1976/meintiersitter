@@ -7,7 +7,6 @@ import type { Metadata } from 'next'
 import GesucheCarousel from '@/components/portal/GesucheCarousel'
 import SitterCarousel from '@/components/portal/SitterCarousel'
 import MatchKacheln from '@/components/portal/MatchKacheln'
-import DonationProgress from '@/components/DonationProgress'
 import type { Profile } from '@/types'
 
 interface Props {
@@ -133,7 +132,6 @@ export default async function LandkreisPage({ params }: Props) {
         <SitterCarousel bundesland={bundesland} landkreis={landkreis} />
       </div>
 
-      <DonationProgress regionId={region.id} />
     </div>
   )
 }
