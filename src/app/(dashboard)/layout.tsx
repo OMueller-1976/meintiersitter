@@ -29,7 +29,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       <DashboardNav role={profile.role} profile={profile} />
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
+      <main className="flex-1 overflow-y-auto pb-20 md:pb-0" style={{ background: 'var(--content-bg)' }}>
         {children}
       </main>
     </div>

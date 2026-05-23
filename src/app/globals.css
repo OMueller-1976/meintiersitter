@@ -3,27 +3,40 @@
 @tailwind utilities;
 
 :root {
+  --gradient: linear-gradient(135deg, #0f4c81 0%, #1a7a5e 100%);
   --gradient-bg: linear-gradient(135deg, #0f4c81 0%, #1a7a5e 50%, #0d6e8a 100%);
-  --tile-bg: rgba(255, 255, 255, 0.10);
+  --content-bg: #f0f4f8;
+  --card-bg: #ffffff;
+  --card-border: #d0e4f7;
+  --card-shadow: 0 4px 20px rgba(15, 76, 129, 0.12), 0 1px 4px rgba(15, 76, 129, 0.08);
+  --tile-glass-bg: rgba(255, 255, 255, 0.10);
   --tile-border: rgba(255, 255, 255, 0.18);
   --tile-shadow: 0 8px 32px rgba(0, 0, 0, 0.20);
-  --accent-green: #4ade80;
-  --accent-blue: #38bdf8;
-  --accent-amber: #f59e0b;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.72);
-  --text-muted: rgba(255, 255, 255, 0.45);
-  --chat-bubble-own: rgba(74, 222, 128, 0.22);
-  --chat-bubble-other: rgba(255, 255, 255, 0.10);
+  --accent-green: #16a34a;
+  --accent-green-light: #4ade80;
+  --accent-blue: #0369a1;
+  --accent-amber: #d97706;
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --chat-bubble-own: rgba(22, 163, 74, 0.12);
+  --chat-bubble-other: #f0f4f8;
 
   /* Portal layout dimensions */
   --sidebar-width-left: 220px;
   --sidebar-width-right: 280px;
   --header-height: 64px;
+
+  /* Font sizes */
+  --text-size-base: 16px;
+  --text-size-lg: 18px;
+  --text-size-xl: 22px;
+  --text-size-h2: 26px;
+  --text-size-h1: 32px;
 }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
 }
 
 body {
@@ -39,23 +52,29 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* ── Glasmorphismus Tile ── */
+/* ── White Card — for content areas ── */
 .tile {
-  background: var(--tile-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--tile-border);
-  border-radius: 16px;
-  box-shadow: var(--tile-shadow);
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
 }
 
 .tile-sm {
-  background: var(--tile-bg);
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+/* ── Glassmorphism — for header/sidebar (on gradient bg) ── */
+.tile-glass {
+  background: rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--tile-border);
-  border-radius: 12px;
-  box-shadow: var(--tile-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.20);
 }
 
 /* ── Dummy Badge ── */
@@ -63,20 +82,21 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(245, 158, 11, 0.85);
-  color: white;
+  background: rgba(217, 119, 6, 0.15);
+  color: #92400e;
   font-size: 11px;
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 20px;
   letter-spacing: 0.3px;
   z-index: 10;
+  border: 1px solid rgba(217, 119, 6, 0.25);
 }
 
 /* ── Buttons ── */
 .btn-primary {
-  background: var(--accent-green);
-  color: #0f172a;
+  background: var(--gradient);
+  color: #ffffff;
   border: none;
   border-radius: 12px;
   padding: 10px 20px;
@@ -92,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-outline {
   background: transparent;
   color: var(--text-primary);
-  border: 1.5px solid var(--tile-border);
+  border: 1.5px solid var(--card-border);
   border-radius: 12px;
   padding: 10px 20px;
   font-weight: 600;
@@ -101,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 .btn-outline:hover {
-  background: var(--tile-bg);
+  background: var(--content-bg);
 }
 
 /* ── Portal Layout ── */
@@ -136,24 +156,45 @@ h1, h2, h3, h4, h5, h6 {
 /* ── Input / Select Glass ── */
 .glass-input {
   background: rgba(255, 255, 255, 0.12);
-  border: 1px solid var(--tile-border);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   padding: 8px 12px;
-  color: var(--text-primary);
+  color: #ffffff;
   font-family: 'Nunito', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
 }
 .glass-input::placeholder {
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.5);
 }
 .glass-input:focus {
-  border-color: var(--accent-green);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 .glass-input option {
   background: #0f4c81;
   color: white;
+}
+
+/* ── Card Input — for white card forms ── */
+.card-input {
+  background: var(--content-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.card-input::placeholder {
+  color: var(--text-muted);
+}
+.card-input:focus {
+  border-color: #0f4c81;
+  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
 }
 
 /* ── Text utilities ── */

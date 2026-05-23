@@ -50,7 +50,7 @@ export default function GesucheCarousel() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <h2 className="text-base font-bold">Aktuelle Gesuche</h2>
-          <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.2)', color: 'var(--accent-green)' }}>
+          <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.1)', color: '#15803d' }}>
             {MOCK_POSTINGS.length} offen
           </span>
         </div>
@@ -64,7 +64,7 @@ export default function GesucheCarousel() {
           onClick={() => emblaApi?.scrollPrev()}
           disabled={!canScrollPrev}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-7 h-7 rounded-full flex items-center justify-center transition disabled:opacity-30"
-          style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}
+          style={{ background: '#f0f4f8', border: '1px solid #d0e4f7', color: '#0f4c81' }}
           aria-label="Zurück"
         >
           ‹
@@ -78,7 +78,7 @@ export default function GesucheCarousel() {
                   <span className="dummy-badge">📌 Beispiel</span>
 
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-white/20">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={p.tier_foto} alt={p.tier_name} className="w-full h-full object-cover"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
@@ -89,7 +89,7 @@ export default function GesucheCarousel() {
                       <div className="text-xs text-secondary">📍 {p.ortschaft}</div>
                     </div>
                     <span className="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
-                      style={{ background: LEISTUNG_STYLE[p.leistung] ?? 'rgba(255,255,255,0.15)', color: 'white' }}>
+                      style={{ background: LEISTUNG_STYLE[p.leistung] ?? 'rgba(255,255,255,0.15)', color: '#1e293b' }}>
                       {p.leistung_label}
                     </span>
                   </div>
@@ -101,7 +101,7 @@ export default function GesucheCarousel() {
                     <div className="text-xs text-muted">🕐 {p.uhrzeit}</div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                  <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid #e2e8f0' }}>
                     <div className="flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-full flex items-center justify-center text-slate-900 text-[9px] font-bold flex-shrink-0"
                         style={{ background: 'var(--accent-green)' }}>
@@ -124,7 +124,7 @@ export default function GesucheCarousel() {
           onClick={() => emblaApi?.scrollNext()}
           disabled={!canScrollNext}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-7 h-7 rounded-full flex items-center justify-center transition disabled:opacity-30"
-          style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}
+          style={{ background: '#f0f4f8', border: '1px solid #d0e4f7', color: '#0f4c81' }}
           aria-label="Weiter"
         >
           ›
@@ -135,7 +135,7 @@ export default function GesucheCarousel() {
         {MOCK_POSTINGS.map((_, i) => (
           <button key={i} onClick={() => emblaApi?.scrollTo(i)}
             className="w-1.5 h-1.5 rounded-full transition-colors"
-            style={{ background: i === selectedIndex ? 'var(--accent-green)' : 'rgba(255,255,255,0.25)' }}
+            style={{ background: i === selectedIndex ? 'var(--accent-green)' : '#d0e4f7' }}
             aria-label={`Slide ${i + 1}`} />
         ))}
       </div>

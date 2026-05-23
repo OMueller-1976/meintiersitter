@@ -105,7 +105,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#EEF2F8] to-[#D4E3F0]">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0f4c81 0%, #1a7a5e 50%, #0d6e8a 100%)' }}>
       <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col lg:flex-row gap-10 lg:gap-16 lg:items-start">
 
         {/* ══════════════════════════════════════════
@@ -114,17 +114,17 @@ export default function RegisterPage() {
         <div className="flex-1 lg:py-4">
           {/* Logo */}
           <Link href="/" className="inline-flex items-center gap-2 mb-8">
-            <span className="text-2xl font-bold text-[#2E4A6B]">🐾 MeinTiersitter</span>
+            <span className="text-2xl font-bold text-white">🐾 Tiersitti</span>
           </Link>
-          <p className="text-xs text-[#7A9DBF] -mt-7 mb-8 ml-9">Kreis Daun · Vulkaneifel</p>
+          <p className="text-xs text-white/60 -mt-7 mb-8 ml-9">Tierbetreuung in Deiner Region</p>
 
           {/* Hero-Text */}
-          <h1 className="text-3xl font-bold text-[#1E3249] leading-snug mb-4">
+          <h1 className="text-3xl font-bold text-white leading-snug mb-4">
             Willkommen in der<br />
             Tiersitter-Community<br />
             der Vulkaneifel 🐾
           </h1>
-          <p className="text-lg text-[#4E779F] mb-8 leading-relaxed">
+          <p className="text-lg text-white/75 mb-8 leading-relaxed">
             Von Daun bis Gerolstein, von Manderscheid bis Gillenfeld — hier hilft die Nachbarschaft
             einander. Kostenlos. Persönlich. Mit Herz.
           </p>
@@ -172,7 +172,7 @@ export default function RegisterPage() {
             {TRUST_PILLS.map((pill) => (
               <span
                 key={pill}
-                className="bg-[#EEF2F8] text-[#2E4A6B] text-xs rounded-full px-3 py-1 font-medium"
+                className="bg-white/20 text-white text-xs rounded-full px-3 py-1 font-medium"
               >
                 {pill}
               </span>
@@ -180,14 +180,14 @@ export default function RegisterPage() {
           </div>
 
           {/* Testimonial */}
-          <div className="bg-[#EEF2F8] rounded-2xl p-5">
+          <div className="bg-white/15 rounded-2xl p-5 backdrop-blur-sm">
             <div className="text-5xl text-[#C8D8EC] leading-none mb-2">&ldquo;</div>
-            <p className="text-sm text-[#1E3249] leading-relaxed mb-3 -mt-2">
+            <p className="text-sm text-white leading-relaxed mb-3 -mt-2">
               Endlich eine Plattform nur für unsere Region! Ich habe innerhalb von einem Tag einen
               tollen Sitter für meinen Hund gefunden.
             </p>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[#4E779F] font-medium">— Familie Müller, Daun</span>
+              <span className="text-sm text-white/70 font-medium">— Familie Müller, Daun</span>
               <span className="text-sm">⭐⭐⭐⭐⭐</span>
             </div>
           </div>

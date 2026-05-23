@@ -50,7 +50,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
           onClick={() => emblaApi?.scrollPrev()}
           disabled={!canScrollPrev}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-7 h-7 rounded-full flex items-center justify-center transition disabled:opacity-30"
-          style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}
+          style={{ background: '#f0f4f8', border: '1px solid #d0e4f7', color: '#0f4c81' }}
           aria-label="Zurück"
         >
           ‹
@@ -64,7 +64,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
                   <span className="dummy-badge">📌 Beispiel</span>
 
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-white/20">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={s.foto} alt={s.name} className="w-full h-full object-cover"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
@@ -81,7 +81,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
                   <div className="flex flex-wrap gap-1 mb-2">
                     {s.leistungen.map((l) => (
                       <span key={l} className="text-xs px-2 py-0.5 rounded-full"
-                        style={{ background: 'rgba(255,255,255,0.12)', color: 'white' }}>
+                        style={{ background: '#f0f4f8', color: '#4a5568' }}>
                         {LEISTUNGS_CHIPS[l] ?? l}
                       </span>
                     ))}
@@ -89,12 +89,12 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
 
                   <div className="flex flex-wrap gap-1 mb-3">
                     {s.hat_garten && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(74,222,128,0.15)', color: 'var(--accent-green)' }}>
+                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.1)', color: '#15803d' }}>
                         🌿 Garten
                       </span>
                     )}
                     {s.kann_medikamente && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(56,189,248,0.15)', color: 'var(--accent-blue)' }}>
+                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(3,105,161,0.08)', color: '#0369a1' }}>
                         💊 Medikamente
                       </span>
                     )}
@@ -114,7 +114,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
           onClick={() => emblaApi?.scrollNext()}
           disabled={!canScrollNext}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-7 h-7 rounded-full flex items-center justify-center transition disabled:opacity-30"
-          style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}
+          style={{ background: '#f0f4f8', border: '1px solid #d0e4f7', color: '#0f4c81' }}
           aria-label="Weiter"
         >
           ›
@@ -125,7 +125,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
         {MOCK_SITTER.map((_, i) => (
           <button key={i} onClick={() => emblaApi?.scrollTo(i)}
             className="w-1.5 h-1.5 rounded-full transition-colors"
-            style={{ background: i === selectedIndex ? 'var(--accent-green)' : 'rgba(255,255,255,0.25)' }}
+            style={{ background: i === selectedIndex ? 'var(--accent-green)' : '#d0e4f7' }}
             aria-label={`Slide ${i + 1}`} />
         ))}
       </div>

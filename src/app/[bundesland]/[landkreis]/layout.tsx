@@ -32,7 +32,7 @@ export default async function LandkreisLayout({ children, params }: Props) {
           <LandkreisLeftSidebar isLoggedIn={!!user} bundesland={bundesland} landkreis={landkreis} />
         </div>
 
-        <main style={{ flex: 1, overflowY: 'auto', padding: '1.25rem' }}>
+        <main style={{ flex: 1, overflowY: 'auto', padding: '1.25rem', background: 'var(--content-bg)' }}>
           {children}
         </main>
 

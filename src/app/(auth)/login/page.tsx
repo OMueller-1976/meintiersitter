@@ -47,19 +47,19 @@ export default function LoginPage() {
 
   const inputStyle = {
     width: '100%',
-    background: 'rgba(255,255,255,0.12)',
-    border: '1px solid rgba(255,255,255,0.25)',
+    background: '#f0f4f8',
+    border: '1.5px solid #d0e4f7',
     borderRadius: 12,
     padding: '10px 14px',
-    color: 'white',
-    fontSize: 14,
+    color: '#1a1a2e',
+    fontSize: 15,
     outline: 'none',
     fontFamily: 'inherit',
   } as const;
 
   const inputErrorStyle = {
     ...inputStyle,
-    border: '1px solid rgba(248,113,113,0.7)',
+    border: '1.5px solid #f87171',
   };
 
   return (
@@ -76,14 +76,14 @@ export default function LoginPage() {
           <p className="text-white/60 text-sm mt-1">Tierbetreuung in Deiner Region</p>
         </div>
 
-        <div className="tile p-8 md:p-10">
-          <h1 className="text-xl font-bold text-white mb-1 text-center">Willkommen zurück</h1>
-          <p className="text-white/60 text-sm text-center mb-8">Melde Dich mit Deinem Konto an.</p>
+        <div className="p-8 md:p-10 rounded-2xl" style={{ background: '#ffffff', border: '1.5px solid #d0e4f7', boxShadow: '0 4px 20px rgba(15,76,129,0.12)' }}>
+          <h1 className="text-xl font-bold mb-1 text-center" style={{ color: '#1a1a2e' }}>Willkommen zurück</h1>
+          <p className="text-sm text-center mb-8" style={{ color: '#718096' }}>Melde Dich mit Deinem Konto an.</p>
 
           <div className="flex flex-col gap-5">
             {/* E-Mail */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">E-Mail</label>
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#4a5568' }}>E-Mail</label>
               <input
                 type="email"
                 value={email}
@@ -100,7 +100,7 @@ export default function LoginPage() {
 
             {/* Passwort */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Passwort</label>
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#4a5568' }}>Passwort</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -116,14 +116,14 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/50 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors" style={{ color: '#718096' }}
                 >
                   {showPassword ? 'Verbergen' : 'Zeigen'}
                 </button>
               </div>
               {passwordError && <p className="text-red-400 text-xs mt-1">{passwordError}</p>}
               <div className="text-right mt-1.5">
-                <Link href="/passwort-vergessen" className="text-xs text-white/50 hover:text-white transition-colors">
+                <Link href="/passwort-vergessen" className="text-xs transition-colors" style={{ color: '#718096' }}>
                   Passwort vergessen?
                 </Link>
               </div>
@@ -134,7 +134,7 @@ export default function LoginPage() {
               onClick={handleSubmit}
               disabled={isLoading}
               className="w-full py-3 rounded-2xl font-bold text-sm transition-opacity disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1"
-              style={{ background: 'var(--accent-green)', color: '#0f172a' }}
+              style={{ background: 'linear-gradient(135deg, #0f4c81 0%, #1a7a5e 100%)', color: '#ffffff' }}
             >
               {isLoading ? (
                 <>
@@ -147,9 +147,9 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <p className="text-center text-sm text-white/50 mt-6">
+          <p className="text-center text-sm mt-6" style={{ color: '#718096' }}>
             Noch kein Konto?{' '}
-            <Link href="/register" className="text-white font-semibold hover:text-white/80 transition-colors">
+            <Link href="/register" className="font-semibold transition-colors" style={{ color: '#0f4c81' }}>
               Jetzt registrieren →
             </Link>
           </p>

@@ -22,7 +22,7 @@ function KachelCard({ k }: { k: Kachel }) {
   return (
     <div
       className="tile-sm p-4 flex flex-col justify-between h-full relative overflow-hidden transition-all hover:opacity-90"
-      style={k.highlight ? { border: '1.5px solid rgba(74,222,128,0.5)' } : {}}
+      style={k.highlight ? { borderColor: '#bbf7d0' } : {}}
     >
       {k.badge && (
         <span
