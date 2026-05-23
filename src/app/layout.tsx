@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
@@ -9,6 +9,10 @@ const nunito = Nunito({
   variable: "--font-nunito",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#1a7a5e",
+};
 
 export const metadata: Metadata = {
   title: "Tiersitti – Tierbetreuung und Tierhilfe in Deiner Region",
@@ -24,7 +28,6 @@ export const metadata: Metadata = {
     type: "website",
   },
   manifest: "/manifest.json",
-  themeColor: "#1a7a5e",
 };
 
 export default function RootLayout({
