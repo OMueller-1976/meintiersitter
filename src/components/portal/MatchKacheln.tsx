@@ -21,30 +21,27 @@ interface Kachel {
 function KachelCard({ k }: { k: Kachel }) {
   return (
     <div
-      className="tile-sm p-4 flex flex-col justify-between h-full relative overflow-hidden transition-all hover:opacity-90"
+      className="tile-sm p-3 flex flex-col relative overflow-hidden transition-all hover:opacity-90"
       style={k.highlight ? { borderColor: '#bbf7d0' } : {}}
     >
       {k.badge && (
         <span
-          className="absolute top-3 right-3 text-xs font-bold px-2 py-0.5 rounded-full text-slate-900"
-          style={{ background: 'var(--accent-amber)' }}
+          className="absolute top-2 right-2 text-xs font-bold px-1.5 py-0.5 rounded-full text-slate-900"
+          style={{ background: 'var(--accent-amber)', fontSize: 10 }}
         >
           {k.badge}
         </span>
       )}
-      <div>
-        <div className="text-2xl mb-2">{k.icon}</div>
-        {k.matchScore !== undefined && (
-          <div className="text-2xl font-extrabold mb-1" style={{ color: 'var(--accent-green)' }}>
-            {k.matchScore}%
-          </div>
-        )}
-        <div className="font-bold text-sm mb-1">{k.titel}</div>
-        <p className="text-xs text-secondary leading-relaxed">{k.text}</p>
-      </div>
+      {k.matchScore !== undefined && (
+        <div className="text-lg font-extrabold mb-0.5" style={{ color: 'var(--accent-green)' }}>
+          {k.matchScore}%
+        </div>
+      )}
+      <div className="font-semibold text-[#1E3249] text-sm mb-1 leading-tight">{k.titel}</div>
+      <p className="text-xs text-secondary leading-snug mb-2 flex-1">{k.text}</p>
       <Link
         href={k.href}
-        className="mt-3 text-xs font-bold hover:opacity-80 transition-opacity inline-block"
+        className="text-xs font-bold hover:opacity-80 transition-opacity inline-block"
         style={{ color: 'var(--accent-green)' }}
       >
         {k.buttonLabel}
@@ -136,7 +133,7 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
   }
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-3 gap-2">
       {kacheln.map((k) => (
         <KachelCard key={k.titel} k={k} />
       ))}

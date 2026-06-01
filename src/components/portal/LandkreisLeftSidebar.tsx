@@ -31,6 +31,18 @@ export default function LandkreisLeftSidebar({ isLoggedIn, bundesland, landkreis
         { icon: '📖', label: 'Ratgeber', href: '/ratgeber' },
       ],
     },
+    {
+      label: 'ANLAUFSTELLEN',
+      items: [
+        { icon: '🏠', label: 'Tierheime & Vereine', href: '/anlaufstellen' },
+      ],
+    },
+    {
+      label: 'PARTNER',
+      items: [
+        { icon: '🤝', label: 'Förderer & Sponsoren', href: '/foerderer' },
+      ],
+    },
     ...(isLoggedIn
       ? [{
           label: 'MEIN BEREICH',

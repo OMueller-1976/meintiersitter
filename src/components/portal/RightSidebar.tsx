@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import GemeindeDaunBadge from '@/components/GemeindeDaunBadge';
 
 interface InfoKachel {
   kategorie: string;
@@ -137,7 +138,10 @@ export default function RightSidebar() {
           </div>
         </div>
 
-        {/* Kachel 2: Förderer — FESTE HÖHE */}
+        {/* Kachel 2: Gemeinde Daun */}
+        <GemeindeDaunBadge />
+
+        {/* Kachel 3: Förderer — FESTE HÖHE */}
         <div className="rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
           {/* Header */}
           <div className="px-3 py-2 border-b border-[#EEF2F8] flex-shrink-0">

@@ -83,7 +83,7 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
               <div
                 style={{
                   fontSize: 12,
-                  fontWeight: 600,
+                  fontWeight: 700,
                   color: 'var(--vke-text-secondary)',
                   padding: '0.75rem 1rem 0.25rem',
                   letterSpacing: '0.08em',
@@ -103,7 +103,7 @@ export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
                     alignItems: 'center',
                     gap: '0.6rem',
                     padding: '0.65rem 1rem',
-                    fontSize: 14.4,
+                    fontSize: 15.2,
                     textDecoration: 'none',
                     color: isActive ? 'white' : 'var(--vke-text-secondary)',
                     background: isActive ? 'var(--vke-blue-light)' : 'transparent',
