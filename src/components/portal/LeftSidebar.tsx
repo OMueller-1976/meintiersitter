@@ -40,6 +40,7 @@ const navGroups: NavGroup[] = [
     label: 'ANLAUFSTELLEN',
     items: [
       { icon: '🏠', label: 'Tierheime & Vereine', href: '/anlaufstellen' },
+      { icon: '🍖', label: 'Futterstationen', href: '/anlaufstellen#futterstationen' },
     ],
   },
   {
