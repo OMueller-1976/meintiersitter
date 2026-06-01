@@ -2,8 +2,8 @@ export const dynamic = 'force-dynamic'
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import LandkreisLeftSidebar from '@/components/portal/LandkreisLeftSidebar'
-import LandkreisRightSidebar from '@/components/portal/LandkreisRightSidebar'
+import LeftSidebar from '@/components/portal/LeftSidebar'
+import RightSidebar from '@/components/portal/RightSidebar'
 import LandkreisHeader from '@/components/portal/LandkreisHeader'
 
 interface Props {
@@ -29,7 +29,7 @@ export default async function LandkreisLayout({ children, params }: Props) {
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         <div className="portal-sidebar-left">
-          <LandkreisLeftSidebar isLoggedIn={!!user} bundesland={bundesland} landkreis={landkreis} />
+          <LeftSidebar isLoggedIn={!!user} />
         </div>
 
         <main style={{ flex: 1, overflowY: 'auto', padding: '1.25rem', background: 'var(--content-bg)' }}>
@@ -37,7 +37,7 @@ export default async function LandkreisLayout({ children, params }: Props) {
         </main>
 
         <div className="portal-sidebar-right">
-          <LandkreisRightSidebar />
+          <RightSidebar />
         </div>
       </div>
     </div>
