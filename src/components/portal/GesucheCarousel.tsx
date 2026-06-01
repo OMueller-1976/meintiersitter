@@ -73,20 +73,20 @@ export default function GesucheCarousel() {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-3">
             {MOCK_POSTINGS.map((p) => (
-              <div key={p.id} className="flex-none min-w-0" style={{ width: 'calc(50% - 6px)' }}>
+              <div key={p.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
                 <div className="tile-sm p-4 h-full flex flex-col relative">
                   <span className="dummy-badge">📌 Beispiel</span>
 
-                  <div className="flex items-start gap-3 mb-3">
+                  <div className="flex items-start gap-3 mb-3" style={{ minWidth: 0 }}>
                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={p.tier_foto} alt={p.tier_name} className="w-full h-full object-cover"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-bold text-sm leading-tight">{p.tier_name}</div>
-                      <div className="text-xs text-muted">{p.tier_rasse}</div>
-                      <div className="text-xs text-secondary">📍 {p.ortschaft}</div>
+                    <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                      <div className="font-bold text-sm leading-tight truncate">{p.tier_name}</div>
+                      <div className="text-xs text-muted truncate">{p.tier_rasse}</div>
+                      <div className="text-xs text-secondary truncate">📍 {p.ortschaft}</div>
                     </div>
                     <span className="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
                       style={{ background: LEISTUNG_STYLE[p.leistung] ?? 'rgba(255,255,255,0.15)', color: '#1e293b' }}>

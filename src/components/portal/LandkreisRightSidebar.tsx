@@ -65,29 +65,28 @@ export default function LandkreisRightSidebar() {
   return (
     <div className="flex flex-col h-full" style={{
       width: 'var(--sidebar-width-right)',
-      background: 'rgba(15,76,129,0.35)',
-      backdropFilter: 'blur(12px)',
-      borderLeft: '1px solid rgba(255,255,255,0.1)',
+      background: '#ffffff',
+      borderLeft: '1px solid #E2E8F0',
     }}>
       <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
         {/* Tipps Kachel */}
         <div className="tile-sm" style={{ height: 200, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderBottom: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em' }}>TIPPS &amp; ENTDECKEN</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderBottom: '1px solid #EEF2F8', flexShrink: 0 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.08em' }}>TIPPS &amp; ENTDECKEN</span>
             <div style={{ display: 'flex', gap: 4 }}>
               {INFO_KACHELN.map((_, i) => (
                 <button key={i} onClick={() => { setActiveIndex(i); setFading(false) }}
-                  style={{ width: 6, height: 6, borderRadius: '50%', border: 'none', cursor: 'pointer', background: i === activeIndex ? 'var(--accent-green)' : 'rgba(255,255,255,0.2)' }}
+                  style={{ width: 6, height: 6, borderRadius: '50%', border: 'none', cursor: 'pointer', background: i === activeIndex ? 'var(--accent-green)' : '#C8D8EC' }}
                   aria-label={`Kachel ${i + 1}`} />
               ))}
             </div>
           </div>
           <div style={{ flex: 1, padding: '10px 12px', overflow: 'hidden' }}>
             <div style={{ transition: 'opacity 0.3s', opacity: fading ? 0 : 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>{current.kategorie} {current.emoji}</span>
-              <p style={{ fontWeight: 700, fontSize: 14, margin: '4px 0', color: 'white' }}>{current.titel}</p>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', flex: 1, overflow: 'hidden' }}>{current.text}</p>
-              <Link href={current.link} style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-green)', textDecoration: 'none', marginTop: 6 }}>
+              <span style={{ fontSize: 11, color: '#4E779F', fontWeight: 600 }}>{current.kategorie} {current.emoji}</span>
+              <p style={{ fontWeight: 700, fontSize: 14, margin: '4px 0', color: '#1E3249' }}>{current.titel}</p>
+              <p style={{ fontSize: 12, color: '#4E779F', flex: 1, overflow: 'hidden' }}>{current.text}</p>
+              <Link href={current.link} style={{ fontSize: 12, fontWeight: 700, color: '#16a34a', textDecoration: 'none', marginTop: 6 }}>
                 {current.link_label}
               </Link>
             </div>
@@ -96,8 +95,8 @@ export default function LandkreisRightSidebar() {
 
         {/* Community */}
         <div className="tile-sm p-4">
-          <p style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>🐾 Werde Teil der Community</p>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 10 }}>
+          <p style={{ fontWeight: 700, fontSize: 14, marginBottom: 6, color: '#1E3249' }}>🐾 Werde Teil der Community</p>
+          <p style={{ fontSize: 12, color: '#4E779F', marginBottom: 10 }}>
             Schon mehrere Mitglieder in der Region dabei!
           </p>
           <Link href="/register" style={{
@@ -111,15 +110,15 @@ export default function LandkreisRightSidebar() {
       </div>
 
       {/* Schnellzugriff */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '1rem', flexShrink: 0 }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', marginBottom: 8 }}>SCHNELLZUGRIFF</p>
+      <div style={{ borderTop: '1px solid #E2E8F0', padding: '1rem', flexShrink: 0 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.08em', marginBottom: 8 }}>SCHNELLZUGRIFF</p>
         <nav>
           {SCHNELLZUGRIFF.map((item) => (
             <Link key={item.href} href={item.href} style={{
               display: 'flex', alignItems: 'center', gap: 8,
-              fontSize: 13, color: 'rgba(255,255,255,0.7)',
+              fontSize: 13, color: '#2E4A6B',
               padding: '6px 4px', textDecoration: 'none',
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              borderBottom: '1px solid #F5F5F5',
             }}>
               <span>{item.emoji}</span><span>{item.label}</span>
             </Link>

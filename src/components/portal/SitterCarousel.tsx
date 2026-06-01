@@ -59,19 +59,19 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-3">
             {MOCK_SITTER.map((s) => (
-              <div key={s.id} className="flex-none min-w-0" style={{ width: 'calc(50% - 6px)' }}>
-                <div className="tile-sm p-4 h-full flex flex-col relative">
+              <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
+                <div className="tile-sm h-full flex flex-col relative" style={{ padding: '1rem', paddingLeft: '1rem' }}>
                   <span className="dummy-badge">📌 Beispiel</span>
 
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="flex items-center gap-3 mb-3" style={{ minWidth: 0 }}>
                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={s.foto} alt={s.name} className="w-full h-full object-cover"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
-                    <div className="min-w-0">
+                    <div style={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
                       <div className="font-bold text-sm leading-tight truncate">{s.name}</div>
-                      <div className="text-xs text-muted">📍 {s.ortschaft}</div>
+                      <div className="text-xs text-muted truncate">📍 {s.ortschaft}</div>
                       <div className="text-xs text-secondary">⭐ {s.avg_rating.toFixed(1)} ({s.total_reviews})</div>
                     </div>
                   </div>
