@@ -5,7 +5,8 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { MOCK_SITTER, LEISTUNGS_CHIPS } from '@/lib/mock-data'
+import { MOCK_SITTER } from '@/lib/mock-data'
+import SitterCard from '@/components/portal/SitterCard'
 
 interface Props {
   params: Promise<{ bundesland: string; landkreis: string }>
@@ -29,20 +30,6 @@ function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   })
 }
 
-const BADGE_STYLE: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  background: 'rgba(245,158,11,0.12)',
-  color: '#b45309',
-  border: '1px solid rgba(245,158,11,0.35)',
-  borderRadius: '20px',
-  fontSize: '11px',
-  fontWeight: 600,
-  padding: '2px 7px',
-  whiteSpace: 'nowrap',
-  flexShrink: 0,
-}
-
 export default async function SitterOverviewPage({ params }: Props) {
   const { bundesland, landkreis } = await params
   const landkreisName = landkreis.charAt(0).toUpperCase() + landkreis.slice(1)
@@ -59,19 +46,18 @@ export default async function SitterOverviewPage({ params }: Props) {
       .eq('landkreis_slug', landkreis)
       .maybeSingle()
     if (error) throw error
-    if (data?.is_active) regionId = data.id
-    else if (data && !data.is_active) notFound()
-    else notFound()
+    if (!data) notFound()
+    if (!data.is_active) notFound()
+    regionId = data.id
   } catch {
-    // Fallback: Mock-Daten anzeigen
+    // Fallback auf Mock-Daten
   }
 
-  // Echte Sitter laden (graceful fallback auf Mock)
   type SitterRow = {
     id: string
     full_name: string
     ortschaft: string
-    beschreibung: string
+    beschreibung: string | null
     foto_url: string | null
     avg_rating: number
     total_reviews: number
@@ -80,6 +66,7 @@ export default async function SitterOverviewPage({ params }: Props) {
     kann_medikamente: boolean
     is_dummy: boolean
   }
+
   let sitters: SitterRow[] = []
   if (regionId) {
     try {
@@ -92,7 +79,7 @@ export default async function SitterOverviewPage({ params }: Props) {
       if (error) throw error
       if (data && data.length > 0) sitters = data as SitterRow[]
     } catch {
-      // Fallback auf Mock
+      // Fallback auf Mock-Daten
     }
   }
 
@@ -100,7 +87,7 @@ export default async function SitterOverviewPage({ params }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-2">
+      <div>
         <Link
           href={`/${bundesland}/${landkreis}`}
           className="text-sm hover:opacity-80 transition-opacity"
@@ -112,108 +99,40 @@ export default async function SitterOverviewPage({ params }: Props) {
 
       <div>
         <h1 className="text-2xl font-extrabold">Sitter in {landkreisName} 🐾</h1>
-        <p className="text-sm text-secondary mt-1">
-          Alle verfügbaren Tiersitter in Deiner Region.
-        </p>
+        <p className="text-sm text-secondary mt-1">Alle verfügbaren Tiersitter in Deiner Region.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {useMock
           ? MOCK_SITTER.map((s) => (
-              <div key={s.id} className="tile p-4 flex flex-col gap-3">
-                <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
-                  <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={s.foto} alt={s.name} className="w-full h-full object-cover"
-                      onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                  </div>
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
-                      <span className="font-bold text-sm truncate">{s.name}</span>
-                      <span style={BADGE_STYLE}>📌 Beispiel</span>
-                    </div>
-                    <div className="text-xs text-muted truncate">📍 {s.ortschaft}</div>
-                    <div className="text-xs text-secondary">⭐ {s.avg_rating.toFixed(1)} ({s.total_reviews})</div>
-                  </div>
-                </div>
-                <p className="text-xs text-secondary leading-relaxed line-clamp-3">{s.beschreibung}</p>
-                <div className="flex flex-wrap gap-1">
-                  {s.leistungen.map((l) => (
-                    <span key={l} className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#f0f4f8', color: '#4a5568' }}>
-                      {LEISTUNGS_CHIPS[l] ?? l}
-                    </span>
-                  ))}
-                </div>
-                {(s.hat_garten || s.kann_medikamente) && (
-                  <div className="flex flex-wrap gap-1">
-                    {s.hat_garten && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.1)', color: '#15803d' }}>
-                        🌿 Garten
-                      </span>
-                    )}
-                    {s.kann_medikamente && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(3,105,161,0.08)', color: '#0369a1' }}>
-                        💊 Medikamente
-                      </span>
-                    )}
-                  </div>
-                )}
-                <Link href="/register" className="text-xs font-bold hover:opacity-80 transition-opacity mt-auto"
-                  style={{ color: 'var(--accent-green)' }}>
-                  Profil ansehen →
-                </Link>
-              </div>
+              <SitterCard
+                key={s.id}
+                name={s.name}
+                ortschaft={s.ortschaft}
+                beschreibung={s.beschreibung}
+                fotoUrl={s.foto}
+                avgRating={s.avg_rating}
+                totalReviews={s.total_reviews}
+                leistungen={s.leistungen}
+                hatGarten={s.hat_garten}
+                kannMedikamente={s.kann_medikamente}
+                isDummy={true}
+              />
             ))
           : sitters.map((s) => (
-              <div key={s.id} className="tile p-4 flex flex-col gap-3">
-                <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
-                  {s.foto_url && (
-                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={s.foto_url} alt={s.full_name} className="w-full h-full object-cover"
-                        onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                    </div>
-                  )}
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
-                      <span className="font-bold text-sm truncate">{s.full_name}</span>
-                      {s.is_dummy && <span style={BADGE_STYLE}>📌 Beispiel</span>}
-                    </div>
-                    <div className="text-xs text-muted truncate">📍 {s.ortschaft}</div>
-                    <div className="text-xs text-secondary">⭐ {s.avg_rating.toFixed(1)} ({s.total_reviews})</div>
-                  </div>
-                </div>
-                {s.beschreibung && (
-                  <p className="text-xs text-secondary leading-relaxed line-clamp-3">{s.beschreibung}</p>
-                )}
-                {s.leistungen?.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {s.leistungen.map((l) => (
-                      <span key={l} className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#f0f4f8', color: '#4a5568' }}>
-                        {LEISTUNGS_CHIPS[l] ?? l}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {(s.hat_garten || s.kann_medikamente) && (
-                  <div className="flex flex-wrap gap-1">
-                    {s.hat_garten && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.1)', color: '#15803d' }}>
-                        🌿 Garten
-                      </span>
-                    )}
-                    {s.kann_medikamente && (
-                      <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(3,105,161,0.08)', color: '#0369a1' }}>
-                        💊 Medikamente
-                      </span>
-                    )}
-                  </div>
-                )}
-                <Link href="/register" className="text-xs font-bold hover:opacity-80 transition-opacity mt-auto"
-                  style={{ color: 'var(--accent-green)' }}>
-                  Profil ansehen →
-                </Link>
-              </div>
+              <SitterCard
+                key={s.id}
+                name={s.full_name}
+                ortschaft={s.ortschaft}
+                beschreibung={s.beschreibung ?? undefined}
+                fotoUrl={s.foto_url ?? undefined}
+                avgRating={s.avg_rating}
+                totalReviews={s.total_reviews}
+                leistungen={s.leistungen}
+                hatGarten={s.hat_garten}
+                kannMedikamente={s.kann_medikamente}
+                isDummy={s.is_dummy}
+              />
             ))}
       </div>
 

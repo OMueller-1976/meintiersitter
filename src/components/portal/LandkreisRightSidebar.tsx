@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import GemeindeDaunBadge from '@/components/GemeindeDaunBadge'
 
 const INFO_KACHELN = [
   {
@@ -108,17 +109,7 @@ export default function LandkreisRightSidebar() {
           </Link>
         </div>
         {/* Unterstützung */}
-        <div className="tile-sm" style={{
-          padding: '14px 16px',
-          textAlign: 'center',
-        }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 10 }}>
-            Mit freundlicher Unterstützung
-          </p>
-          <div style={{ fontSize: 28, marginBottom: 6 }}>🏛️</div>
-          <p style={{ fontSize: 14, fontWeight: 700, color: '#1E3249', marginBottom: 2 }}>Gemeinde Daun</p>
-          <p style={{ fontSize: 12, color: '#6b7280' }}>Vulkaneifel</p>
-        </div>
+        <GemeindeDaunBadge />
       </div>
 
       {/* Schnellzugriff */}
