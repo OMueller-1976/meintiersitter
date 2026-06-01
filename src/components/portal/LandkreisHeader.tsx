@@ -41,7 +41,7 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
       <Link href="/" style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', lineHeight: 1.2 }}>
         <span style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>🐾 Tiersitti</span>
         <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
-          {bundesland === 'rheinland-pfalz' ? 'Rheinland-Pfalz' : bundesland} · {landkreis}
+          {bundesland === 'rheinland-pfalz' ? 'Rheinland-Pfalz' : bundesland} · {landkreis.charAt(0).toUpperCase() + landkreis.slice(1)}
         </span>
       </Link>
 

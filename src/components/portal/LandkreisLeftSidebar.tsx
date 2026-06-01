@@ -16,7 +16,7 @@ export default function LandkreisLeftSidebar({ isLoggedIn, bundesland, landkreis
   const groups = [
     {
       items: [
-        { icon: '🏠', label: `Portal ${landkreis}`, href: base },
+        { icon: '🏠', label: `Portal ${landkreis.charAt(0).toUpperCase() + landkreis.slice(1)}`, href: base },
         { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
         { icon: '🐾', label: 'Sitter entdecken', href: `${base}/sitter` },
       ],
