@@ -141,37 +141,6 @@ export default function RightSidebar() {
         {/* Kachel 2: Gemeinde Daun */}
         <GemeindeDaunBadge />
 
-        {/* Kachel 3: Förderer — FESTE HÖHE */}
-        <div className="rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
-          {/* Header */}
-          <div className="px-3 py-2 border-b border-[#EEF2F8] flex-shrink-0">
-            <span className="text-xs font-medium text-[#4E779F] uppercase tracking-wide">
-              MIT FREUNDLICHER UNTERSTÜTZUNG
-            </span>
-          </div>
-          {/* Logos */}
-          <div className="flex flex-col gap-2 px-3 py-3">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-[#2E4A6B] bg-[#EEF2F8] rounded px-2 py-0.5 text-xs">
-                dschinn
-              </span>
-              <span className="text-xs text-[#4E779F]">dschinn.online</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-[#2E4A6B] bg-[#EEF2F8] rounded px-2 py-0.5 text-xs">
-                OneTitel
-              </span>
-              <span className="text-xs text-[#4E779F]">onetitel.de</span>
-            </div>
-            <Link
-              href="/foerderer"
-              className="text-xs text-[#2E4A6B] hover:text-[#1E3249] mt-1 transition-colors"
-            >
-              Förderer werden →
-            </Link>
-          </div>
-        </div>
-
       </div>
 
       {/* ── Fixierter unterer Bereich ── */}
