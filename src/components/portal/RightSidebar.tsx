@@ -138,33 +138,33 @@ export default function RightSidebar() {
         </div>
 
         {/* Kachel 2: Förderer — FESTE HÖHE */}
-        <div className="h-[120px] rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
+        <div className="rounded-xl border border-[#C8D8EC] overflow-hidden flex-shrink-0 flex flex-col">
           {/* Header */}
           <div className="px-3 py-2 border-b border-[#EEF2F8] flex-shrink-0">
-            <span className="text-sm font-medium text-[#4E779F] uppercase tracking-wide">
-              Förderer &amp; Partner
+            <span className="text-xs font-medium text-[#4E779F] uppercase tracking-wide">
+              MIT FREUNDLICHER UNTERSTÜTZUNG
             </span>
           </div>
-          {/* Logo + Text */}
-          <div className="flex items-center gap-3 px-3 flex-1">
-            <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-[#2E4A6B] flex items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/assets/images/logo-vulkaneifel.jpg"
-                alt="Landkreis Vulkaneifel"
-                className="w-full h-full object-cover"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
+          {/* Logos */}
+          <div className="flex flex-col gap-2 px-3 py-3">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#2E4A6B] bg-[#EEF2F8] rounded px-2 py-0.5 text-xs">
+                dschinn
+              </span>
+              <span className="text-xs text-[#4E779F]">dschinn.online</span>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-[#1E3249] leading-tight">
-                Landkreis Vulkaneifel
-              </p>
-              <p className="text-sm text-[#4E779F] leading-tight mt-0.5">
-                Unterstützt regionale<br />
-                Initiativen &amp; Community
-              </p>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#2E4A6B] bg-[#EEF2F8] rounded px-2 py-0.5 text-xs">
+                OneTitel
+              </span>
+              <span className="text-xs text-[#4E779F]">onetitel.de</span>
             </div>
+            <Link
+              href="/foerderer"
+              className="text-xs text-[#2E4A6B] hover:text-[#1E3249] mt-1 transition-colors"
+            >
+              Förderer werden →
+            </Link>
           </div>
         </div>
 

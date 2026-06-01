@@ -1,8 +1,6 @@
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import {
   MOCK_POSTINGS,
   LEISTUNGS_LABELS,
@@ -31,16 +29,12 @@ export default async function PinnwandPage({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-
       {/* Hero */}
-      <div className="bg-[#2E4A6B]">
-        <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
           <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche im Kreis Daun</h1>
           <p className="text-[#A8C0DC] mt-2 max-w-xl">
             Alle offenen Tierbetreuungs-Gesuche in der Vulkaneifel. Melde Dich direkt beim Tierhalter.
           </p>
-        </div>
       </div>
 
       {/* Filter */}
@@ -190,7 +184,6 @@ export default async function PinnwandPage({
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }

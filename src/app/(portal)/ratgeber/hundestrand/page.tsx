@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 
 export const metadata = { title: 'Hundestrand & Baden – MeinTiersitter Ratgeber' };
 
@@ -36,25 +34,15 @@ const freilingerDetails = [
 
 export default function HundestrandPage() {
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
+    <main className="min-h-screen">
         {/* Hero */}
-        <div className="bg-[#2E4A6B]">
-          <div className="max-w-4xl mx-auto px-4 py-10">
-            <Link
-              href="/ratgeber"
-              className="inline-flex items-center gap-1 text-[#A8C0DC] hover:text-white text-sm mb-4 transition-colors"
-            >
-              ← Ratgeber
-            </Link>
+        <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
             <h1 className="text-3xl font-bold text-white mb-2">
               🏖 Bademöglichkeiten für Hunde in der Eifelregion
             </h1>
             <p className="text-[#A8C0DC] text-lg">
               Seen, Flüsse und offizielle Hundestrände in der Vulkaneifel und Umgebung
             </p>
-          </div>
         </div>
 
         <div className="bg-[#F1F5F9]">
@@ -122,8 +110,6 @@ export default function HundestrandPage() {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

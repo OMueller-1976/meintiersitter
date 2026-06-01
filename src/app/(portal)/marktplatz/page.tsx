@@ -1,11 +1,6 @@
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-
 export default function MarktplatzPage() {
   return (
-    <>
-      <Navbar />
-      <main>
+    <main>
         {/* Hero */}
         <section className="bg-[#EEF2F8] py-14 px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -31,8 +26,6 @@ export default function MarktplatzPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

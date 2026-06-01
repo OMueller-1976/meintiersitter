@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 
 export const metadata = { title: 'Wandern mit Hund – MeinTiersitter Ratgeber' };
 
@@ -83,25 +81,15 @@ const tipps = [
 
 export default function WandernPage() {
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen">
+    <main className="min-h-screen">
         {/* Hero */}
-        <div className="bg-[#2E4A6B]">
-          <div className="max-w-4xl mx-auto px-4 py-10">
-            <Link
-              href="/ratgeber"
-              className="inline-flex items-center gap-1 text-[#A8C0DC] hover:text-white text-sm mb-4 transition-colors"
-            >
-              ← Ratgeber
-            </Link>
+        <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
             <h1 className="text-3xl font-bold text-white mb-2">
               🥾 Wandern mit Hund in der Vulkaneifel
             </h1>
             <p className="text-[#A8C0DC] text-lg">
               Die schönsten Routen rund um Daun, Manderscheid und die Dauner Maare
             </p>
-          </div>
         </div>
 
         <div className="bg-[#F1F5F9]">
@@ -180,8 +168,6 @@ export default function WandernPage() {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

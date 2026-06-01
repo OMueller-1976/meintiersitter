@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 const trustBadges = [
   '✓ Kostenlos für Sitter',
@@ -146,9 +144,7 @@ const tierhalterFeatures = [
 
 export default function HomePage() {
   return (
-    <>
-      <Navbar />
-      <main>
+    <main>
         {/* ── Hero ──────────────────────────────────────────────── */}
         <section className="bg-gradient-to-br from-[#EEF2F8] to-[#D4E3F0] py-24 px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -391,8 +387,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

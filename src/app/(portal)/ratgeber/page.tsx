@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 const kategorien = [
   {
@@ -91,9 +89,7 @@ const wanderrouten = [
 
 export default function RatgeberPage() {
   return (
-    <>
-      <Navbar />
-      <main>
+    <main>
         {/* ── Hero klein ────────────────────────────────────────── */}
         <section className="bg-[#EEF2F8] py-14 px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -211,8 +207,6 @@ export default function RatgeberPage() {
             </Link>
           </div>
         </section>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }

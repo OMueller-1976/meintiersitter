@@ -36,6 +36,18 @@ const navGroups: NavGroup[] = [
       { icon: '📖', label: 'Ratgeber', href: '/ratgeber' },
     ],
   },
+  {
+    label: 'ANLAUFSTELLEN',
+    items: [
+      { icon: '🏠', label: 'Tierheime & Vereine', href: '/anlaufstellen' },
+    ],
+  },
+  {
+    label: 'PARTNER',
+    items: [
+      { icon: '🤝', label: 'Förderer & Sponsoren', href: '/foerderer' },
+    ],
+  },
 ];
 
 const loggedInGroup: NavGroup = {

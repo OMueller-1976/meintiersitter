@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 
 export const metadata = { title: 'AGB – MeinTiersitter' };
 
@@ -71,13 +69,7 @@ const paragraphen = [
 
 export default function AgbPage() {
   return (
-    <>
-      <Navbar />
-      <main className="max-w-3xl mx-auto px-6 py-12">
-        <Link href="/daun" className="text-[#2E4A6B] text-sm hover:underline inline-block mb-6">
-          ← Zurück
-        </Link>
-
+    <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="bg-white rounded-2xl shadow-sm p-8 md:p-12">
           <h1 className="text-3xl font-bold text-[#1E3249] mb-2">
             Allgemeine Geschäftsbedingungen
@@ -111,8 +103,6 @@ export default function AgbPage() {
             </div>
           ))}
         </div>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }
