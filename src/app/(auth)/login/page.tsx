@@ -1,9 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { loginAction } from './actions';
+
+function ConfirmErrorBanner() {
+  const searchParams = useSearchParams();
+  if (searchParams.get('error') !== 'email_confirmation_failed') return null;
+  return (
+    <div className="mb-5 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">
+      Die E-Mail-Bestätigung ist fehlgeschlagen. Bitte versuche es erneut oder registriere Dich neu.
+    </div>
+  );
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -77,6 +88,9 @@ export default function LoginPage() {
         </div>
 
         <div className="p-8 md:p-10 rounded-2xl" style={{ background: '#ffffff', border: '1.5px solid #d0e4f7', boxShadow: '0 4px 20px rgba(15,76,129,0.12)' }}>
+          <Suspense fallback={null}>
+            <ConfirmErrorBanner />
+          </Suspense>
           <h1 className="text-xl font-bold mb-1 text-center" style={{ color: '#1a1a2e' }}>Willkommen zurück</h1>
           <p className="text-sm text-center mb-8" style={{ color: '#718096' }}>Melde Dich mit Deinem Konto an.</p>
 

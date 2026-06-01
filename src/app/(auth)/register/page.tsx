@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { createBrowserClient } from '@supabase/ssr';
 import { registerAction } from './actions';
 import type { UserRole } from '@/types';
 
@@ -63,6 +64,9 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [registered, setRegistered] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const [resending, setResending] = useState(false);
 
   function set(key: keyof FormFields, value: string | boolean) {
     setFields((prev) => ({ ...prev, [key]: value }));
@@ -94,14 +98,65 @@ export default function RegisterPage() {
         ortschaft: fields.ortschaft || undefined,
         phone: fields.phone || undefined,
       });
-      if (result?.error) {
+      if (result && 'error' in result) {
         toast.error(result.error);
         setIsLoading(false);
+      } else if (result && 'success' in result) {
+        setRegisteredEmail(result.email);
+        setRegistered(true);
       }
     } catch {
       toast.error('Ein unbekannter Fehler ist aufgetreten.');
       setIsLoading(false);
     }
+  }
+
+  async function handleResend() {
+    if (!registeredEmail) return;
+    setResending(true);
+    try {
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: registeredEmail,
+        options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback` },
+      });
+      if (error) toast.error(error.message);
+      else toast.success('E-Mail wurde erneut gesendet!');
+    } finally {
+      setResending(false);
+    }
+  }
+
+  if (registered) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'linear-gradient(135deg, #0f4c81 0%, #1a7a5e 50%, #0d6e8a 100%)' }}>
+        <div className="bg-white rounded-2xl shadow-md border border-[#C8D8EC] p-10 max-w-md w-full text-center">
+          <div className="text-6xl mb-4">📬</div>
+          <h2 className="text-xl font-bold text-[#1E3249] mb-2">Bitte E-Mail bestätigen</h2>
+          <p className="text-sm text-[#4E779F] mb-2 leading-relaxed">
+            Wir haben eine Bestätigungs-E-Mail an
+          </p>
+          <p className="font-semibold text-[#2E4A6B] mb-4 break-all">{registeredEmail}</p>
+          <p className="text-sm text-[#4E779F] mb-8 leading-relaxed">
+            gesendet. Bitte klicke auf den Link in der E-Mail, um Dein Konto zu aktivieren.
+          </p>
+          <button
+            onClick={handleResend}
+            disabled={resending}
+            className="w-full border border-[#C8D8EC] text-[#2E4A6B] py-2.5 rounded-xl text-sm font-medium hover:bg-[#EEF2F8] transition-colors disabled:opacity-50 mb-4"
+          >
+            {resending ? 'Wird gesendet…' : 'E-Mail erneut senden'}
+          </button>
+          <Link href="/login" className="text-sm text-[#7A9DBF] hover:text-[#2E4A6B] hover:underline">
+            Zur Anmeldung →
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
