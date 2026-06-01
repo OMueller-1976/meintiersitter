@@ -74,9 +74,7 @@ export default function GesucheCarousel() {
           <div className="flex gap-3">
             {MOCK_POSTINGS.map((p) => (
               <div key={p.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-                <div className="tile-sm p-4 h-full flex flex-col relative">
-                  <span className="dummy-badge">📌 Beispiel</span>
-
+                <div className="tile-sm p-4 h-full flex flex-col">
                   <div className="flex items-start gap-3 mb-3" style={{ minWidth: 0 }}>
                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -84,7 +82,10 @@ export default function GesucheCarousel() {
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                      <div className="font-bold text-sm leading-tight truncate">{p.tier_name}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                        <span className="font-bold text-sm leading-tight truncate">{p.tier_name}</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(245,158,11,0.12)', color: '#b45309', border: '1px solid rgba(245,158,11,0.35)', borderRadius: '20px', fontSize: '11px', fontWeight: 600, padding: '2px 7px', whiteSpace: 'nowrap', flexShrink: 0 }}>📌 Beispiel</span>
+                      </div>
                       <div className="text-xs text-muted truncate">{p.tier_rasse}</div>
                       <div className="text-xs text-secondary truncate">📍 {p.ortschaft}</div>
                     </div>

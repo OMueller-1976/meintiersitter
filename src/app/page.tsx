@@ -111,14 +111,16 @@ export default async function NationalHomepage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {MOCK_POSTINGS.slice(0, 3).map((p) => (
-                    <div key={p.id} className="tile p-4 relative">
-                      <span className="dummy-badge">📌 Beispiel</span>
+                    <div key={p.id} className="tile p-4">
                       <div className="flex items-start gap-3 mb-2">
                         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                           <FallbackImg src={p.tier_foto} alt={p.tier_name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-bold text-sm text-gray-900">{p.tier_name} <span className="font-normal text-gray-500">· {p.tier_rasse}</span></div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                            <span className="font-bold text-sm text-gray-900 truncate">{p.tier_name} <span className="font-normal text-gray-500">· {p.tier_rasse}</span></span>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(245,158,11,0.12)', color: '#b45309', border: '1px solid rgba(245,158,11,0.35)', borderRadius: '20px', fontSize: '11px', fontWeight: 600, padding: '2px 7px', whiteSpace: 'nowrap', flexShrink: 0 }}>📌 Beispiel</span>
+                          </div>
                           <div className="text-xs text-gray-500">📍 {p.ortschaft}</div>
                         </div>
                         <span className={`text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? ''}`} style={!LEISTUNGS_BADGE_CLASSES[p.leistung] ? { background: '#e2e8f0', color: '#475569' } : {}}>
@@ -153,14 +155,16 @@ export default async function NationalHomepage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {MOCK_SITTER.map((s) => (
-                    <div key={s.id} className="tile p-4 relative">
-                      <span className="dummy-badge">📌 Beispiel</span>
+                    <div key={s.id} className="tile p-4">
                       <div className="flex items-center gap-3 mb-2">
                         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                           <FallbackImg src={s.foto} alt={s.name} className="w-full h-full object-cover" />
                         </div>
-                        <div className="min-w-0">
-                          <div className="font-bold text-sm truncate text-gray-900">{s.name}</div>
+                        <div className="min-w-0 flex-1">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                            <span className="font-bold text-sm truncate text-gray-900">{s.name}</span>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(245,158,11,0.12)', color: '#b45309', border: '1px solid rgba(245,158,11,0.35)', borderRadius: '20px', fontSize: '11px', fontWeight: 600, padding: '2px 7px', whiteSpace: 'nowrap', flexShrink: 0 }}>📌 Beispiel</span>
+                          </div>
                           <div className="text-xs text-muted">📍 {s.ortschaft} · ⭐ {s.avg_rating.toFixed(1)}</div>
                         </div>
                       </div>

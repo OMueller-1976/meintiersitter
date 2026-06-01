@@ -60,9 +60,7 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
           <div className="flex gap-3">
             {MOCK_SITTER.map((s) => (
               <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-                <div className="tile-sm h-full flex flex-col relative" style={{ padding: '1rem', paddingLeft: '1rem' }}>
-                  <span className="dummy-badge">📌 Beispiel</span>
-
+                <div className="tile-sm h-full flex flex-col" style={{ padding: '1rem' }}>
                   <div className="flex items-center gap-3 mb-3" style={{ minWidth: 0 }}>
                     <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -70,7 +68,10 @@ export default function SitterCarousel({ bundesland = 'rheinland-pfalz', landkre
                         onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                     </div>
                     <div style={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
-                      <div className="font-bold text-sm leading-tight truncate">{s.name}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                        <span className="font-bold text-sm leading-tight truncate">{s.name}</span>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(245,158,11,0.12)', color: '#b45309', border: '1px solid rgba(245,158,11,0.35)', borderRadius: '20px', fontSize: '11px', fontWeight: 600, padding: '2px 7px', whiteSpace: 'nowrap', flexShrink: 0 }}>📌 Beispiel</span>
+                      </div>
                       <div className="text-xs text-muted truncate">📍 {s.ortschaft}</div>
                       <div className="text-xs text-secondary">⭐ {s.avg_rating.toFixed(1)} ({s.total_reviews})</div>
                     </div>
