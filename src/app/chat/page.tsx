@@ -50,7 +50,7 @@ export default async function ChatPage() {
             <p className="text-sm text-muted mb-6">
               Schreibe einem Sitter, um ein Gespräch zu starten.
             </p>
-            <Link href="/rheinland-pfalz/daun" className="btn-primary inline-block px-6 py-2.5">
+            <Link href="/daun" className="btn-primary inline-block px-6 py-2.5">
               Sitter entdecken
             </Link>
           </div>
