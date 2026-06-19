@@ -86,6 +86,7 @@ export interface TierProfile {
   geschlecht: Geschlecht | null;
   kastriert: boolean;
   foto_url: string | null;
+  foto_urls: string[];
   beschreibung: string | null;
   vertraeglich_hunde: boolean;
   vertraeglich_katzen: boolean;
@@ -115,6 +116,7 @@ export type TierProfileInsert = {
   geschlecht?: Geschlecht | null;
   kastriert?: boolean;
   foto_url?: string | null;
+  foto_urls?: string[];
   beschreibung?: string | null;
   vertraeglich_hunde?: boolean;
   vertraeglich_katzen?: boolean;

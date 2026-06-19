@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { createClient } from '@/lib/supabase/client';
 import { createTierProfile, updateTierProfile, deleteTierProfile } from './actions';
 import type { TierProfile, Tierart, Geschlecht } from '@/types';
+import TierFotoUpload from '@/components/dashboard/TierFotoUpload';
 
 // ── Toggle Switch ────────────────────────────────────────────
 function Toggle({
@@ -117,8 +118,7 @@ export default function TierePage() {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [fotoUrls, setFotoUrls] = useState<string[]>([]);
 
   const fetchTiere = useCallback(async () => {
     const supabase = createClient();
@@ -133,9 +133,6 @@ export default function TierePage() {
 
   useEffect(() => {
     fetchTiere();
-    createClient()
-      .auth.getUser()
-      .then(({ data }) => setUserId(data.user?.id ?? null));
   }, [fetchTiere]);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
@@ -144,6 +141,7 @@ export default function TierePage() {
 
   function openAddForm() {
     setForm(INITIAL_FORM);
+    setFotoUrls([]);
     setEditId(null);
     setShowForm(true);
   }
@@ -171,33 +169,11 @@ export default function TierePage() {
       tierarzt_name: t.tierarzt_name ?? '',
       tierarzt_phone: t.tierarzt_phone ?? '',
     });
+    // Lade bestehende Fotos: foto_urls hat Priorität, Fallback auf foto_url
+    const vorhandene = (t as TierProfile & { foto_urls?: string[] }).foto_urls ?? (t.foto_url ? [t.foto_url] : []);
+    setFotoUrls(vorhandene);
     setEditId(t.id);
     setShowForm(true);
-  }
-
-  async function handleFotoUpload(file: File) {
-    if (!userId) return;
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Foto darf maximal 5 MB groß sein.');
-      return;
-    }
-    setUploading(true);
-    try {
-      const supabase = createClient();
-      const ext = file.name.split('.').pop();
-      const path = `${userId}/${Date.now()}.${ext}`;
-      const { data, error } = await supabase.storage
-        .from('tier-fotos')
-        .upload(path, file, { upsert: true });
-      if (error) throw error;
-      const url = supabase.storage.from('tier-fotos').getPublicUrl(data.path).data.publicUrl;
-      set('foto_url', url);
-      toast.success('Foto hochgeladen.');
-    } catch {
-      toast.error('Foto-Upload fehlgeschlagen.');
-    } finally {
-      setUploading(false);
-    }
   }
 
   async function handleSave() {
@@ -214,7 +190,8 @@ export default function TierePage() {
       gewicht_kg: form.gewicht_kg ? parseFloat(form.gewicht_kg) : null,
       geschlecht: (form.geschlecht || null) as Geschlecht | null,
       kastriert: form.kastriert,
-      foto_url: form.foto_url || null,
+      foto_url: (fotoUrls[0] ?? form.foto_url) || null,
+      foto_urls: fotoUrls,
       vertraeglich_hunde: form.vertraeglich_hunde,
       vertraeglich_katzen: form.vertraeglich_katzen,
       vertraeglich_kinder: form.vertraeglich_kinder,
@@ -374,25 +351,12 @@ export default function TierePage() {
               />
             </div>
 
-            {/* Foto */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Foto hochladen (max. 5 MB)
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleFotoUpload(file);
-                }}
-                className="text-sm text-gray-600"
-              />
-              {uploading && <p className="text-xs text-gray-400 mt-1">Wird hochgeladen…</p>}
-              {form.foto_url && (
-                <p className="text-xs text-[#2D6A4F] mt-1">✓ Foto gespeichert</p>
-              )}
-            </div>
+            {/* Fotos */}
+            <TierFotoUpload
+              tierId={editId ?? 'neu'}
+              bestehendeFotos={fotoUrls}
+              onChange={setFotoUrls}
+            />
 
             <Section title="Verträglichkeit" />
             <div className="flex flex-col gap-3">
@@ -518,7 +482,7 @@ export default function TierePage() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleSave}
-                disabled={saving || uploading}
+                disabled={saving}
                 className="flex-1 bg-[#2D6A4F] text-white py-2.5 rounded-xl text-sm font-medium hover:bg-[#245a42] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {saving ? (
