@@ -83,6 +83,20 @@ export default async function MarktplatzPage() {
           </div>
         </div>
       ))}
+
+      <div className="mt-10 bg-[#EEF2F8] border border-[#DCE7F2] rounded-xl p-5">
+        <p className="text-sm text-[#1E3249] font-medium mb-1">
+          Daten nicht korrekt oder fehlt ein Unternehmen? 🐾
+        </p>
+        <p className="text-xs text-[#4E779F] leading-relaxed">
+          Wir bemühen uns um aktuelle und vollständige Angaben, können aber keine Gewähr für
+          Richtigkeit übernehmen. Melde Dich gerne bei uns unter{' '}
+          <a href="mailto:tiersitter@onetitel.de" className="text-[#2E4A6B] underline font-medium">
+            tiersitter@onetitel.de
+          </a>
+          {' '}— wir korrigieren Einträge zeitnah oder nehmen Dein Unternehmen kostenlos mit auf.
+        </p>
+      </div>
     </div>
   )
 }
