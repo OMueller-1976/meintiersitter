@@ -26,16 +26,18 @@ const TIERART_EMOJI: Record<string, string> = {
 export default async function PinnwandPage({
   searchParams,
 }: {
-  searchParams: Promise<{ ort?: string; leistung?: string }>;
+  searchParams: Promise<{ ort?: string; leistung?: string; notfall?: string }>;
 }) {
-  const { ort, leistung } = await searchParams;
+  const { ort, leistung, notfall } = await searchParams;
   const filterOrt = ort && ort !== 'Alle Ortschaften' ? ort : '';
   const filterLeistung = leistung ?? '';
-  const hasFilter = !!filterOrt || !!filterLeistung;
+  const filterNotfall = notfall === '1';
+  const hasFilter = !!filterOrt || !!filterLeistung || filterNotfall;
 
   const postings = await getOffenePostings({
     ort: filterOrt || undefined,
     leistung: filterLeistung || undefined,
+    nurNotfall: filterNotfall || undefined,
   });
 
   // User-Auth + Rolle für Bewerben-Button
@@ -107,6 +109,16 @@ export default async function PinnwandPage({
                 <option key={key} value={key}>{label}</option>
               ))}
             </select>
+            <label className="flex items-center gap-2 cursor-pointer select-none border border-[#E07B30] bg-[#FEF3E2] rounded-xl px-4 py-2 text-sm text-[#8A5A2E] font-medium">
+              <input
+                type="checkbox"
+                name="notfall"
+                value="1"
+                defaultChecked={filterNotfall}
+                className="accent-[#E07B30] w-4 h-4"
+              />
+              🚨 Nur Notfälle
+            </label>
             <button
               type="submit"
               className="bg-[#2E4A6B] text-white rounded-xl px-5 py-2 text-sm font-medium hover:bg-[#1E3249] transition-colors"
@@ -160,8 +172,15 @@ export default async function PinnwandPage({
                   return (
                     <div
                       key={p.id}
-                      className="bg-white rounded-2xl border border-[#C8D8EC] p-5 hover:border-[#2E4A6B] hover:shadow-md transition-all flex flex-col"
+                      className={`bg-white rounded-2xl p-5 hover:shadow-md transition-all flex flex-col ${p.ist_notfall ? 'border-2 border-[#E07B30]' : 'border border-[#C8D8EC] hover:border-[#2E4A6B]'}`}
                     >
+                      {p.ist_notfall && (
+                        <div className="mb-2">
+                          <span className="text-xs font-semibold bg-[#E07B30] text-white px-2 py-0.5 rounded-full inline-flex items-center gap-1 animate-pulse">
+                            🚨 Notfall
+                          </span>
+                        </div>
+                      )}
                       {/* Foto + Info + Badge */}
                       <div className="flex items-start gap-3 mb-3">
                         <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC] flex items-center justify-center bg-[#EEF2F8]">

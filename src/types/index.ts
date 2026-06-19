@@ -21,7 +21,7 @@ export type VerfuegbarkeitTyp = 'einmalig' | 'wiederkehrend' | 'spontan';
 
 export type MatchStatus =
   | 'angefragt'
-  | 'bestaetigt'
+  | 'akzeptiert'
   | 'abgelehnt'
   | 'abgebrochen'
   | 'abgeschlossen';
@@ -360,6 +360,7 @@ export type PostingInsert = {
   nachricht?: string | null;
   status?: PostingStatus;
   auf_pinnwand?: boolean;
+  ist_notfall?: boolean;
 };
 
 export type PostingUpdate = Partial<Pick<Posting, 'status' | 'auf_pinnwand' | 'nachricht'>>;

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 export async function getOffenePostings(filters?: {
   ort?: string
   leistung?: string
+  nurNotfall?: boolean
 }) {
   const supabase = await createClient()
 
@@ -11,7 +12,7 @@ export async function getOffenePostings(filters?: {
     .select(`
       id, leistung, datum_von, datum_bis,
       uhrzeit_von, uhrzeit_bis, nachricht,
-      plz, ort, status, ist_beispiel, created_at,
+      plz, ort, status, ist_beispiel, ist_notfall, created_at,
       tier_profiles ( id, name, tierart, rasse, foto_url ),
       profiles!postings_tierhalter_id_fkey (
         id, full_name
@@ -19,6 +20,7 @@ export async function getOffenePostings(filters?: {
     `)
     .eq('status', 'offen')
     .eq('auf_pinnwand', true)
+    .order('ist_notfall', { ascending: false })
     .order('created_at', { ascending: false })
 
   if (filters?.ort && filters.ort !== 'Alle Ortschaften') {
@@ -26,6 +28,9 @@ export async function getOffenePostings(filters?: {
   }
   if (filters?.leistung && filters.leistung !== 'Alle') {
     query = query.eq('leistung', filters.leistung)
+  }
+  if (filters?.nurNotfall) {
+    query = query.eq('ist_notfall', true)
   }
 
   const { data, error } = await query

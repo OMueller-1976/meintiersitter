@@ -125,6 +125,9 @@ export default function StepSitterDetails({ data, onChange }: Props) {
             <p className="text-xs text-[#b45309]/80 mt-0.5">
               z.B. wenn ein Tierhalter plötzlich ins Krankenhaus muss und kurzfristig Hilfe braucht.
             </p>
+            <p className="text-xs text-[#A0744A] mt-1.5 bg-white/60 rounded-lg px-2 py-1 inline-block">
+              ⏳ Automatische Sofort-Benachrichtigung kommt bald — aktuell siehst Du Notfall-Ausschreibungen prominent hervorgehoben auf der Pinnwand.
+            </p>
           </div>
         </label>
 

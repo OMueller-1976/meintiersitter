@@ -21,6 +21,7 @@ export type PostingRow = {
   ort: string
   status: string
   ist_beispiel: boolean | null
+  ist_notfall: boolean | null
   created_at: string
   tier_profiles: Array<{
     id: string
@@ -79,7 +80,17 @@ function PostingCard({ p, isLoggedIn, userRole, matchProzent }: { p: PostingRow;
   const kannBewerben = isLoggedIn && (userRole === 'sitter' || userRole === 'beide');
 
   return (
-    <div className="tile-sm p-4 h-full flex flex-col">
+    <div
+      className="tile-sm p-4 h-full flex flex-col"
+      style={p.ist_notfall ? { borderWidth: 2, borderColor: '#E07B30' } : undefined}
+    >
+      {p.ist_notfall && (
+        <div className="mb-2">
+          <span className="text-xs font-semibold bg-[#E07B30] text-white px-2 py-0.5 rounded-full inline-flex items-center gap-1 animate-pulse">
+            🚨 Notfall
+          </span>
+        </div>
+      )}
       <div className="flex items-start gap-3 mb-3" style={{ minWidth: 0 }}>
         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7] flex items-center justify-center bg-[#f0f4f8]">
           {fotoUrl ? (

@@ -18,6 +18,7 @@ export default function PostingNeuPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [tiere, setTiere] = useState<TierProfile[]>([]);
+  const [istNotfall, setIstNotfall] = useState(false);
 
   const [form, setForm] = useState({
     tier_id: '',
@@ -71,6 +72,7 @@ export default function PostingNeuPage() {
       nachricht: form.nachricht || null,
       plz: form.plz,
       ort: form.ort,
+      ist_notfall: istNotfall,
     });
     setLoading(false);
 
@@ -224,6 +226,30 @@ export default function PostingNeuPage() {
             rows={4}
             className="w-full border border-[#C8D8EC] rounded-xl px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#2E4A6B]"
           />
+        </div>
+
+        {/* Notfall-Checkbox */}
+        <div className="bg-[#FEF3E2] border border-[#F4A261] rounded-xl p-4 mt-4">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={istNotfall}
+              onChange={(e) => setIstNotfall(e.target.checked)}
+              className="mt-1 w-5 h-5 accent-[#E07B30]"
+            />
+            <div>
+              <span className="font-medium text-[#1E3249] flex items-center gap-2">
+                🚨 Dies ist eine Notfall-Ausschreibung
+              </span>
+              <p className="text-sm text-[#8A5A2E] mt-1">
+                Für dringende Fälle, z.B. plötzlicher Krankenhausaufenthalt. Notfall-Ausschreibungen
+                werden auf der Pinnwand hervorgehoben angezeigt.
+              </p>
+              <p className="text-xs text-[#A0744A] mt-2 bg-white/60 rounded-lg px-2 py-1 inline-block">
+                ⏳ Automatische Sofort-Benachrichtigung an Notfall-Sitter kommt bald
+              </p>
+            </div>
+          </label>
         </div>
 
         {/* Submit */}
