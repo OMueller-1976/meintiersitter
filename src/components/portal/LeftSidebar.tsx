@@ -43,12 +43,6 @@ const navGroups: NavGroup[] = [
       { icon: '🍖', label: 'Futterstationen', href: '/anlaufstellen#futterstationen' },
     ],
   },
-  {
-    label: 'PARTNER',
-    items: [
-      { icon: '🤝', label: 'Förderer & Sponsoren', href: '/foerderer' },
-    ],
-  },
 ];
 
 const loggedInGroup: NavGroup = {
