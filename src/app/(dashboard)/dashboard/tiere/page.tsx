@@ -122,9 +122,12 @@ export default function TierePage() {
 
   const fetchTiere = useCallback(async () => {
     const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
     const { data } = await supabase
       .from('tier_profiles')
       .select('*')
+      .eq('owner_id', user.id)
       .eq('is_active', true)
       .order('created_at', { ascending: false });
     setTiere((data as TierProfile[]) ?? []);
