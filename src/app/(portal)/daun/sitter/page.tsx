@@ -133,6 +133,9 @@ export default async function SitterOverviewPage() {
                 leistungen={getLeistungen(sp)}
                 hatGarten={sp?.hat_garten ?? false}
                 kannMedikamente={sp?.kann_medikamente ?? false}
+                notfallVerfuegbar={sp?.notfall_verfuegbar ?? false}
+                erfahrungJahre={sp?.erfahrung_jahre ?? undefined}
+                radiusKm={sp?.radius_km ?? undefined}
                 isDummy={s.ist_beispiel ?? false}
                 isLoggedIn={!!userId}
                 userRole={userRole ?? undefined}

@@ -10,7 +10,7 @@ export async function getAktiveSitter(filters?: {
     .select(`
       id, full_name, ort, ortschaft, avatar_url, bio, ist_beispiel,
       sitter_profiles (
-        erfahrung_jahre, hat_garten, kann_medikamente,
+        erfahrung_jahre, hat_garten, kann_medikamente, notfall_verfuegbar,
         bietet_gassi, bietet_fuettern,
         bietet_tagesbetreuung, bietet_uebernachtung,
         avg_rating, total_reviews, radius_km

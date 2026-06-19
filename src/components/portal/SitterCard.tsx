@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data'
 import NachrichtModal from '@/components/dashboard/NachrichtModal'
 import { matchColor, matchLabel } from '@/lib/matching'
+import SitterDetailModal from './SitterDetailModal'
 
 const BADGE_STYLE: React.CSSProperties = {
   display: 'inline-flex',
@@ -31,6 +32,9 @@ interface SitterCardProps {
   leistungen?: string[]
   hatGarten?: boolean
   kannMedikamente?: boolean
+  notfallVerfuegbar?: boolean
+  erfahrungJahre?: number
+  radiusKm?: number
   isDummy?: boolean
   isLoggedIn?: boolean
   userRole?: string
@@ -41,13 +45,17 @@ export default function SitterCard({
   sitterId,
   name, ortschaft, beschreibung, fotoUrl,
   avgRating, totalReviews, leistungen = [],
-  hatGarten, kannMedikamente, isDummy,
-  isLoggedIn, userRole, matchProzent,
+  hatGarten, kannMedikamente, notfallVerfuegbar, erfahrungJahre, radiusKm,
+  isDummy, isLoggedIn, userRole, matchProzent,
 }: SitterCardProps) {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [zeigeDetail, setZeigeDetail] = useState(false)
+  const [zeigeKontakt, setZeigeKontakt] = useState(false)
 
   return (
-    <div className="tile p-4 flex flex-col gap-3">
+    <div
+      className="tile p-4 flex flex-col gap-3 cursor-pointer hover:shadow-md transition-shadow"
+      onClick={() => setZeigeDetail(true)}
+    >
       <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
         {fotoUrl && (
           <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7]">
@@ -108,13 +116,17 @@ export default function SitterCard({
       )}
 
       <div className="flex items-center gap-2 mt-auto">
-        <Link href="/daun/sitter" className="text-xs font-bold hover:opacity-80 transition-opacity"
-          style={{ color: 'var(--accent-green)' }}>
+        <Link
+          href="/daun/sitter"
+          className="text-xs font-bold hover:opacity-80 transition-opacity"
+          style={{ color: 'var(--accent-green)' }}
+          onClick={(e) => e.stopPropagation()}
+        >
           Profil ansehen →
         </Link>
         {sitterId && isLoggedIn && userRole !== 'sitter' && (
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={(e) => { e.stopPropagation(); setZeigeKontakt(true) }}
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
             style={{ background: 'var(--accent-green)', color: '#fff' }}
           >
@@ -122,18 +134,43 @@ export default function SitterCard({
           </button>
         )}
         {sitterId && !isLoggedIn && (
-          <Link href="/login"
+          <Link
+            href="/login"
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
-            style={{ background: 'var(--accent-green)', color: '#fff' }}>
+            style={{ background: 'var(--accent-green)', color: '#fff' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             Kontakt
           </Link>
         )}
       </div>
 
+      {zeigeDetail && sitterId && (
+        <SitterDetailModal
+          sitterId={sitterId}
+          name={name}
+          ort={ortschaft}
+          bio={beschreibung}
+          fotoUrl={fotoUrl}
+          avgRating={avgRating}
+          totalReviews={totalReviews}
+          leistungen={leistungen}
+          hatGarten={hatGarten}
+          kannMedikamente={kannMedikamente}
+          notfallVerfuegbar={notfallVerfuegbar}
+          erfahrungJahre={erfahrungJahre}
+          radiusKm={radiusKm}
+          matchProzent={matchProzent}
+          currentUserRole={userRole ?? null}
+          onClose={() => setZeigeDetail(false)}
+          onKontakt={() => { setZeigeDetail(false); setZeigeKontakt(true) }}
+        />
+      )}
+
       {sitterId && (
         <NachrichtModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
+          open={zeigeKontakt}
+          onClose={() => setZeigeKontakt(false)}
           richtung="tierhalter-an-sitter"
           empfaengerName={name}
           empfaengerId={sitterId}

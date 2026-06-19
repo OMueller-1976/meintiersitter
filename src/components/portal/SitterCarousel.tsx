@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data';
 import NachrichtModal from '@/components/dashboard/NachrichtModal';
 import { matchColor, matchLabel } from '@/lib/matching';
+import SitterDetailModal from './SitterDetailModal';
 
 // Typ passend zur getAktiveSitter-Query
 export type SitterRow = {
@@ -21,6 +22,7 @@ export type SitterRow = {
     erfahrung_jahre: number | null
     hat_garten: boolean | null
     kann_medikamente: boolean | null
+    notfall_verfuegbar: boolean | null
     bietet_gassi: boolean | null
     bietet_fuettern: boolean | null
     bietet_tagesbetreuung: boolean | null
@@ -43,8 +45,9 @@ function getLeistungen(sp: SpEntry | null | undefined): string[] {
   return l;
 }
 
-function SitterCard({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number }) {
-  const [modalOpen, setModalOpen] = useState(false);
+function SitterCardInner({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number }) {
+  const [zeigeDetail, setZeigeDetail] = useState(false);
+  const [zeigeKontakt, setZeigeKontakt] = useState(false);
   const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles;
   const leistungen = getLeistungen(sp);
   const avgRating = sp?.avg_rating ?? 0;
@@ -53,7 +56,11 @@ function SitterCard({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; i
   const initial = s.full_name.charAt(0).toUpperCase();
 
   return (
-    <div className="tile-sm h-full flex flex-col" style={{ padding: '1rem' }}>
+    <div
+      className="tile-sm h-full flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+      style={{ padding: '1rem' }}
+      onClick={() => setZeigeDetail(true)}
+    >
       <div className="flex items-center gap-3 mb-3" style={{ minWidth: 0 }}>
         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7] flex items-center justify-center bg-[#f0f4f8]">
           {s.avatar_url ? (
@@ -121,13 +128,17 @@ function SitterCard({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; i
       </div>
 
       <div className="flex items-center gap-2 mt-auto">
-        <Link href="/daun/sitter" className="text-xs font-bold hover:opacity-80 transition-opacity"
-          style={{ color: 'var(--accent-green)' }}>
+        <Link
+          href="/daun/sitter"
+          className="text-xs font-bold hover:opacity-80 transition-opacity"
+          style={{ color: 'var(--accent-green)' }}
+          onClick={(e) => e.stopPropagation()}
+        >
           Profil ansehen →
         </Link>
         {isLoggedIn && userRole !== 'sitter' && (
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={(e) => { e.stopPropagation(); setZeigeKontakt(true) }}
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
             style={{ background: 'var(--accent-green)', color: '#fff' }}
           >
@@ -135,17 +146,42 @@ function SitterCard({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; i
           </button>
         )}
         {!isLoggedIn && (
-          <Link href="/login"
+          <Link
+            href="/login"
             className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
-            style={{ background: 'var(--accent-green)', color: '#fff' }}>
+            style={{ background: 'var(--accent-green)', color: '#fff' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             Kontakt
           </Link>
         )}
       </div>
 
+      {zeigeDetail && (
+        <SitterDetailModal
+          sitterId={s.id}
+          name={s.full_name}
+          ort={ortLabel}
+          bio={s.bio ?? undefined}
+          fotoUrl={s.avatar_url ?? undefined}
+          avgRating={avgRating}
+          totalReviews={totalReviews}
+          leistungen={leistungen}
+          hatGarten={sp?.hat_garten ?? false}
+          kannMedikamente={sp?.kann_medikamente ?? false}
+          notfallVerfuegbar={sp?.notfall_verfuegbar ?? false}
+          erfahrungJahre={sp?.erfahrung_jahre ?? undefined}
+          radiusKm={sp?.radius_km ?? undefined}
+          matchProzent={matchProzent}
+          currentUserRole={userRole ?? null}
+          onClose={() => setZeigeDetail(false)}
+          onKontakt={() => { setZeigeDetail(false); setZeigeKontakt(true) }}
+        />
+      )}
+
       <NachrichtModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={zeigeKontakt}
+        onClose={() => setZeigeKontakt(false)}
         richtung="tierhalter-an-sitter"
         empfaengerName={s.full_name}
         empfaengerId={s.id}
@@ -194,7 +230,7 @@ function CarouselView({ sitter, isLoggedIn, userRole, matchProzente }: { sitter:
         <div className="flex gap-3">
           {sitter.map((s) => (
             <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-              <SitterCard s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
+              <SitterCardInner s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
             </div>
           ))}
         </div>
@@ -256,7 +292,7 @@ export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProz
       ) : (
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${sitter.length}, 1fr)` }}>
           {sitter.map((s) => (
-            <SitterCard key={s.id} s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
+            <SitterCardInner key={s.id} s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
           ))}
         </div>
       )}

@@ -1,27 +1,13 @@
-import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
 import Link from 'next/link';
-import {
-  LEISTUNGS_LABELS,
-  LEISTUNGS_BADGE_CLASSES,
-  ORTSCHAFTEN,
-} from '@/lib/mock-data';
+import { ORTSCHAFTEN, LEISTUNGS_LABELS } from '@/lib/mock-data';
 import { getOffenePostings } from '@/lib/queries/postings';
 import { createClient } from '@/lib/supabase/server';
 import { getMatchProzenteForSitter } from '@/lib/queries/matching';
-import { matchColor, matchLabel } from '@/lib/matching';
+import GesuchCard, { type PostingRow } from '@/components/portal/GesuchCard';
 import PinnwandBewerbenButton from './PinnwandBewerbenButton';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Pinnwand – MeinTiersitter' };
-
-const TIERART_EMOJI: Record<string, string> = {
-  hund: '🐕',
-  katze: '🐈',
-  vogel: '🐦',
-  kleintier: '🐹',
-  sonstiges: '🐾',
-};
 
 export default async function PinnwandPage({
   searchParams,
@@ -34,13 +20,13 @@ export default async function PinnwandPage({
   const filterNotfall = notfall === '1';
   const hasFilter = !!filterOrt || !!filterLeistung || filterNotfall;
 
-  const postings = await getOffenePostings({
+  const postings = (await getOffenePostings({
     ort: filterOrt || undefined,
     leistung: filterLeistung || undefined,
     nurNotfall: filterNotfall || undefined,
-  });
+  })) as unknown as PostingRow[];
 
-  // User-Auth + Rolle für Bewerben-Button
+  // User-Auth + Rolle
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   let userRole: string | null = null;
@@ -54,7 +40,6 @@ export default async function PinnwandPage({
       .single();
     userRole = profile?.role ?? null;
 
-    // Eigene Bewerbungen laden (für hasBewerbung-Flag)
     if (userRole === 'sitter' || userRole === 'beide') {
       const postingIds = postings.map((p) => p.id);
       if (postingIds.length > 0) {
@@ -159,124 +144,39 @@ export default async function PinnwandPage({
                 {hasFilter && <span className="ml-1">· gefiltert</span>}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {postings.map((p) => {
-                  const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles;
-                  const pr = Array.isArray(p.profiles) ? p.profiles[0] : p.profiles;
-                  const tierName = tp?.name ?? 'Unbekanntes Tier';
-                  const tierRasse = tp?.rasse ?? '';
-                  const fotoUrl = tp?.foto_url;
-                  const tierEmoji = TIERART_EMOJI[tp?.tierart ?? ''] ?? '🐾';
-                  const besitzerName = pr?.full_name ?? 'Tierhalter';
-                  const avatarInitial = besitzerName.charAt(0).toUpperCase();
-
-                  return (
-                    <div
-                      key={p.id}
-                      className={`bg-white rounded-2xl p-5 hover:shadow-md transition-all flex flex-col ${p.ist_notfall ? 'border-2 border-[#E07B30]' : 'border border-[#C8D8EC] hover:border-[#2E4A6B]'}`}
-                    >
-                      {p.ist_notfall && (
-                        <div className="mb-2">
-                          <span className="text-xs font-semibold bg-[#E07B30] text-white px-2 py-0.5 rounded-full inline-flex items-center gap-1 animate-pulse">
-                            🚨 Notfall
-                          </span>
-                        </div>
-                      )}
-                      {/* Foto + Info + Badge */}
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC] flex items-center justify-center bg-[#EEF2F8]">
-                          {fotoUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={fotoUrl}
-                              alt={tierName}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-2xl">{tierEmoji}</span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="font-semibold text-[#1E3249] text-sm leading-tight">{tierName}</span>
-                            {p.ist_beispiel && (
-                              <span className="text-xs bg-[#FEF3E2] text-[#E07B30] px-2 py-0.5 rounded-full inline-flex items-center gap-1">
-                                📌 Beispiel
-                              </span>
-                            )}
-                          </div>
-                          {tierRasse && <div className="text-xs text-[#7A9DBF]">{tierRasse}</div>}
-                          <div className="text-xs text-[#4E779F]">📍 {p.ort}</div>
-                        </div>
-                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
-                          {LEISTUNGS_LABELS[p.leistung] ?? p.leistung}
-                        </span>
-                      </div>
-
-                      {isSitter && matchProzente[p.id] !== undefined && (
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <span className="text-xs font-bold" style={{ color: matchColor(matchProzente[p.id]) }}>
-                            {matchProzente[p.id]}%
-                          </span>
-                          <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold text-slate-900"
-                            style={{ background: '#FEF3E2', fontSize: 9 }}>
-                            {matchLabel(matchProzente[p.id])}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="border-t border-[#EEF2F8] my-3" />
-
-                      {p.nachricht && (
-                        <p className="text-xs text-[#4E779F] leading-relaxed line-clamp-3 flex-1 mb-3">
-                          {p.nachricht}
-                        </p>
-                      )}
-
-                      <div className="border-t border-[#EEF2F8] my-3" />
-
-                      {/* Datum + Uhrzeit */}
-                      <div className="mb-3 space-y-0.5">
-                        <div className="text-xs text-[#4E779F]">
-                          📅 {format(new Date(p.datum_von), 'dd. MMM yyyy', { locale: de })}
-                          {p.datum_von !== p.datum_bis && (
-                            <> – {format(new Date(p.datum_bis), 'dd. MMM yyyy', { locale: de })}</>
-                          )}
-                        </div>
-                        {p.uhrzeit_von && (
-                          <div className="text-xs text-[#4E779F]">
-                            🕐 {p.uhrzeit_von}{p.uhrzeit_bis ? `–${p.uhrzeit_bis}` : ''}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="border-t border-[#EEF2F8] my-3" />
-
-                      {/* Besitzer + Button */}
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-7 h-7 rounded-full bg-[#2E4A6B] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
-                            {avatarInitial}
-                          </div>
-                          <span className="text-xs text-[#4E779F] truncate">{besitzerName}</span>
-                        </div>
-                        {isSitter ? (
-                          <PinnwandBewerbenButton
-                            postingId={p.id}
-                            isLoggedIn={true}
-                            hasBewerbung={meineBewerbungIds.has(p.id)}
-                          />
-                        ) : (
-                          <Link
-                            href={user ? '/dashboard/postings/neu' : '/login'}
-                            className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
-                          >
-                            {user ? 'Eigenes Gesuch →' : 'Anmelden →'}
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                {postings.map((p) => (
+                  <GesuchCard
+                    key={p.id}
+                    posting={p}
+                    matchProzent={isSitter ? matchProzente[p.id] : undefined}
+                    isLoggedIn={!!user}
+                    userRole={userRole ?? undefined}
+                    variant="pinnwand"
+                    footerAction={
+                      isSitter ? (
+                        <PinnwandBewerbenButton
+                          postingId={p.id}
+                          isLoggedIn={true}
+                          hasBewerbung={meineBewerbungIds.has(p.id)}
+                        />
+                      ) : user ? (
+                        <Link
+                          href="/dashboard/postings/neu"
+                          className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
+                        >
+                          Eigenes Gesuch →
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/login"
+                          className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
+                        >
+                          Anmelden →
+                        </Link>
+                      )
+                    }
+                  />
+                ))}
               </div>
             </>
           )}

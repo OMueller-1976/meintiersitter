@@ -13,7 +13,7 @@ export async function getOffenePostings(filters?: {
       id, leistung, datum_von, datum_bis,
       uhrzeit_von, uhrzeit_bis, nachricht,
       plz, ort, status, ist_beispiel, ist_notfall, created_at,
-      tier_profiles ( id, name, tierart, rasse, foto_url ),
+      tier_profiles ( id, name, tierart, rasse, foto_url, foto_urls ),
       profiles!postings_tierhalter_id_fkey (
         id, full_name
       )
