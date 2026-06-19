@@ -58,7 +58,7 @@ export default function StepAdresse({ data, onChange, errors }: Props) {
             type="text"
             value={data.ortschaft}
             onChange={(e) => onChange('ortschaft', e.target.value)}
-            placeholder="z.B. Gillenfeld, Manderscheid, Daun…"
+            placeholder="z.B. Gillenfeld, Gerolstein, Daun…"
             className="w-full border border-[#C8D8EC] rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30"
           />
         </div>

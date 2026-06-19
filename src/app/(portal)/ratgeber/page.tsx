@@ -26,7 +26,7 @@ const kategorien = [
     iconBg: 'bg-orange-100',
     iconColor: 'text-[#F4A261]',
     title: 'Hundefreundliche Unterkünfte',
-    desc: 'Hotels, Pensionen und Ferienhäuser im Kreis Daun und Umgebung.',
+    desc: 'Hotels, Pensionen und Ferienhäuser in der Vulkaneifel und Umgebung.',
     badge: '3 Tipps',
     badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
     href: '/ratgeber/unterkuenfte',

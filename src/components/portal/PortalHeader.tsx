@@ -73,7 +73,7 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         <div style={{ textAlign: 'right' }}>
           <div style={{ color: 'white', fontWeight: 600, fontSize: 18 }}>🐾 MeinTiersitter</div>
-          <div style={{ color: 'var(--vke-text-secondary)', fontSize: 14 }}>Kreis Daun</div>
+          <div style={{ color: 'var(--vke-text-secondary)', fontSize: 14 }}>Vulkaneifel</div>
         </div>
 
         {user ? (

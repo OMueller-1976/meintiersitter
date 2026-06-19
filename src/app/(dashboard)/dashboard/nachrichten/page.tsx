@@ -7,6 +7,7 @@ import { de } from 'date-fns/locale';
 import toast from 'react-hot-toast';
 import BewertungsModal from '@/components/ui/BewertungsModal';
 import { sendNachricht, markAsRead, abschliessenMatch, shareJournalUpdate } from './actions';
+import { KontaktanfrageButtons } from '../anfragen/AnfrageActionButtons';
 import type { Match, Nachricht, Profile, TierProfile, JournalEintrag } from '@/types';
 
 // ── Types ────────────────────────────────────────────────────
@@ -88,7 +89,7 @@ export default function NachrichtenPage() {
           tier:tier_profiles(name, tierart)
         `)
         .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
-        .in('status', ['bestaetigt', 'abgeschlossen'])
+        .in('status', ['angefragt', 'akzeptiert', 'abgeschlossen'])
         .order('updated_at', { ascending: false });
 
       if (matchData) {
@@ -338,14 +339,20 @@ export default function NachrichtenPage() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 <span
                   className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                    activeMatch.status === 'bestaetigt'
+                    activeMatch.status === 'angefragt'
+                      ? 'bg-yellow-100 text-yellow-700'
+                      : activeMatch.status === 'akzeptiert'
                       ? 'bg-green-100 text-green-700'
                       : 'bg-gray-100 text-gray-500'
                   }`}
                 >
-                  {activeMatch.status === 'bestaetigt' ? 'Aktiv' : 'Abgeschlossen'}
+                  {activeMatch.status === 'angefragt' ? 'Ausstehend' :
+                   activeMatch.status === 'akzeptiert' ? 'Aktiv' : 'Abgeschlossen'}
                 </span>
-                {activeMatch.status === 'bestaetigt' && userId === activeMatch.tierhalter_id && (
+                {activeMatch.status === 'angefragt' && (userId === activeMatch.sitter_id) && (
+                  <KontaktanfrageButtons matchId={activeMatch.id} />
+                )}
+                {activeMatch.status === 'akzeptiert' && userId === activeMatch.tierhalter_id && (
                   <button
                     onClick={async () => {
                       const result = await abschliessenMatch(activeMatch.id);
@@ -387,7 +394,15 @@ export default function NachrichtenPage() {
 
             {/* Input */}
             <div className="bg-white border-t border-gray-100 px-4 py-3 flex-shrink-0">
-              {activeMatch.status === 'abgeschlossen' ? (
+              {activeMatch.status === 'angefragt' ? (
+                <p className="text-sm text-gray-400 text-center py-1">
+                  {userId === activeMatch.sitter_id
+                    ? 'Nimm die Anfrage an, um zu antworten.'
+                    : 'Warte auf Antwort des Sitters…'}
+                </p>
+              ) : activeMatch.status !== 'akzeptiert' && activeMatch.status !== 'abgeschlossen' ? (
+                <p className="text-sm text-gray-400 text-center py-1">Chat nicht verfügbar</p>
+              ) : activeMatch.status === 'abgeschlossen' ? (
                 <p className="text-sm text-gray-400 text-center py-1">Betreuung abgeschlossen</p>
               ) : (
                 <div className="flex items-end gap-2">

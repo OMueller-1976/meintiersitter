@@ -8,7 +8,7 @@ export default function MarktplatzPage() {
               Marktplatz Vulkaneifel
             </h1>
             <p className="text-[#4E779F] text-lg">
-              Tiergeschäfte, Tierärzte und hundefreundliche Betriebe im Kreis Daun.
+              Tiergeschäfte, Tierärzte und hundefreundliche Betriebe in der Vulkaneifel.
             </p>
           </div>
         </section>
@@ -21,7 +21,7 @@ export default function MarktplatzPage() {
               <h2 className="text-xl font-bold text-[#1E3249] mb-3">In Kürze verfügbar</h2>
               <p className="text-[#4E779F]">
                 Der Marktplatz für lokale Tiergeschäfte, Tierärzte und hundefreundliche Betriebe
-                im Kreis Daun wird gerade aufgebaut. Schau bald wieder vorbei!
+                in der Vulkaneifel wird gerade aufgebaut. Schau bald wieder vorbei!
               </p>
             </div>
           </div>

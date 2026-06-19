@@ -264,7 +264,7 @@ export default function OnboardingWizard() {
             <span className="text-2xl">🐾</span>
             <div>
               <p className="text-white font-semibold">MeinTiersitter</p>
-              <p className="text-white/60 text-xs">Kreis Daun · Vulkaneifel</p>
+              <p className="text-white/60 text-xs">Landkreis Vulkaneifel</p>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center text-xl">🐾</div>
           <div>
             <div className="text-white font-semibold text-lg leading-tight">MeinTiersitter</div>
-            <div className="text-[#A8C0DC] text-xs">Kreis Daun · Vulkaneifel</div>
+            <div className="text-[#A8C0DC] text-xs">Landkreis Vulkaneifel</div>
           </div>
         </Link>
         <Link href="/daun" className="text-white/70 hover:text-white text-sm transition-colors">

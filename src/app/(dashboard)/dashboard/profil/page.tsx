@@ -311,7 +311,7 @@ export default function ProfilPage() {
               type="text"
               value={ortschaft}
               onChange={(e) => setOrtschaft(e.target.value)}
-              placeholder="z.B. Gillenfeld, Manderscheid…"
+              placeholder="z.B. Gillenfeld, Gerolstein…"
               className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30"
             />
           </div>

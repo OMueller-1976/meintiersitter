@@ -47,9 +47,11 @@ function getInitials(name: string): string {
 interface Props {
   role: UserRole;
   profile: Profile;
+  unreadNachrichten?: number;
+  pendingAnfragen?: number;
 }
 
-export default function DashboardNav({ role, profile }: Props) {
+export default function DashboardNav({ role, profile, unreadNachrichten = 0, pendingAnfragen = 0 }: Props) {
   const pathname = usePathname();
   const isSitterRole = role === 'sitter' || role === 'beide';
   const navItems = isSitterRole ? getSitterNav() : getTierhalterNav();
@@ -91,7 +93,17 @@ export default function DashboardNav({ role, profile }: Props) {
                   } : { borderLeft: '3px solid transparent' }}
                 >
                   <span className="text-base">{item.icon}</span>
-                  {item.label}
+                  <span className="flex-1">{item.label}</span>
+                  {item.href === '/dashboard/nachrichten' && unreadNachrichten > 0 && (
+                    <span className="w-5 h-5 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                      {unreadNachrichten > 9 ? '9+' : unreadNachrichten}
+                    </span>
+                  )}
+                  {item.href === '/dashboard/anfragen' && pendingAnfragen > 0 && (
+                    <span className="w-5 h-5 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                      {pendingAnfragen > 9 ? '9+' : pendingAnfragen}
+                    </span>
+                  )}
                 </Link>
               </li>
             ))}
@@ -134,12 +146,24 @@ export default function DashboardNav({ role, profile }: Props) {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-colors ${
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-colors relative ${
                   isActive(item.href) ? 'text-white' : 'text-white/50'
                 }`}
                 style={isActive(item.href) ? { color: 'var(--accent-green)' } : {}}
               >
-                <span className="text-xl">{item.icon}</span>
+                <span className="text-xl relative">
+                  {item.icon}
+                  {item.href === '/dashboard/nachrichten' && unreadNachrichten > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 text-white text-[8px] rounded-full flex items-center justify-center font-bold">
+                      {unreadNachrichten > 9 ? '9' : unreadNachrichten}
+                    </span>
+                  )}
+                  {item.href === '/dashboard/anfragen' && pendingAnfragen > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 text-white text-[8px] rounded-full flex items-center justify-center font-bold">
+                      {pendingAnfragen > 9 ? '9' : pendingAnfragen}
+                    </span>
+                  )}
+                </span>
                 <span className="text-[10px] leading-none">{item.label.split(' ')[0]}</span>
               </Link>
             </li>

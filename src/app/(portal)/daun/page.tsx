@@ -13,7 +13,7 @@ import type { Profile } from '@/types'
 
 const BUNDESLAND = 'rheinland-pfalz'
 const LANDKREIS = 'daun'
-const LANDKREIS_NAME = 'Daun'
+const LANDKREIS_NAME = 'Vulkaneifel'
 
 export const metadata: Metadata = {
   title: `Tiersitti – ${LANDKREIS_NAME}`,
@@ -198,7 +198,7 @@ export default async function DaunPage() {
         <p className="text-sm text-secondary mt-1">
           {user
             ? 'Hier ist was heute in der Region los ist.'
-            : `Finde oder werde ein Tiersitter in ${regionName}.`}
+            : `Finde oder werde ein Tiersitter im Landkreis ${regionName}.`}
         </p>
       </div>
 

@@ -41,7 +41,7 @@ const INFO_KACHELN: InfoKachel[] = [
   {
     kategorie: 'Marktplatz',
     emoji: '🏪',
-    titel: 'Tiergeschäfte im Kreis Daun',
+    titel: 'Tiergeschäfte in der Vulkaneifel',
     text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
     link: '/marktplatz',
     link_label: 'Zum Marktplatz →',
@@ -169,7 +169,7 @@ export default function RightSidebar() {
         <div className="bg-[#2E4A6B] rounded-xl p-3 text-white">
           <p className="font-semibold text-base mb-1">🐾 Werde Teil der Community</p>
           <p className="text-sm text-white/70 mb-2 leading-relaxed">
-            Schon mehrere Mitglieder im Kreis Daun dabei!
+            Schon mehrere Mitglieder in der Vulkaneifel dabei!
           </p>
           <Link
             href="/register"

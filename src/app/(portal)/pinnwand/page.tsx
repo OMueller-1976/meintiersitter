@@ -80,7 +80,7 @@ export default async function PinnwandPage({
     <div className="min-h-screen flex flex-col">
       {/* Hero */}
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
-        <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche im Kreis Daun</h1>
+        <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche in der Vulkaneifel</h1>
         <p className="text-[#A8C0DC] mt-2 max-w-xl">
           Alle offenen Tierbetreuungs-Gesuche in der Vulkaneifel. Melde Dich direkt beim Tierhalter.
         </p>
@@ -285,7 +285,7 @@ export default async function PinnwandPage({
           <div className="mt-10 bg-[#2E4A6B] rounded-2xl p-8 text-center text-white">
             <p className="text-xl font-bold mb-2">Du hast ein Tier das Betreuung braucht?</p>
             <p className="text-[#A8C0DC] text-sm mb-5">
-              Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Kreis Daun.
+              Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Landkreis Vulkaneifel.
             </p>
             <Link
               href={user ? '/dashboard/postings/neu' : '/register'}

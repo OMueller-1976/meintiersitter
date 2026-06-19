@@ -21,7 +21,7 @@ interface NavGroup {
 const navGroups: NavGroup[] = [
   {
     items: [
-      { icon: '🏠', label: 'Portal Daun', href: '/daun' },
+      { icon: '🏠', label: 'Portal Vulkaneifel', href: '/daun' },
       { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
       { icon: '🐾', label: 'Sitter entdecken', href: '/daun/sitter' },
     ],

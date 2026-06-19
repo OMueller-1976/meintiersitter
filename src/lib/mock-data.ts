@@ -76,7 +76,7 @@ export const MOCK_POSTINGS: PostingMock[] = [
     tier_foto: '/assets/ponny.png',
     leistung: 'tagesbetreuung',
     leistung_label: 'Tagesbetreuung',
-    ortschaft: 'Manderscheid',
+    ortschaft: 'Kelberg',
     plz: '54531',
     datum_von: '2025-07-01',
     datum_bis: '2025-07-03',
@@ -141,7 +141,7 @@ export const MOCK_SITTER: SitterMock[] = [
   {
     id: '3',
     name: 'Maria Schneider',
-    ortschaft: 'Manderscheid',
+    ortschaft: 'Kelberg',
     plz: '54531',
     foto: '/assets/FrauSitter.png',
     avatar_initial: 'MS',
@@ -179,13 +179,15 @@ export const LEISTUNGS_CHIPS: Record<string, string> = {
 
 export const ORTSCHAFTEN = [
   'Alle Ortschaften',
-  'Daun',
-  'Gillenfeld',
-  'Manderscheid',
-  'Gerolstein',
-  'Hillesheim',
-  'Kelberg',
-  'Ulmen',
-  'Adenau',
-  'Kirchweiler',
+  // Verbandsgemeinde Daun
+  'Daun', 'Gillenfeld', 'Schalkenmehren',
+  'Darscheid', 'Üdersdorf', 'Strohn', 'Mehren',
+  'Kirchweiler', 'Brockscheid', 'Gefell',
+  'Wallenborn', 'Steineberg',
+  // Verbandsgemeinde Gerolstein
+  'Gerolstein', 'Hillesheim', 'Jünkerath',
+  'Stadtkyll', 'Birresborn', 'Pelm', 'Kerpen',
+  'Hallschlag', 'Üxheim', 'Walsdorf', 'Wiesbaum',
+  // Verbandsgemeinde Kelberg
+  'Kelberg', 'Mosbruch', 'Kolverath', 'Gunderath',
 ];

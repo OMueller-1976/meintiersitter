@@ -3,7 +3,7 @@ import Link from 'next/link';
 const trustBadges = [
   '✓ Kostenlos für Sitter',
   '✓ Keine Provision',
-  '✓ Nur Kreis Daun',
+  '✓ Nur Landkreis Vulkaneifel',
   '✓ Gegenseitige Bewertung',
 ];
 
@@ -72,7 +72,7 @@ const features = [
   {
     icon: '🏪',
     title: 'Lokaler Marktplatz',
-    desc: 'Tiergeschäfte und Tierärzte im Kreis Daun auf einen Blick',
+    desc: 'Tiergeschäfte und Tierärzte im Landkreis Vulkaneifel auf einen Blick',
   },
 ];
 
@@ -90,7 +90,7 @@ const ratgeberTeaser = [
   {
     icon: '🏨',
     title: 'Hundefreundliche Unterkünfte',
-    desc: 'Hotels, Ferienhäuser und Pensionen im Kreis Daun, die Deinen Vierbeiner herzlich willkommen heißen.',
+    desc: 'Hotels, Ferienhäuser und Pensionen im Landkreis Vulkaneifel, die Deinen Vierbeiner herzlich willkommen heißen.',
   },
   {
     icon: '📖',
@@ -119,7 +119,7 @@ const testimonials = [
   {
     initials: 'AL',
     name: 'Anna L.',
-    ort: 'Manderscheid',
+    ort: 'Kelberg',
     stars: 5,
     quote: 'Endlich eine lokale Alternative! Das Betreuungsjournal mit Fotos ist genial.',
   },
@@ -153,7 +153,7 @@ export default function HomePage() {
               <br className="hidden sm:block" /> in Deiner Nachbarschaft
             </h1>
             <p className="text-lg md:text-xl text-[#4E779F] max-w-2xl mx-auto mb-10">
-              Finde kostenlose, liebevolle Tiersitter direkt in Deiner Ortschaft im Kreis Daun.
+              Finde kostenlose, liebevolle Tiersitter direkt in Deiner Ortschaft im Landkreis Vulkaneifel.
               Kein Stress, kein Preisvergleich – echte Nachbarschaftshilfe.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">

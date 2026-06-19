@@ -15,13 +15,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Tiersitti – Tierbetreuung und Tierhilfe in Deiner Region",
+  title: "Tiersitti Vulkaneifel – Tiersitter finden im Landkreis Vulkaneifel",
   description:
-    "Finde Sitter, melde Gefahren, entdecke tierfreundliche Orte und vernetze Dich mit Tierfreunden in Deiner Region.",
+    "Finde vertrauensvolle Tiersitter in Deiner Nähe — Daun, Gerolstein, Kelberg und die gesamte Vulkaneifel. Kostenlos für Sitter, fair für Tierhalter.",
   metadataBase: new URL("https://tiersitti.de"),
   openGraph: {
-    title: "Tiersitti",
-    description: "Tierbetreuung und Tierhilfe in Deiner Region",
+    title: "Tiersitti Vulkaneifel",
+    description: "Tierbetreuung und Tierhilfe im Landkreis Vulkaneifel",
     url: "https://tiersitti.de",
     siteName: "Tiersitti",
     locale: "de_DE",
