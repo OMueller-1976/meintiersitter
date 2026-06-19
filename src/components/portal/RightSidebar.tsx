@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GemeindeDaunBadge from '@/components/GemeindeDaunBadge';
+import SpendenHinweis from '@/components/shared/SpendenHinweis';
 
 interface InfoKachel {
   kategorie: string;
@@ -165,18 +166,9 @@ export default function RightSidebar() {
           </nav>
         </div>
 
-        {/* Community Box */}
-        <div className="bg-[#2E4A6B] rounded-xl p-3 text-white">
-          <p className="font-semibold text-base mb-1">🐾 Werde Teil der Community</p>
-          <p className="text-sm text-white/70 mb-2 leading-relaxed">
-            Schon mehrere Mitglieder in der Vulkaneifel dabei!
-          </p>
-          <Link
-            href="/register"
-            className="block text-center text-sm font-medium bg-white text-[#2E4A6B] rounded-lg py-2 hover:bg-[#EEF2F8] transition-colors"
-          >
-            Jetzt mitmachen →
-          </Link>
+        {/* Spenden-Hinweis */}
+        <div className="bg-[#EEF2F8] rounded-xl p-3">
+          <SpendenHinweis variant="kompakt" />
         </div>
 
       </div>

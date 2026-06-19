@@ -10,7 +10,7 @@ const ROLLEN = [
     id: 'tierhalter' as WizardRole,
     emoji: '🐾',
     title: 'Ich suche einen Sitter',
-    sub: 'Für mein Tier · €1,90/Monat',
+    sub: 'Für mein Tier · Kostenlos',
   },
   {
     id: 'sitter' as WizardRole,
@@ -22,7 +22,7 @@ const ROLLEN = [
     id: 'beide' as WizardRole,
     emoji: '⭐',
     title: 'Beides — ich suche UND biete an',
-    sub: 'Volle Flexibilität · Kombi-Preis',
+    sub: 'Volle Flexibilität · Kostenlos',
   },
 ]
 

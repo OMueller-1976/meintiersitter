@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import LandkreisHeader from '@/components/portal/LandkreisHeader'
 import LeftSidebar from '@/components/portal/LeftSidebar'
 import RightSidebar from '@/components/portal/RightSidebar'
+import SpendenModalTrigger from '@/components/shared/SpendenModalTrigger'
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies()
@@ -34,6 +35,7 @@ export default async function PortalLayout({ children }: { children: React.React
           <RightSidebar />
         </div>
       </div>
+      <SpendenModalTrigger />
     </div>
   )
 }

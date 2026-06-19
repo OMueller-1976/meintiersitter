@@ -43,6 +43,17 @@ export default function ImpressumPage() {
 
           <div className="border-t border-[#C8D8EC] my-6" />
 
+          <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">Ehrenamtliches Angebot</h2>
+          <p className="text-[#2E4A6B] leading-relaxed">
+            Tiersitti wird von OneTitel – Digital &amp; Business Solutions ehrenamtlich betrieben und
+            ist für Tierhalter und Tiersitter kostenlos nutzbar. Wir freuen uns über freiwillige
+            Spenden zur Kostendeckung des Betriebs. Spenden, die über die Betriebskosten
+            hinausgehen, geben wir an regionale Tierschutzvereine und -verbände in der Vulkaneifel
+            weiter.
+          </p>
+
+          <div className="border-t border-[#C8D8EC] my-6" />
+
           <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">Haftung für Inhalte</h2>
           <p className="text-[#2E4A6B] leading-relaxed">
             Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten

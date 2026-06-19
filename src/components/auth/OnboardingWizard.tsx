@@ -10,6 +10,7 @@ import StepAccount from './steps/StepAccount'
 import StepAdresse from './steps/StepAdresse'
 import StepSitterDetails from './steps/StepSitterDetails'
 import StepZusammenfassung from './steps/StepZusammenfassung'
+import SpendenHinweis from '@/components/shared/SpendenHinweis'
 import { registerAction } from '@/app/(auth)/register/actions'
 
 export type WizardRole = 'tierhalter' | 'sitter' | 'beide'
@@ -247,6 +248,9 @@ export default function OnboardingWizard() {
           <Link href="/login" className="text-sm text-[#7A9DBF] hover:text-[#2E4A6B] hover:underline">
             Zur Anmeldung →
           </Link>
+          <div className="mt-6 pt-6 border-t border-[#EEF2F8] text-left">
+            <SpendenHinweis variant="kompakt" />
+          </div>
         </div>
       </div>
     )
