@@ -49,19 +49,28 @@ export async function GET(request: NextRequest) {
     .single();
 
   if (!existingProfile) {
-    await supabase.from('profiles').insert({
+    await supabase.from('profiles').upsert({
       id: user.id,
-      role: meta.role ?? 'owner',
+      role: meta.role ?? 'tierhalter',
       full_name: meta.full_name ?? '',
       email: user.email ?? '',
-      plz: meta.plz ?? '',
-      ort: meta.ort ?? '',
+      plz: meta.plz ?? null,
+      ort: meta.ort ?? null,
       ortschaft: meta.ortschaft ?? null,
       phone: meta.phone ?? null,
-    });
+      onboarding_complete: true,
+    }, { onConflict: 'id' });
 
-    if (meta.role === 'sitter') {
-      await supabase.from('sitter_profiles').insert({ id: user.id });
+    if (meta.role === 'sitter' || meta.role === 'beide') {
+      let sitterData: Record<string, unknown> = {};
+      try {
+        if (meta.sitter_data) sitterData = JSON.parse(meta.sitter_data);
+      } catch { /* ignore parse errors */ }
+
+      await supabase.from('sitter_profiles').upsert({
+        id: user.id,
+        ...sitterData,
+      }, { onConflict: 'id' });
     }
   }
 

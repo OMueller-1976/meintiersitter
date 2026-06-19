@@ -52,7 +52,7 @@ export default function NachrichtenPage() {
   );
 
   const [userId, setUserId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<'tierhalter' | 'sitter' | 'admin'>('tierhalter');
+  const [userRole, setUserRole] = useState<'tierhalter' | 'sitter' | 'beide' | 'admin'>('tierhalter');
   const [matches, setMatches] = useState<MatchRow[]>([]);
   const [activeMatch, setActiveMatch] = useState<MatchRow | null>(null);
   const [nachrichten, setNachrichten] = useState<NachrichtRow[]>([]);
@@ -391,7 +391,7 @@ export default function NachrichtenPage() {
                 <p className="text-sm text-gray-400 text-center py-1">Betreuung abgeschlossen</p>
               ) : (
                 <div className="flex items-end gap-2">
-                  {userRole === 'sitter' && (
+                  {(userRole === 'sitter' || userRole === 'beide') && (
                     <button
                       onClick={() => setShowJournalModal(true)}
                       className="text-gray-400 hover:text-[#2D6A4F] transition-colors pb-2 text-xl"

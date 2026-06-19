@@ -51,8 +51,9 @@ interface Props {
 
 export default function DashboardNav({ role, profile }: Props) {
   const pathname = usePathname();
-  const navItems = role === 'sitter' ? getSitterNav() : getTierhalterNav();
-  const roleName = role === 'sitter' ? 'Sitter' : 'Tierhalter';
+  const isSitterRole = role === 'sitter' || role === 'beide';
+  const navItems = isSitterRole ? getSitterNav() : getTierhalterNav();
+  const roleName = isSitterRole ? 'Sitter' : 'Tierhalter';
 
   function isActive(href: string): boolean {
     if (href === '/dashboard') return pathname === '/dashboard';

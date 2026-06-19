@@ -6,6 +6,8 @@ import type { Metadata } from 'next'
 import GesucheCarousel from '@/components/portal/GesucheCarousel'
 import SitterCarousel from '@/components/portal/SitterCarousel'
 import MatchKacheln from '@/components/portal/MatchKacheln'
+import { getOffenePostings } from '@/lib/queries/postings'
+import { getAktiveSitter } from '@/lib/queries/sitter'
 import type { Profile } from '@/types'
 
 const BUNDESLAND = 'rheinland-pfalz'
@@ -97,6 +99,12 @@ export default async function DaunPage() {
     console.error('[DaunPage] Fehler beim Laden des Profils:', err)
   }
 
+  // Echte Daten laden
+  const [postings, sitter] = await Promise.all([
+    getOffenePostings(),
+    getAktiveSitter(),
+  ])
+
   const vorname = profile?.full_name?.split(' ')[0] ?? ''
   const regionName = region?.landkreis_name ?? LANDKREIS_NAME
 
@@ -118,11 +126,11 @@ export default async function DaunPage() {
       <MatchKacheln isLoggedIn={!!user} userRole={profile?.role} />
 
       <div className="tile p-4">
-        <GesucheCarousel />
+        <GesucheCarousel postings={postings} />
       </div>
 
       <div className="tile p-4">
-        <SitterCarousel bundesland={BUNDESLAND} landkreis={LANDKREIS} />
+        <SitterCarousel sitter={sitter} />
       </div>
     </div>
   )

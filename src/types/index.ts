@@ -7,7 +7,7 @@
 // Enum Union Types (aus CHECK-Constraints)
 // ────────────────────────────────────────────────────────────
 
-export type UserRole = 'tierhalter' | 'sitter' | 'admin';
+export type UserRole = 'tierhalter' | 'sitter' | 'beide' | 'admin';
 
 export type SubscriptionStatus = 'active' | 'inactive' | 'trialing' | 'past_due';
 
@@ -54,6 +54,7 @@ export interface Profile {
   latitude: number | null;
   longitude: number | null;
   is_verified: boolean;
+  onboarding_complete: boolean;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   subscription_status: SubscriptionStatus;
@@ -155,6 +156,11 @@ export interface SitterProfile {
   radius_km: number;
   avg_rating: number;
   total_reviews: number;
+  notfall_verfuegbar: boolean;
+  notfall_telefon: string | null;
+  notfall_per_email: boolean;
+  notfall_per_sms: boolean;
+  notfall_per_whatsapp: boolean;
   created_at: string;
   updated_at: string;
 }

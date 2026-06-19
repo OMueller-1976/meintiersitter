@@ -2,13 +2,22 @@ import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import Link from 'next/link';
 import {
-  MOCK_POSTINGS,
   LEISTUNGS_LABELS,
   LEISTUNGS_BADGE_CLASSES,
   ORTSCHAFTEN,
 } from '@/lib/mock-data';
+import { getOffenePostings } from '@/lib/queries/postings';
 
+export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Pinnwand – MeinTiersitter' };
+
+const TIERART_EMOJI: Record<string, string> = {
+  hund: '🐕',
+  katze: '🐈',
+  vogel: '🐦',
+  kleintier: '🐹',
+  sonstiges: '🐾',
+};
 
 export default async function PinnwandPage({
   searchParams,
@@ -18,23 +27,21 @@ export default async function PinnwandPage({
   const { ort, leistung } = await searchParams;
   const filterOrt = ort && ort !== 'Alle Ortschaften' ? ort : '';
   const filterLeistung = leistung ?? '';
-
-  const postings = MOCK_POSTINGS.filter((p) => {
-    if (filterOrt && p.ortschaft !== filterOrt) return false;
-    if (filterLeistung && p.leistung !== filterLeistung) return false;
-    return true;
-  });
-
   const hasFilter = !!filterOrt || !!filterLeistung;
+
+  const postings = await getOffenePostings({
+    ort: filterOrt || undefined,
+    leistung: filterLeistung || undefined,
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero */}
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
-          <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche im Kreis Daun</h1>
-          <p className="text-[#A8C0DC] mt-2 max-w-xl">
-            Alle offenen Tierbetreuungs-Gesuche in der Vulkaneifel. Melde Dich direkt beim Tierhalter.
-          </p>
+        <h1 className="text-3xl font-bold text-white">Aktuelle Gesuche im Kreis Daun</h1>
+        <p className="text-[#A8C0DC] mt-2 max-w-xl">
+          Alle offenen Tierbetreuungs-Gesuche in der Vulkaneifel. Melde Dich direkt beim Tierhalter.
+        </p>
       </div>
 
       {/* Filter */}
@@ -100,70 +107,97 @@ export default async function PinnwandPage({
                 {hasFilter && <span className="ml-1">· gefiltert</span>}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {postings.map((p) => (
-                  <div
-                    key={p.id}
-                    className="bg-white rounded-2xl border border-[#C8D8EC] p-5 hover:border-[#2E4A6B] hover:shadow-md transition-all flex flex-col"
-                  >
-                    {/* Foto + Info + Badge */}
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC]">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={p.tier_foto}
-                          alt={p.tier_name}
-                          className="w-full h-full object-cover"
-                        />
+                {postings.map((p) => {
+                  const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles;
+                  const pr = Array.isArray(p.profiles) ? p.profiles[0] : p.profiles;
+                  const tierName = tp?.name ?? 'Unbekanntes Tier';
+                  const tierRasse = tp?.rasse ?? '';
+                  const fotoUrl = tp?.foto_url;
+                  const tierEmoji = TIERART_EMOJI[tp?.tierart ?? ''] ?? '🐾';
+                  const besitzerName = pr?.full_name ?? 'Tierhalter';
+                  const avatarInitial = besitzerName.charAt(0).toUpperCase();
+
+                  return (
+                    <div
+                      key={p.id}
+                      className="bg-white rounded-2xl border border-[#C8D8EC] p-5 hover:border-[#2E4A6B] hover:shadow-md transition-all flex flex-col"
+                    >
+                      {/* Foto + Info + Badge */}
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#C8D8EC] flex items-center justify-center bg-[#EEF2F8]">
+                          {fotoUrl ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={fotoUrl}
+                              alt={tierName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-2xl">{tierEmoji}</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-semibold text-[#1E3249] text-sm leading-tight">{tierName}</span>
+                            {p.ist_beispiel && (
+                              <span className="text-xs bg-[#FEF3E2] text-[#E07B30] px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                📌 Beispiel
+                              </span>
+                            )}
+                          </div>
+                          {tierRasse && <div className="text-xs text-[#7A9DBF]">{tierRasse}</div>}
+                          <div className="text-xs text-[#4E779F]">📍 {p.ort}</div>
+                        </div>
+                        <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
+                          {LEISTUNGS_LABELS[p.leistung] ?? p.leistung}
+                        </span>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-[#1E3249] text-sm leading-tight">{p.tier_name}</div>
-                        <div className="text-xs text-[#7A9DBF]">{p.tier_rasse}</div>
-                        <div className="text-xs text-[#4E779F]">📍 {p.ortschaft}</div>
-                      </div>
-                      <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${LEISTUNGS_BADGE_CLASSES[p.leistung] ?? 'bg-[#EEF2F8] text-[#2E4A6B]'}`}>
-                        {p.leistung_label}
-                      </span>
-                    </div>
 
-                    {/* Trennlinie */}
-                    <div className="border-t border-[#EEF2F8] my-3" />
+                      <div className="border-t border-[#EEF2F8] my-3" />
 
-                    <p className="text-xs text-[#4E779F] leading-relaxed line-clamp-3 flex-1 mb-3">
-                      {p.beschreibung}
-                    </p>
+                      {p.nachricht && (
+                        <p className="text-xs text-[#4E779F] leading-relaxed line-clamp-3 flex-1 mb-3">
+                          {p.nachricht}
+                        </p>
+                      )}
 
-                    <div className="border-t border-[#EEF2F8] my-3" />
+                      <div className="border-t border-[#EEF2F8] my-3" />
 
-                    {/* Datum + Uhrzeit */}
-                    <div className="mb-3 space-y-0.5">
-                      <div className="text-xs text-[#4E779F]">
-                        📅 {format(new Date(p.datum_von), 'dd. MMM yyyy', { locale: de })}
-                        {p.datum_von !== p.datum_bis && (
-                          <> – {format(new Date(p.datum_bis), 'dd. MMM yyyy', { locale: de })}</>
+                      {/* Datum + Uhrzeit */}
+                      <div className="mb-3 space-y-0.5">
+                        <div className="text-xs text-[#4E779F]">
+                          📅 {format(new Date(p.datum_von), 'dd. MMM yyyy', { locale: de })}
+                          {p.datum_von !== p.datum_bis && (
+                            <> – {format(new Date(p.datum_bis), 'dd. MMM yyyy', { locale: de })}</>
+                          )}
+                        </div>
+                        {p.uhrzeit_von && (
+                          <div className="text-xs text-[#4E779F]">
+                            🕐 {p.uhrzeit_von}{p.uhrzeit_bis ? `–${p.uhrzeit_bis}` : ''}
+                          </div>
                         )}
                       </div>
-                      <div className="text-xs text-[#4E779F]">🕐 {p.uhrzeit}</div>
-                    </div>
 
-                    <div className="border-t border-[#EEF2F8] my-3" />
+                      <div className="border-t border-[#EEF2F8] my-3" />
 
-                    {/* Besitzer + Button */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-7 h-7 rounded-full bg-[#2E4A6B] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
-                          {p.avatar_initial}
+                      {/* Besitzer + Button */}
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-7 h-7 rounded-full bg-[#2E4A6B] text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                            {avatarInitial}
+                          </div>
+                          <span className="text-xs text-[#4E779F] truncate">{besitzerName}</span>
                         </div>
-                        <span className="text-xs text-[#4E779F] truncate">{p.besitzer_name}</span>
+                        <Link
+                          href="/register"
+                          className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
+                        >
+                          Jetzt bewerben →
+                        </Link>
                       </div>
-                      <Link
-                        href="/register"
-                        className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
-                      >
-                        Jetzt bewerben →
-                      </Link>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </>
           )}
@@ -183,7 +217,6 @@ export default async function PinnwandPage({
           </div>
         </div>
       </div>
-
     </div>
   );
 }

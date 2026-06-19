@@ -13,6 +13,7 @@ export interface RegisterData {
   ort: string;
   ortschaft?: string;
   phone?: string;
+  sitter_data?: string; // JSON-serialisierte Sitter-Details
 }
 
 export async function registerAction(
@@ -54,6 +55,7 @@ export async function registerAction(
         ort: data.ort,
         ortschaft: data.ortschaft || null,
         phone: data.phone || null,
+        sitter_data: data.sitter_data || null,
       },
     },
   });

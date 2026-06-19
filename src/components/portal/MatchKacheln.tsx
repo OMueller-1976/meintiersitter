@@ -77,7 +77,7 @@ export default function MatchKacheln({ isLoggedIn, userRole }: MatchKachelnProps
         href: '/marktplatz',
       },
     ];
-  } else if (userRole === 'sitter') {
+  } else if (userRole === 'sitter' || userRole === 'beide') {
     kacheln = [
       {
         icon: '🔔',

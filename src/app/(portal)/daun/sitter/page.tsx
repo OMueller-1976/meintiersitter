@@ -5,8 +5,8 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { MOCK_SITTER } from '@/lib/mock-data'
 import SitterCard from '@/components/portal/SitterCard'
+import { getAktiveSitter } from '@/lib/queries/sitter'
 
 const BUNDESLAND = 'rheinland-pfalz'
 const LANDKREIS = 'daun'
@@ -26,11 +26,25 @@ function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   })
 }
 
+function getLeistungen(sp: {
+  bietet_gassi: boolean | null
+  bietet_fuettern: boolean | null
+  bietet_tagesbetreuung: boolean | null
+  bietet_uebernachtung: boolean | null
+} | null | undefined): string[] {
+  if (!sp) return [];
+  const l: string[] = [];
+  if (sp.bietet_gassi) l.push('gassi');
+  if (sp.bietet_fuettern) l.push('fuettern');
+  if (sp.bietet_tagesbetreuung) l.push('tagesbetreuung');
+  if (sp.bietet_uebernachtung) l.push('uebernachtung');
+  return l;
+}
+
 export default async function SitterOverviewPage() {
   const cookieStore = await cookies()
 
   // Region validieren
-  let regionId: string | null = null
   try {
     const supabase = buildSupabase(cookieStore)
     const { data, error } = await supabase
@@ -42,42 +56,11 @@ export default async function SitterOverviewPage() {
     if (error) throw error
     if (!data) notFound()
     if (!data.is_active) notFound()
-    regionId = data.id
   } catch {
-    // Fallback auf Mock-Daten
+    // Bei DB-Fehler trotzdem anzeigen
   }
 
-  type SitterRow = {
-    id: string
-    full_name: string
-    ortschaft: string
-    beschreibung: string | null
-    foto_url: string | null
-    avg_rating: number
-    total_reviews: number
-    leistungen: string[]
-    hat_garten: boolean
-    kann_medikamente: boolean
-    is_dummy: boolean
-  }
-
-  let sitters: SitterRow[] = []
-  if (regionId) {
-    try {
-      const supabase = buildSupabase(cookieStore)
-      const { data, error } = await supabase
-        .from('sitter_profiles')
-        .select('id, full_name, ortschaft, beschreibung, foto_url, avg_rating, total_reviews, leistungen, hat_garten, kann_medikamente, is_dummy')
-        .eq('region_id', regionId)
-        .order('avg_rating', { ascending: false })
-      if (error) throw error
-      if (data && data.length > 0) sitters = data as SitterRow[]
-    } catch {
-      // Fallback auf Mock-Daten
-    }
-  }
-
-  const useMock = sitters.length === 0
+  const sitters = await getAktiveSitter()
 
   return (
     <div className="flex flex-col gap-5">
@@ -96,44 +79,40 @@ export default async function SitterOverviewPage() {
         <p className="text-sm text-secondary mt-1">Alle verfügbaren Tiersitter in Deiner Region.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {useMock
-          ? MOCK_SITTER.map((s) => (
-              <SitterCard
-                key={s.id}
-                name={s.name}
-                ortschaft={s.ortschaft}
-                beschreibung={s.beschreibung}
-                fotoUrl={s.foto}
-                avgRating={s.avg_rating}
-                totalReviews={s.total_reviews}
-                leistungen={s.leistungen}
-                hatGarten={s.hat_garten}
-                kannMedikamente={s.kann_medikamente}
-                isDummy={true}
-              />
-            ))
-          : sitters.map((s) => (
+      {sitters.length === 0 ? (
+        <div className="tile p-12 text-center">
+          <div className="text-4xl mb-3">🐾</div>
+          <p className="text-secondary font-medium mb-1">Noch keine Sitter registriert.</p>
+          <p className="text-sm text-muted mb-4">Sei der Erste in {LANDKREIS_NAME}!</p>
+          <Link
+            href="/register?role=sitter"
+            className="inline-block text-sm font-bold hover:opacity-80 transition-opacity"
+            style={{ color: 'var(--accent-green)' }}
+          >
+            Als Sitter registrieren →
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {sitters.map((s) => {
+            const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles;
+            return (
               <SitterCard
                 key={s.id}
                 name={s.full_name}
-                ortschaft={s.ortschaft}
-                beschreibung={s.beschreibung ?? undefined}
-                fotoUrl={s.foto_url ?? undefined}
-                avgRating={s.avg_rating}
-                totalReviews={s.total_reviews}
-                leistungen={s.leistungen}
-                hatGarten={s.hat_garten}
-                kannMedikamente={s.kann_medikamente}
-                isDummy={s.is_dummy}
+                ortschaft={s.ort ?? s.ortschaft ?? ''}
+                beschreibung={s.bio ?? undefined}
+                fotoUrl={s.avatar_url ?? undefined}
+                avgRating={sp?.avg_rating ?? 0}
+                totalReviews={sp?.total_reviews ?? 0}
+                leistungen={getLeistungen(sp)}
+                hatGarten={sp?.hat_garten ?? false}
+                kannMedikamente={sp?.kann_medikamente ?? false}
+                isDummy={s.ist_beispiel ?? false}
               />
-            ))}
-      </div>
-
-      {useMock && (
-        <p className="text-xs text-muted text-center pt-2">
-          Beispieldaten – registriere Dich, um echte Sitter in Deiner Region zu sehen.
-        </p>
+            );
+          })}
+        </div>
       )}
     </div>
   )

@@ -1,3 +1,6 @@
+// Nicht mehr aktiv verwendet, dient als Vorlage und Referenz für leere Datenbankzustände.
+// LEISTUNGS_LABELS, LEISTUNGS_BADGE_CLASSES, LEISTUNGS_CHIPS, ORTSCHAFTEN werden noch importiert.
+
 export interface PostingMock {
   id: string;
   tier_name: string;

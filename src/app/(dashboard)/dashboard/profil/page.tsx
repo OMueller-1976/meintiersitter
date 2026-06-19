@@ -106,7 +106,7 @@ export default function ProfilPage() {
         setOrtschaft(p.ortschaft ?? '');
         setBio(p.bio ?? '');
 
-        if (p.role === 'sitter') {
+        if (p.role === 'sitter' || p.role === 'beide') {
           const { data: sp } = await supabase
             .from('sitter_profiles')
             .select('*')
@@ -206,7 +206,7 @@ export default function ProfilPage() {
     return <div className="p-8 text-gray-400">Lade Profil…</div>;
   }
 
-  const isSitter = profile?.role === 'sitter';
+  const isSitter = profile?.role === 'sitter' || profile?.role === 'beide';
 
   return (
     <div className="p-6 md:p-8 max-w-2xl">

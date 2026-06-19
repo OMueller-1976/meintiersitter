@@ -43,7 +43,8 @@ export default async function DashboardPage() {
     .eq('id', user.id)
     .single<Profile>();
 
-  const stats = profile?.role === 'sitter' ? getSitterStats() : getTierhalterStats();
+  const isSitter = profile?.role === 'sitter' || profile?.role === 'beide';
+  const stats = isSitter ? getSitterStats() : getTierhalterStats();
 
   return (
     <div className="p-6 md:p-8">
@@ -82,7 +83,7 @@ export default async function DashboardPage() {
         </h2>
         <p className="text-gray-500 text-sm max-w-sm mx-auto">
           Hier erscheinen bald Deine Matches, Nachrichten und{' '}
-          {profile?.role === 'sitter' ? 'Tierbetreuungs-Anfragen' : 'Sitter-Vorschläge'}.
+          {isSitter ? 'Tierbetreuungs-Anfragen' : 'Sitter-Vorschläge'}.
         </p>
       </div>
     </div>
