@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import LogoutButton from '@/components/auth/LogoutButton';
 
 interface PortalHeaderProps {
   user?: { email?: string; user_metadata?: { full_name?: string; role?: string } } | null;
@@ -130,24 +131,20 @@ export default function PortalHeader({ user }: PortalHeaderProps) {
                 >
                   Dashboard
                 </Link>
-                <form action="/auth/signout" method="post">
-                  <button
-                    type="submit"
-                    style={{
-                      width: '100%',
-                      textAlign: 'left',
-                      padding: '10px 14px',
-                      fontSize: 13,
-                      color: '#ef4444',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      borderTop: '1px solid #f1f5f9',
-                    }}
-                  >
-                    Abmelden
-                  </button>
-                </form>
+                <LogoutButton
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    padding: '10px 14px',
+                    fontSize: 13,
+                    color: '#ef4444',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    borderTop: '1px solid #f1f5f9',
+                    fontFamily: 'inherit',
+                  }}
+                />
               </div>
             )}
           </div>

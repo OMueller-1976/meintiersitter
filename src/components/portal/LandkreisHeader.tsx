@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 interface LandkreisHeaderProps {
   user?: User | null
@@ -100,16 +101,12 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
                     {label}
                   </Link>
                 ))}
-                <form action="/auth/signout" method="post">
-                  <button type="submit" style={{
-                    width: '100%', textAlign: 'left', padding: '10px 14px',
-                    fontSize: 13, color: '#f87171', background: 'none',
-                    border: 'none', cursor: 'pointer', borderTop: '1px solid rgba(255,255,255,0.1)',
-                    fontFamily: 'inherit',
-                  }}>
-                    Abmelden
-                  </button>
-                </form>
+                <LogoutButton style={{
+                  width: '100%', textAlign: 'left', padding: '10px 14px',
+                  fontSize: 13, color: '#f87171', background: 'none',
+                  border: 'none', cursor: 'pointer', borderTop: '1px solid rgba(255,255,255,0.1)',
+                  fontFamily: 'inherit',
+                }} />
               </div>
             )}
           </div>
