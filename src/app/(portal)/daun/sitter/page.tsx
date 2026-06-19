@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import SitterCard from '@/components/portal/SitterCard'
 import { getAktiveSitter } from '@/lib/queries/sitter'
+import { getMatchProzenteForTierhalter } from '@/lib/queries/matching'
 
 const BUNDESLAND = 'rheinland-pfalz'
 const LANDKREIS = 'daun'
@@ -60,7 +61,30 @@ export default async function SitterOverviewPage() {
     // Bei DB-Fehler trotzdem anzeigen
   }
 
+  // User laden für Kontakt-Button
+  let userId: string | null = null
+  let userRole: string | null = null
+  try {
+    const supabase = buildSupabase(cookieStore)
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      userId = user.id
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+      userRole = profile?.role ?? null
+    }
+  } catch { /* ignore */ }
+
   const sitters = await getAktiveSitter()
+
+  // Match-Prozente für Tierhalter berechnen
+  let matchProzente: Record<string, number> = {}
+  if (userId && (userRole === 'tierhalter' || userRole === 'beide') && sitters.length > 0) {
+    matchProzente = await getMatchProzenteForTierhalter(userId, sitters.map((s) => s.id))
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -99,6 +123,7 @@ export default async function SitterOverviewPage() {
             return (
               <SitterCard
                 key={s.id}
+                sitterId={s.id}
                 name={s.full_name}
                 ortschaft={s.ort ?? s.ortschaft ?? ''}
                 beschreibung={s.bio ?? undefined}
@@ -109,6 +134,9 @@ export default async function SitterOverviewPage() {
                 hatGarten={sp?.hat_garten ?? false}
                 kannMedikamente={sp?.kann_medikamente ?? false}
                 isDummy={s.ist_beispiel ?? false}
+                isLoggedIn={!!userId}
+                userRole={userRole ?? undefined}
+                matchProzent={matchProzente[s.id]}
               />
             );
           })}

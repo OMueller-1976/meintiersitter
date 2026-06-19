@@ -1,7 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data'
+import NachrichtModal from '@/components/dashboard/NachrichtModal'
+import { matchColor, matchLabel } from '@/lib/matching'
 
 const BADGE_STYLE: React.CSSProperties = {
   display: 'inline-flex',
@@ -18,6 +21,7 @@ const BADGE_STYLE: React.CSSProperties = {
 }
 
 interface SitterCardProps {
+  sitterId?: string
   name: string
   ortschaft: string
   beschreibung?: string
@@ -28,13 +32,20 @@ interface SitterCardProps {
   hatGarten?: boolean
   kannMedikamente?: boolean
   isDummy?: boolean
+  isLoggedIn?: boolean
+  userRole?: string
+  matchProzent?: number
 }
 
 export default function SitterCard({
+  sitterId,
   name, ortschaft, beschreibung, fotoUrl,
   avgRating, totalReviews, leistungen = [],
   hatGarten, kannMedikamente, isDummy,
+  isLoggedIn, userRole, matchProzent,
 }: SitterCardProps) {
+  const [modalOpen, setModalOpen] = useState(false)
+
   return (
     <div className="tile p-4 flex flex-col gap-3">
       <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
@@ -54,6 +65,18 @@ export default function SitterCard({
           <div className="text-xs text-secondary">⭐ {avgRating.toFixed(1)} ({totalReviews})</div>
         </div>
       </div>
+
+      {matchProzent !== undefined && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-bold" style={{ color: matchColor(matchProzent) }}>
+            {matchProzent}%
+          </span>
+          <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold text-slate-900"
+            style={{ background: 'rgba(245,158,11,0.15)', fontSize: 9 }}>
+            {matchLabel(matchProzent)}
+          </span>
+        </div>
+      )}
 
       {beschreibung && (
         <p className="text-xs text-secondary leading-relaxed line-clamp-3">{beschreibung}</p>
@@ -84,10 +107,38 @@ export default function SitterCard({
         </div>
       )}
 
-      <Link href="/register" className="text-xs font-bold hover:opacity-80 transition-opacity mt-auto"
-        style={{ color: 'var(--accent-green)' }}>
-        Profil ansehen →
-      </Link>
+      <div className="flex items-center gap-2 mt-auto">
+        <Link href="/daun/sitter" className="text-xs font-bold hover:opacity-80 transition-opacity"
+          style={{ color: 'var(--accent-green)' }}>
+          Profil ansehen →
+        </Link>
+        {sitterId && isLoggedIn && userRole !== 'sitter' && (
+          <button
+            onClick={() => setModalOpen(true)}
+            className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
+            style={{ background: 'var(--accent-green)', color: '#fff' }}
+          >
+            Kontakt
+          </button>
+        )}
+        {sitterId && !isLoggedIn && (
+          <Link href="/login"
+            className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
+            style={{ background: 'var(--accent-green)', color: '#fff' }}>
+            Kontakt
+          </Link>
+        )}
+      </div>
+
+      {sitterId && (
+        <NachrichtModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          richtung="tierhalter-an-sitter"
+          empfaengerName={name}
+          empfaengerId={sitterId}
+        />
+      )}
     </div>
   )
 }

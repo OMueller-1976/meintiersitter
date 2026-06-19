@@ -5,6 +5,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Link from 'next/link';
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data';
+import NachrichtModal from '@/components/dashboard/NachrichtModal';
+import { matchColor, matchLabel } from '@/lib/matching';
 
 // Typ passend zur getAktiveSitter-Query
 export type SitterRow = {
@@ -41,7 +43,8 @@ function getLeistungen(sp: SpEntry | null | undefined): string[] {
   return l;
 }
 
-function SitterCard({ s }: { s: SitterRow }) {
+function SitterCard({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number }) {
+  const [modalOpen, setModalOpen] = useState(false);
   const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles;
   const leistungen = getLeistungen(sp);
   const avgRating = sp?.avg_rating ?? 0;
@@ -75,6 +78,18 @@ function SitterCard({ s }: { s: SitterRow }) {
         </div>
       </div>
 
+      {matchProzent !== undefined && (
+        <div className="mb-2 flex items-center gap-1.5">
+          <span className="text-xs font-bold" style={{ color: matchColor(matchProzent) }}>
+            {matchProzent}%
+          </span>
+          <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold text-slate-900"
+            style={{ background: 'var(--accent-amber)', fontSize: 9 }}>
+            {matchLabel(matchProzent)}
+          </span>
+        </div>
+      )}
+
       {s.bio && (
         <p className="text-xs text-secondary leading-relaxed mb-3 line-clamp-3 flex-1">{s.bio}</p>
       )}
@@ -105,15 +120,41 @@ function SitterCard({ s }: { s: SitterRow }) {
         )}
       </div>
 
-      <Link href="/register" className="text-xs font-bold hover:opacity-80 transition-opacity"
-        style={{ color: 'var(--accent-green)' }}>
-        Profil ansehen →
-      </Link>
+      <div className="flex items-center gap-2 mt-auto">
+        <Link href="/daun/sitter" className="text-xs font-bold hover:opacity-80 transition-opacity"
+          style={{ color: 'var(--accent-green)' }}>
+          Profil ansehen →
+        </Link>
+        {isLoggedIn && userRole !== 'sitter' && (
+          <button
+            onClick={() => setModalOpen(true)}
+            className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
+            style={{ background: 'var(--accent-green)', color: '#fff' }}
+          >
+            Kontakt
+          </button>
+        )}
+        {!isLoggedIn && (
+          <Link href="/login"
+            className="text-xs font-bold px-2.5 py-1 rounded-full transition-opacity hover:opacity-80 ml-auto"
+            style={{ background: 'var(--accent-green)', color: '#fff' }}>
+            Kontakt
+          </Link>
+        )}
+      </div>
+
+      <NachrichtModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        richtung="tierhalter-an-sitter"
+        empfaengerName={s.full_name}
+        empfaengerId={s.id}
+      />
     </div>
   );
 }
 
-function CarouselView({ sitter }: { sitter: SitterRow[] }) {
+function CarouselView({ sitter, isLoggedIn, userRole, matchProzente }: { sitter: SitterRow[]; isLoggedIn?: boolean; userRole?: string; matchProzente?: Record<string, number> }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 5000, stopOnInteraction: true })]
@@ -153,7 +194,7 @@ function CarouselView({ sitter }: { sitter: SitterRow[] }) {
         <div className="flex gap-3">
           {sitter.map((s) => (
             <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-              <SitterCard s={s} />
+              <SitterCard s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
             </div>
           ))}
         </div>
@@ -183,9 +224,12 @@ function CarouselView({ sitter }: { sitter: SitterRow[] }) {
 
 interface Props {
   sitter: SitterRow[]
+  isLoggedIn?: boolean
+  userRole?: string
+  matchProzente?: Record<string, number>
 }
 
-export default function SitterCarousel({ sitter }: Props) {
+export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProzente }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -208,11 +252,11 @@ export default function SitterCarousel({ sitter }: Props) {
           </Link>
         </div>
       ) : sitter.length >= 3 ? (
-        <CarouselView sitter={sitter} />
+        <CarouselView sitter={sitter} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} />
       ) : (
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${sitter.length}, 1fr)` }}>
           {sitter.map((s) => (
-            <SitterCard key={s.id} s={s} />
+            <SitterCard key={s.id} s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
           ))}
         </div>
       )}

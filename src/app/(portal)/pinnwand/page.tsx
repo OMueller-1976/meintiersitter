@@ -7,6 +7,10 @@ import {
   ORTSCHAFTEN,
 } from '@/lib/mock-data';
 import { getOffenePostings } from '@/lib/queries/postings';
+import { createClient } from '@/lib/supabase/server';
+import { getMatchProzenteForSitter } from '@/lib/queries/matching';
+import { matchColor, matchLabel } from '@/lib/matching';
+import PinnwandBewerbenButton from './PinnwandBewerbenButton';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Pinnwand – MeinTiersitter' };
@@ -33,6 +37,42 @@ export default async function PinnwandPage({
     ort: filterOrt || undefined,
     leistung: filterLeistung || undefined,
   });
+
+  // User-Auth + Rolle für Bewerben-Button
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  let userRole: string | null = null;
+  let meineBewerbungIds: Set<string> = new Set();
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+    userRole = profile?.role ?? null;
+
+    // Eigene Bewerbungen laden (für hasBewerbung-Flag)
+    if (userRole === 'sitter' || userRole === 'beide') {
+      const postingIds = postings.map((p) => p.id);
+      if (postingIds.length > 0) {
+        const { data: bewerbungen } = await supabase
+          .from('bewerbungen')
+          .select('posting_id')
+          .eq('sitter_id', user.id)
+          .in('posting_id', postingIds);
+        meineBewerbungIds = new Set((bewerbungen ?? []).map((b: { posting_id: string }) => b.posting_id));
+      }
+    }
+  }
+
+  const isSitter = userRole === 'sitter' || userRole === 'beide';
+
+  // Match-Prozente für Sitter berechnen
+  let matchProzente: Record<string, number> = {};
+  if (user && isSitter && postings.length > 0) {
+    matchProzente = await getMatchProzenteForSitter(user.id, postings);
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -153,6 +193,18 @@ export default async function PinnwandPage({
                         </span>
                       </div>
 
+                      {isSitter && matchProzente[p.id] !== undefined && (
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <span className="text-xs font-bold" style={{ color: matchColor(matchProzente[p.id]) }}>
+                            {matchProzente[p.id]}%
+                          </span>
+                          <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold text-slate-900"
+                            style={{ background: '#FEF3E2', fontSize: 9 }}>
+                            {matchLabel(matchProzente[p.id])}
+                          </span>
+                        </div>
+                      )}
+
                       <div className="border-t border-[#EEF2F8] my-3" />
 
                       {p.nachricht && (
@@ -188,12 +240,20 @@ export default async function PinnwandPage({
                           </div>
                           <span className="text-xs text-[#4E779F] truncate">{besitzerName}</span>
                         </div>
-                        <Link
-                          href="/register"
-                          className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
-                        >
-                          Jetzt bewerben →
-                        </Link>
+                        {isSitter ? (
+                          <PinnwandBewerbenButton
+                            postingId={p.id}
+                            isLoggedIn={true}
+                            hasBewerbung={meineBewerbungIds.has(p.id)}
+                          />
+                        ) : (
+                          <Link
+                            href={user ? '/dashboard/postings/neu' : '/login'}
+                            className="bg-[#2E4A6B] text-white text-xs font-medium px-3 py-1.5 rounded-xl hover:bg-[#3A5A80] transition-colors flex-shrink-0"
+                          >
+                            {user ? 'Eigenes Gesuch →' : 'Anmelden →'}
+                          </Link>
+                        )}
                       </div>
                     </div>
                   );
@@ -209,7 +269,7 @@ export default async function PinnwandPage({
               Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Kreis Daun.
             </p>
             <Link
-              href="/register"
+              href={user ? '/dashboard/postings/neu' : '/register'}
               className="inline-block bg-[#F4A261] text-white font-semibold px-7 py-3 rounded-xl hover:bg-[#E07B30] transition-colors"
             >
               Jetzt Gesuch aufgeben →

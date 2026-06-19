@@ -5,6 +5,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import Link from 'next/link';
 import { LEISTUNGS_LABELS } from '@/lib/mock-data';
+import NachrichtModal from '@/components/dashboard/NachrichtModal';
+import { matchColor, matchLabel } from '@/lib/matching';
 
 // Typ passend zur getOffenePostings-Query
 export type PostingRow = {
@@ -58,9 +60,13 @@ const TIERART_EMOJI: Record<string, string> = {
 
 interface Props {
   postings: PostingRow[]
+  isLoggedIn?: boolean
+  userRole?: string
+  matchProzente?: Record<string, number>
 }
 
-function PostingCard({ p }: { p: PostingRow }) {
+function PostingCard({ p, isLoggedIn, userRole, matchProzent }: { p: PostingRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number }) {
+  const [modalOpen, setModalOpen] = useState(false);
   const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles;
   const pr = Array.isArray(p.profiles) ? p.profiles[0] : p.profiles;
   const tierName = tp?.name ?? 'Unbekanntes Tier';
@@ -69,6 +75,8 @@ function PostingCard({ p }: { p: PostingRow }) {
   const tierEmoji = TIERART_EMOJI[tp?.tierart ?? ''] ?? '🐾';
   const besitzerName = pr?.full_name ?? 'Tierhalter';
   const avatarInitial = besitzerName.charAt(0).toUpperCase();
+
+  const kannBewerben = isLoggedIn && (userRole === 'sitter' || userRole === 'beide');
 
   return (
     <div className="tile-sm p-4 h-full flex flex-col">
@@ -100,6 +108,18 @@ function PostingCard({ p }: { p: PostingRow }) {
         </span>
       </div>
 
+      {matchProzent !== undefined && (
+        <div className="mb-2 flex items-center gap-1.5">
+          <span className="text-xs font-bold" style={{ color: matchColor(matchProzent) }}>
+            {matchProzent}%
+          </span>
+          <span className="text-xs px-1.5 py-0.5 rounded-full font-semibold text-slate-900"
+            style={{ background: 'var(--accent-amber)', fontSize: 9 }}>
+            {matchLabel(matchProzent)}
+          </span>
+        </div>
+      )}
+
       {p.nachricht && (
         <p className="text-xs text-secondary leading-relaxed mb-3 line-clamp-2 flex-1">{p.nachricht}</p>
       )}
@@ -121,16 +141,36 @@ function PostingCard({ p }: { p: PostingRow }) {
           </div>
           <span className="text-xs text-muted truncate">{besitzerName}</span>
         </div>
-        <Link href="/register" className="text-xs font-bold hover:opacity-80 transition-opacity flex-shrink-0"
-          style={{ color: 'var(--accent-green)' }}>
-          Bewerben →
-        </Link>
+        {kannBewerben ? (
+          <button
+            onClick={() => setModalOpen(true)}
+            className="text-xs font-bold hover:opacity-80 transition-opacity flex-shrink-0"
+            style={{ color: 'var(--accent-green)' }}
+          >
+            Bewerben →
+          </button>
+        ) : !isLoggedIn ? (
+          <Link href="/login" className="text-xs font-bold hover:opacity-80 transition-opacity flex-shrink-0"
+            style={{ color: 'var(--accent-green)' }}>
+            Bewerben →
+          </Link>
+        ) : null}
       </div>
+
+      <NachrichtModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        richtung="sitter-an-tierhalter"
+        empfaengerName={besitzerName}
+        empfaengerId={pr?.id ?? ''}
+        tierName={tierName}
+        postingId={p.id}
+      />
     </div>
   );
 }
 
-function CarouselView({ postings }: { postings: PostingRow[] }) {
+function CarouselView({ postings, isLoggedIn, userRole, matchProzente }: { postings: PostingRow[]; isLoggedIn?: boolean; userRole?: string; matchProzente?: Record<string, number> }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 4000, stopOnInteraction: true })]
@@ -170,7 +210,7 @@ function CarouselView({ postings }: { postings: PostingRow[] }) {
         <div className="flex gap-3">
           {postings.map((p) => (
             <div key={p.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-              <PostingCard p={p} />
+              <PostingCard p={p} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[p.id]} />
             </div>
           ))}
         </div>
@@ -198,7 +238,7 @@ function CarouselView({ postings }: { postings: PostingRow[] }) {
   );
 }
 
-export default function GesucheCarousel({ postings }: Props) {
+export default function GesucheCarousel({ postings, isLoggedIn, userRole, matchProzente }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -227,11 +267,11 @@ export default function GesucheCarousel({ postings }: Props) {
           </Link>
         </div>
       ) : postings.length >= 3 ? (
-        <CarouselView postings={postings} />
+        <CarouselView postings={postings} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} />
       ) : (
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${postings.length}, 1fr)` }}>
           {postings.map((p) => (
-            <PostingCard key={p.id} p={p} />
+            <PostingCard key={p.id} p={p} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[p.id]} />
           ))}
         </div>
       )}
