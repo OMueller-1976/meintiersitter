@@ -94,12 +94,12 @@ export default function MatchKacheln({
           </Link>
         </div>
       ) : (
-        <KachelCard
-          titel={isSitter ? 'Keine Gesuche' : 'Kein Match'}
-          text={isSitter ? 'Noch keine offenen Gesuche in Deiner Region' : 'Noch keine Sitter registriert'}
-          buttonLabel={isSitter ? 'Zur Pinnwand →' : 'Sitter suchen →'}
-          href={isSitter ? '/pinnwand' : '/daun/sitter'}
-        />
+        <div className="tile-sm p-3 flex flex-col relative overflow-hidden">
+          <div className="font-semibold text-[#1E3249] text-sm mb-1 leading-tight">Aktuell noch kein Match</div>
+          <p className="text-xs text-secondary leading-snug flex-1">
+            Sobald ein passendes Gesuch oder ein passender Sitter gefunden wird, erscheint er hier.
+          </p>
+        </div>
       )}
 
       {/* Kachel 2: Eigenes Gesuch (Tierhalter) / Verfügbarkeit (Sitter) */}

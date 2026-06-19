@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data'
 import { matchColor, matchLabel } from '@/lib/matching'
@@ -43,6 +44,9 @@ export default function SitterDetailModal({
   onClose,
   onKontakt,
 }: Props) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
   const initial = name.charAt(0).toUpperCase()
   const kannKontakt = currentUserRole === 'tierhalter' || currentUserRole === 'beide'
 
@@ -52,7 +56,9 @@ export default function SitterDetailModal({
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  return (
+  if (!mounted) return null
+
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
@@ -178,6 +184,7 @@ export default function SitterDetailModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

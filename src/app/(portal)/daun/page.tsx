@@ -127,7 +127,7 @@ export default async function DaunPage() {
           label: nameKurz,
           ortLabel: match.sitterOrt ? `aus ${match.sitterOrt}` : '',
           prozent: match.prozent,
-          href: `/daun/sitter/${match.sitterId}`,
+          href: `/daun/sitter`,
           linkLabel: 'Match ansehen →',
         }
       }
@@ -153,7 +153,7 @@ export default async function DaunPage() {
           label: match.tierName,
           ortLabel: match.postingOrt ? `aus ${match.postingOrt}` : '',
           prozent: match.prozent,
-          href: `/pinnwand/${match.postingId}`,
+          href: `/pinnwand`,
           linkLabel: 'Gesuch ansehen →',
         }
       }

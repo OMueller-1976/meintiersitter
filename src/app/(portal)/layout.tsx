@@ -20,7 +20,7 @@ export default async function PortalLayout({ children }: { children: React.React
 
   return (
     <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      <LandkreisHeader user={user} bundesland="rheinland-pfalz" landkreis="daun" />
+      <LandkreisHeader user={user} bundesland="rheinland-pfalz" landkreis="vulkaneifel" />
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         <div className="portal-sidebar-left">

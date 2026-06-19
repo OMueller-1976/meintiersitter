@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { LEISTUNGS_LABELS } from '@/lib/mock-data'
 import { matchColor, matchLabel } from '@/lib/matching'
@@ -20,6 +21,9 @@ function formatDate(d: string): string {
 }
 
 export default function GesuchDetailModal({ posting: p, matchProzent, currentUserRole, onClose, onBewerben }: Props) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
   const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles
   const pr = Array.isArray(p.profiles) ? p.profiles[0] : p.profiles
 
@@ -42,7 +46,9 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  return (
+  if (!mounted) return null
+
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
@@ -181,6 +187,7 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
