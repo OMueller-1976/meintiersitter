@@ -40,7 +40,7 @@ export default async function DashboardLayout({
         .from('matches')
         .select('id')
         .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
-        .in('status', ['akzeptiert', 'abgeschlossen'])
+        .in('status', ['bestaetigt', 'abgeschlossen'])
         .then((r) => (r.data ?? []).map((m: { id: string }) => m.id)))
     );
 

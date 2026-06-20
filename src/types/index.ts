@@ -21,7 +21,7 @@ export type VerfuegbarkeitTyp = 'einmalig' | 'wiederkehrend' | 'spontan';
 
 export type MatchStatus =
   | 'angefragt'
-  | 'akzeptiert'
+  | 'bestaetigt'
   | 'abgelehnt'
   | 'abgebrochen'
   | 'abgeschlossen';

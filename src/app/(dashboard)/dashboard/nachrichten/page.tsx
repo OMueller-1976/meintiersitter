@@ -89,7 +89,7 @@ export default function NachrichtenPage() {
           tier:tier_profiles(name, tierart)
         `)
         .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
-        .in('status', ['angefragt', 'akzeptiert', 'abgeschlossen'])
+        .in('status', ['angefragt', 'bestaetigt', 'abgeschlossen'])
         .order('updated_at', { ascending: false });
 
       if (matchData) {
@@ -341,18 +341,18 @@ export default function NachrichtenPage() {
                   className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                     activeMatch.status === 'angefragt'
                       ? 'bg-yellow-100 text-yellow-700'
-                      : activeMatch.status === 'akzeptiert'
+                      : activeMatch.status === 'bestaetigt'
                       ? 'bg-green-100 text-green-700'
                       : 'bg-gray-100 text-gray-500'
                   }`}
                 >
                   {activeMatch.status === 'angefragt' ? 'Ausstehend' :
-                   activeMatch.status === 'akzeptiert' ? 'Aktiv' : 'Abgeschlossen'}
+                   activeMatch.status === 'bestaetigt' ? 'Aktiv' : 'Abgeschlossen'}
                 </span>
                 {activeMatch.status === 'angefragt' && (userId === activeMatch.sitter_id) && (
                   <KontaktanfrageButtons matchId={activeMatch.id} />
                 )}
-                {activeMatch.status === 'akzeptiert' && userId === activeMatch.tierhalter_id && (
+                {activeMatch.status === 'bestaetigt' && userId === activeMatch.tierhalter_id && (
                   <button
                     onClick={async () => {
                       const result = await abschliessenMatch(activeMatch.id);
@@ -400,7 +400,7 @@ export default function NachrichtenPage() {
                     ? 'Nimm die Anfrage an, um zu antworten.'
                     : 'Warte auf Antwort des Sitters…'}
                 </p>
-              ) : activeMatch.status !== 'akzeptiert' && activeMatch.status !== 'abgeschlossen' ? (
+              ) : activeMatch.status !== 'bestaetigt' && activeMatch.status !== 'abgeschlossen' ? (
                 <p className="text-sm text-gray-400 text-center py-1">Chat nicht verfügbar</p>
               ) : activeMatch.status === 'abgeschlossen' ? (
                 <p className="text-sm text-gray-400 text-center py-1">Betreuung abgeschlossen</p>

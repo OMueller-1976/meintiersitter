@@ -155,7 +155,7 @@ export async function akzeptiereBewerbung(bewerbungId: string) {
       tierhalter_id: user.id,
       sitter_id: bewerbung.sitter_id,
       tier_id: posting.tier_id ?? null,
-      status: 'akzeptiert',
+      status: 'bestaetigt',
       leistung: posting.leistung,
       datum_von: posting.datum_von,
       datum_bis: posting.datum_bis,
@@ -213,7 +213,7 @@ export async function akzeptiereKontaktanfrage(matchId: string) {
 
   const { error } = await supabase
     .from('matches')
-    .update({ status: 'akzeptiert' })
+    .update({ status: 'bestaetigt' })
     .eq('id', matchId)
     .eq('sitter_id', user.id)
     .eq('status', 'angefragt');
