@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import BewertungsModal from '@/components/ui/BewertungsModal';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function BewertungenClient({ matchId, bewertetId, bewertetName }: Props) {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -25,7 +27,10 @@ export default function BewertungenClient({ matchId, bewertetId, bewertetName }:
           matchId={matchId}
           bewertetId={bewertetId}
           bewertetName={bewertetName}
-          onClose={() => setShowModal(false)}
+          onClose={(bewertet) => {
+            setShowModal(false);
+            if (bewertet) router.refresh();
+          }}
         />
       )}
     </>
