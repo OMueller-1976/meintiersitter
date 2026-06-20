@@ -18,6 +18,7 @@ type MatchRow = Match & {
   tier: Pick<TierProfile, 'name' | 'tierart'> | null;
   lastMsg?: string;
   unread?: number;
+  bereitsBewertet?: boolean;
 };
 
 type NachrichtRow = Nachricht & {
@@ -107,12 +108,22 @@ export default function NachrichtenPage() {
               .eq('match_id', m.id)
               .neq('sender_id', user.id)
               .eq('gelesen', false);
+            let bereitsBewertet = false;
+            if (m.status === 'abgeschlossen') {
+              const { count: bewCount } = await supabase
+                .from('bewertungen')
+                .select('id', { count: 'exact', head: true })
+                .eq('match_id', m.id)
+                .eq('bewerter_id', user.id);
+              bereitsBewertet = (bewCount ?? 0) > 0;
+            }
             return {
               ...m,
               lastMsg: lastMsgs?.[0]?.inhalt?.startsWith('__journal__')
                 ? '📸 Journal-Update'
                 : lastMsgs?.[0]?.inhalt ?? '',
               unread: count ?? 0,
+              bereitsBewertet,
             };
           })
         );
@@ -404,13 +415,16 @@ export default function NachrichtenPage() {
                   }
                   return null;
                 })()}
-                {activeMatch.status === 'abgeschlossen' && (
+                {activeMatch.status === 'abgeschlossen' && !activeMatch.bereitsBewertet && (
                   <button
                     onClick={() => setShowBewertungsModal(true)}
                     className="text-xs bg-[#F4A261] text-white px-3 py-1.5 rounded-xl hover:bg-[#e08a44] transition-colors"
                   >
                     Jetzt bewerten ⭐
                   </button>
+                )}
+                {activeMatch.status === 'abgeschlossen' && activeMatch.bereitsBewertet && (
+                  <span className="text-xs text-gray-400">Bereits bewertet ✓</span>
                 )}
               </div>
             </div>
@@ -483,7 +497,17 @@ export default function NachrichtenPage() {
           matchId={activeMatch.id}
           bewertetId={gegenueberOfActive.id}
           bewertetName={gegenueberOfActive.full_name ?? 'Unbekannt'}
-          onClose={() => setShowBewertungsModal(false)}
+          onClose={(bewertet) => {
+            setShowBewertungsModal(false);
+            if (bewertet) {
+              setActiveMatch((prev) => prev ? { ...prev, bereitsBewertet: true } : prev);
+              setMatches((prev) =>
+                prev.map((m) =>
+                  m.id === activeMatch.id ? { ...m, bereitsBewertet: true } : m
+                )
+              );
+            }
+          }}
         />
       )}
     </div>

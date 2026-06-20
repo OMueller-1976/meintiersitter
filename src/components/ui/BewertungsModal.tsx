@@ -17,7 +17,7 @@ interface Props {
   matchId: string;
   bewertetId: string;
   bewertetName: string;
-  onClose: () => void;
+  onClose: (bewertet?: boolean) => void;
 }
 
 export default function BewertungsModal({ matchId, bewertetId, bewertetName, onClose }: Props) {
@@ -34,7 +34,7 @@ export default function BewertungsModal({ matchId, bewertetId, bewertetName, onC
       toast.error(result.error);
     } else {
       toast.success('Bewertung gespeichert!');
-      onClose();
+      onClose(true);
     }
   };
 
@@ -80,7 +80,7 @@ export default function BewertungsModal({ matchId, bewertetId, bewertetName, onC
             {loading ? 'Wird gespeichert…' : 'Bewertung absenden'}
           </button>
           <button
-            onClick={onClose}
+            onClick={() => onClose()}
             className="border border-gray-200 text-gray-600 px-5 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
           >
             Später
