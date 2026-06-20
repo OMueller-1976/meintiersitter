@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 import { revalidatePath } from 'next/cache';
 
-function makeClient() {
-  const cookieStore = cookies();
+async function makeClient() {
+  const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -26,7 +26,7 @@ export async function sendNachricht(
   matchId: string,
   inhalt: string
 ): Promise<{ error?: string }> {
-  const supabase = makeClient();
+  const supabase = await makeClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Nicht angemeldet' };
 
@@ -55,7 +55,7 @@ export async function sendNachricht(
 }
 
 export async function markAsRead(matchId: string): Promise<void> {
-  const supabase = makeClient();
+  const supabase = await makeClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 
@@ -67,22 +67,49 @@ export async function markAsRead(matchId: string): Promise<void> {
     .eq('gelesen', false);
 }
 
-export async function abschliessenMatch(matchId: string): Promise<{ error?: string }> {
-  const supabase = makeClient();
+export async function abschliessenMatch(matchId: string): Promise<{ error?: string; nowAbgeschlossen?: boolean }> {
+  const supabase = await makeClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Nicht angemeldet' };
 
+  // Prüfen ob User Beteiligter ist und aktuelle Flag-Werte holen
+  const { data: match } = await supabase
+    .from('matches')
+    .select('id, tierhalter_id, sitter_id, tierhalter_bestaetigt_abschluss, sitter_bestaetigt_abschluss')
+    .eq('id', matchId)
+    .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
+    .eq('status', 'bestaetigt')
+    .single();
+
+  if (!match) return { error: 'Match nicht gefunden oder kein Zugriff' };
+
+  const isTierhalter = match.tierhalter_id === user.id;
+  const flagUpdate = isTierhalter
+    ? { tierhalter_bestaetigt_abschluss: true }
+    : { sitter_bestaetigt_abschluss: true };
+
   const { error } = await supabase
     .from('matches')
-    .update({ status: 'abgeschlossen' })
-    .eq('id', matchId)
-    .eq('tierhalter_id', user.id);
+    .update(flagUpdate)
+    .eq('id', matchId);
 
   if (error) return { error: error.message };
 
+  // Prüfen ob jetzt beide Seiten bestätigt haben
+  const neuesTierhalterFlag = isTierhalter ? true : match.tierhalter_bestaetigt_abschluss;
+  const neuesSitterFlag = isTierhalter ? match.sitter_bestaetigt_abschluss : true;
+  const beideBestaetigt = neuesTierhalterFlag && neuesSitterFlag;
+
+  if (beideBestaetigt) {
+    await supabase
+      .from('matches')
+      .update({ status: 'abgeschlossen' })
+      .eq('id', matchId);
+  }
+
   revalidatePath('/dashboard/nachrichten');
   revalidatePath('/dashboard/bewertungen');
-  return {};
+  return { nowAbgeschlossen: beideBestaetigt };
 }
 
 export async function shareJournalUpdate(
@@ -90,7 +117,7 @@ export async function shareJournalUpdate(
   fotoUrl: string | null,
   nachricht: string
 ): Promise<{ error?: string }> {
-  const supabase = makeClient();
+  const supabase = await makeClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Nicht angemeldet' };
 
@@ -132,7 +159,7 @@ export async function createBewertung(
   sterne: number,
   kommentar: string | null
 ): Promise<{ error?: string }> {
-  const supabase = makeClient();
+  const supabase = await makeClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Nicht angemeldet' };
 

@@ -229,6 +229,8 @@ export interface Match {
   uhrzeit_bis: string | null;  // HH:MM
   leistung: Leistung | null;
   nachricht: string | null;
+  tierhalter_bestaetigt_abschluss: boolean;
+  sitter_bestaetigt_abschluss: boolean;
   created_at: string;
   updated_at: string;
 }

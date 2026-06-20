@@ -352,26 +352,58 @@ export default function NachrichtenPage() {
                 {activeMatch.status === 'angefragt' && (userId === activeMatch.sitter_id) && (
                   <KontaktanfrageButtons matchId={activeMatch.id} />
                 )}
-                {activeMatch.status === 'bestaetigt' && userId === activeMatch.tierhalter_id && (
-                  <button
-                    onClick={async () => {
-                      const result = await abschliessenMatch(activeMatch.id);
-                      if (result.error) toast.error(result.error);
-                      else {
-                        setActiveMatch({ ...activeMatch, status: 'abgeschlossen' });
-                        setMatches((prev) =>
-                          prev.map((m) =>
-                            m.id === activeMatch.id ? { ...m, status: 'abgeschlossen' } : m
-                          )
-                        );
-                        toast.success('Betreuung abgeschlossen!');
-                      }
-                    }}
-                    className="text-xs border border-[#2D6A4F] text-[#2D6A4F] px-3 py-1.5 rounded-xl hover:bg-green-50 transition-colors"
-                  >
-                    Abschließen
-                  </button>
-                )}
+                {activeMatch.status === 'bestaetigt' && (() => {
+                  const ichBinTierhalter = userId === activeMatch.tierhalter_id;
+                  const ichBinSitter = userId === activeMatch.sitter_id;
+                  const meinFlag = ichBinTierhalter
+                    ? activeMatch.tierhalter_bestaetigt_abschluss
+                    : activeMatch.sitter_bestaetigt_abschluss;
+                  const gegenparteiName = ichBinTierhalter
+                    ? (activeMatch.sitter?.full_name ?? 'dem Sitter')
+                    : (activeMatch.tierhalter?.full_name ?? 'dem Tierhalter');
+                  if ((ichBinTierhalter || ichBinSitter) && !meinFlag) {
+                    return (
+                      <button
+                        onClick={async () => {
+                          const result = await abschliessenMatch(activeMatch.id);
+                          if (result.error) {
+                            toast.error(result.error);
+                          } else if (result.nowAbgeschlossen) {
+                            setActiveMatch({ ...activeMatch, status: 'abgeschlossen' });
+                            setMatches((prev) =>
+                              prev.map((m) =>
+                                m.id === activeMatch.id ? { ...m, status: 'abgeschlossen' } : m
+                              )
+                            );
+                            toast.success('Betreuung abgeschlossen!');
+                          } else {
+                            const updatedFlag = ichBinTierhalter
+                              ? { tierhalter_bestaetigt_abschluss: true }
+                              : { sitter_bestaetigt_abschluss: true };
+                            setActiveMatch({ ...activeMatch, ...updatedFlag });
+                            setMatches((prev) =>
+                              prev.map((m) =>
+                                m.id === activeMatch.id ? { ...m, ...updatedFlag } : m
+                              )
+                            );
+                            toast.success('Bestätigt — warte auf die andere Seite.');
+                          }
+                        }}
+                        className="text-xs border border-[#2D6A4F] text-[#2D6A4F] px-3 py-1.5 rounded-xl hover:bg-green-50 transition-colors"
+                      >
+                        Abschließen
+                      </button>
+                    );
+                  }
+                  if ((ichBinTierhalter || ichBinSitter) && meinFlag) {
+                    return (
+                      <span className="text-xs text-gray-400 px-2">
+                        Du hast bestätigt — warte auf {gegenparteiName}
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
                 {activeMatch.status === 'abgeschlossen' && (
                   <button
                     onClick={() => setShowBewertungsModal(true)}
