@@ -116,14 +116,13 @@ export default function SitterCard({
       )}
 
       <div className="flex items-center gap-2 mt-auto">
-        <Link
-          href="/daun/sitter"
+        <button
+          onClick={(e) => { e.stopPropagation(); setZeigeDetail(true) }}
           className="text-xs font-bold hover:opacity-80 transition-opacity"
-          style={{ color: 'var(--accent-green)' }}
-          onClick={(e) => e.stopPropagation()}
+          style={{ color: 'var(--accent-green)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
         >
           Profil ansehen →
-        </Link>
+        </button>
         {sitterId && isLoggedIn && userRole !== 'sitter' && (
           <button
             onClick={(e) => { e.stopPropagation(); setZeigeKontakt(true) }}
