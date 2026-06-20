@@ -53,7 +53,7 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto flex flex-col">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto flex flex-col" onClick={(e) => e.stopPropagation()}>
 
         {/* Foto-Galerie */}
         <div className="relative flex-shrink-0">
@@ -96,7 +96,7 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
 
           {/* Schließen-Button */}
           <button
-            onClick={onClose}
+            onClick={(e) => { e.stopPropagation(); onClose() }}
             className="absolute top-3 right-3 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors text-lg leading-none"
             style={matchProzent !== undefined ? { top: '3.5rem' } : undefined}
             aria-label="Schließen"

@@ -63,7 +63,7 @@ export default function SitterDetailModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto flex flex-col">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto flex flex-col" onClick={(e) => e.stopPropagation()}>
 
         {/* Header mit Avatar */}
         <div className="relative bg-[#EEF2F8] rounded-t-2xl px-5 pt-8 pb-5 flex flex-col items-center text-center">
@@ -99,7 +99,7 @@ export default function SitterDetailModal({
           )}
 
           <button
-            onClick={onClose}
+            onClick={(e) => { e.stopPropagation(); onClose() }}
             className="absolute top-3 right-3 w-8 h-8 bg-black/20 text-[#1E3249] rounded-full flex items-center justify-center hover:bg-black/30 transition-colors text-lg leading-none"
             aria-label="Schließen"
           >
