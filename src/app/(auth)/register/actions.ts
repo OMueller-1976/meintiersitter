@@ -65,5 +65,13 @@ export async function registerAction(
   if (authError) return { error: authError.message };
   if (!authData.user) return { error: 'Registrierung fehlgeschlagen. Bitte erneut versuchen.' };
 
+  // Supabase gibt bei bereits bestätigter E-Mail keinen Error zurück (Sicherheitsverhalten),
+  // aber identities ist leer — so erkennen wir stille Doppel-Registrierungen.
+  if (authData.user.identities && authData.user.identities.length === 0) {
+    return {
+      error: 'Diese E-Mail-Adresse ist bereits registriert. Bitte melde Dich an oder setze Dein Passwort zurück, falls Du es vergessen hast.',
+    };
+  }
+
   return { success: true, email: data.email };
 }

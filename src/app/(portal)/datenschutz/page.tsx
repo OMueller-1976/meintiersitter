@@ -25,7 +25,7 @@ export default function DatenschutzPage() {
           <p className="text-[#2E4A6B] leading-relaxed">
             <strong>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br />
             Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber: Markus
-            Müller, OneTitel – Digital &amp; Business Solutions, tiersitter@onetitel.de
+            Müller, OneTitel – Digital &amp; Business Solutions, kontakt@tiersitti.de
           </p>
 
           <div className="border-t border-[#C8D8EC] my-6" />
@@ -64,7 +64,7 @@ export default function DatenschutzPage() {
           <p className="text-[#2E4A6B] leading-relaxed">
             Markus Müller<br />
             OneTitel – Digital &amp; Business Solutions<br />
-            E-Mail: tiersitter@onetitel.de
+            E-Mail: kontakt@tiersitti.de
           </p>
           <p className="text-[#2E4A6B] leading-relaxed mt-4">
             Sie haben das Recht, jederzeit Auskunft über Herkunft, Empfänger und Zweck Ihrer
@@ -154,7 +154,7 @@ export default function DatenschutzPage() {
             ))}
           </ul>
           <p className="text-[#2E4A6B] leading-relaxed mt-4">
-            Zur Ausübung Ihrer Rechte wenden Sie sich an: tiersitter@onetitel.de
+            Zur Ausübung Ihrer Rechte wenden Sie sich an: kontakt@tiersitti.de
           </p>
 
           <div className="border-t border-[#C8D8EC] my-6" />

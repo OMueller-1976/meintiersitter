@@ -98,6 +98,7 @@ export default function OnboardingWizard() {
   const [registered, setRegistered] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState('')
   const [resending, setResending] = useState(false)
+  const [doppelRegistrierung, setDoppelRegistrierung] = useState(false)
 
   const steps = useMemo<Step[]>(() => {
     const base: Step[] = ['rolle', 'account', 'adresse']
@@ -226,7 +227,11 @@ export default function OnboardingWizard() {
       })
 
       if (result && 'error' in result) {
-        toast.error(result.error)
+        if (result.error.includes('bereits registriert')) {
+          setDoppelRegistrierung(true)
+        } else {
+          toast.error(result.error)
+        }
       } else if (result && 'success' in result) {
         setRegisteredEmail(result.email)
         setRegistered(true)
@@ -359,6 +364,13 @@ export default function OnboardingWizard() {
             >
               Weiter →
             </button>
+          ) : doppelRegistrierung ? (
+            <div className="text-right">
+              <p className="text-sm text-red-600 font-medium mb-1">Diese E-Mail ist bereits registriert.</p>
+              <Link href="/login" className="text-sm font-bold text-[#2E4A6B] hover:underline">
+                → Jetzt anmelden
+              </Link>
+            </div>
           ) : (
             <button
               onClick={handleSubmit}

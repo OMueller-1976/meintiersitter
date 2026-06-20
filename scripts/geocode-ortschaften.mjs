@@ -24,7 +24,7 @@ const ORTSCHAFTEN = [
   'Kelberg', 'Mosbruch', 'Kolverath', 'Gunderath',
 ];
 
-const USER_AGENT = 'Tiersitti/1.0 (tiersitter@onetitel.de)';
+const USER_AGENT = 'Tiersitti/1.0 (kontakt@tiersitti.de)';
 const DELAY_MS = 1100;
 
 function sleep(ms) {

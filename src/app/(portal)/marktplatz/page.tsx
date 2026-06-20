@@ -91,8 +91,8 @@ export default async function MarktplatzPage() {
         <p className="text-xs text-[#4E779F] leading-relaxed">
           Wir bemühen uns um aktuelle und vollständige Angaben, können aber keine Gewähr für
           Richtigkeit übernehmen. Melde Dich gerne bei uns unter{' '}
-          <a href="mailto:tiersitter@onetitel.de" className="text-[#2E4A6B] underline font-medium">
-            tiersitter@onetitel.de
+          <a href="mailto:kontakt@tiersitti.de" className="text-[#2E4A6B] underline font-medium">
+            kontakt@tiersitti.de
           </a>
           {' '}— wir korrigieren Einträge zeitnah oder nehmen Dein Unternehmen kostenlos mit auf.
         </p>

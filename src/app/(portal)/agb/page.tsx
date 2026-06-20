@@ -48,7 +48,7 @@ const paragraphen = [
     titel: '§ 7 Kündigung',
     items: [
       '7.1 Tierhalter-Abonnements können monatlich zum Monatsende gekündigt werden.',
-      '7.2 Die Kündigung erfolgt per E-Mail an: tiersitter@onetitel.de',
+      '7.2 Die Kündigung erfolgt per E-Mail an: kontakt@tiersitti.de',
       '7.3 Bei Kündigung werden alle persönlichen Daten nach 30 Tagen gelöscht.',
     ],
   },
@@ -85,7 +85,7 @@ export default function AgbPage() {
                 <p className="text-[#2E4A6B] leading-relaxed">
                   OneTitel – Digital &amp; Business Solutions<br />
                   Markus Müller<br />
-                  tiersitter@onetitel.de<br />
+                  kontakt@tiersitti.de<br />
                   www.meintiersitter.de
                 </p>
               ) : p.items ? (

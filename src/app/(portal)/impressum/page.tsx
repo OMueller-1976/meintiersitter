@@ -27,7 +27,7 @@ export default function ImpressumPage() {
 
           <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">Kontakt</h2>
           <p className="text-[#2E4A6B] leading-relaxed">
-            E-Mail: tiersitter@onetitel.de<br />
+            E-Mail: kontakt@tiersitti.de<br />
             Web: www.meintiersitter.de
           </p>
 

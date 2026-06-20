@@ -131,16 +131,16 @@ export default function FoerdererPage() {
                   jederzeit zum Jahresende.
                 </p>
                 <a
-                  href="mailto:tiersitter@onetitel.de?subject=F%C3%B6rderschaft%20MeinTiersitter&body=Ich%20interessiere%20mich%20f%C3%BCr%20eine%20F%C3%B6rderschaft%20bei%20MeinTiersitter.%20Bitte%20nehmen%20Sie%20Kontakt%20mit%20mir%20auf."
+                  href="mailto:kontakt@tiersitti.de?subject=F%C3%B6rderschaft%20MeinTiersitter&body=Ich%20interessiere%20mich%20f%C3%BCr%20eine%20F%C3%B6rderschaft%20bei%20MeinTiersitter.%20Bitte%20nehmen%20Sie%20Kontakt%20mit%20mir%20auf."
                   className="block text-center text-sm font-semibold bg-[#2E4A6B] text-white rounded-xl py-3 hover:bg-[#3A5A80] transition-colors"
                 >
                   Jetzt Förderer werden →
                 </a>
                 <a
-                  href="mailto:tiersitter@onetitel.de"
+                  href="mailto:kontakt@tiersitti.de"
                   className="block text-center text-sm text-[#4E779F] hover:text-[#2E4A6B] transition-colors"
                 >
-                  Fragen? tiersitter@onetitel.de
+                  Fragen? kontakt@tiersitti.de
                 </a>
               </div>
             </div>

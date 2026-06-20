@@ -214,7 +214,7 @@ export default function AnlaufstellenPage() {
               Schreiben Sie uns — wir nehmen sie gerne auf.
             </p>
             <a
-              href="mailto:tiersitter@onetitel.de?subject=Anlaufstelle%20vorschlagen"
+              href="mailto:kontakt@tiersitti.de?subject=Anlaufstelle%20vorschlagen"
               className="inline-block bg-white text-[#2E4A6B] font-semibold rounded-xl px-6 py-3 hover:bg-[#EEF2F8] transition-colors"
             >
               Eintrag vorschlagen →
@@ -390,7 +390,7 @@ export default function AnlaufstellenPage() {
             <div className="text-center">
               <p className="text-[#4E779F] mb-3 text-sm">Kennen Sie eine weitere Futterstation?</p>
               <a
-                href="mailto:tiersitter@onetitel.de?subject=Futterstation%20vorschlagen"
+                href="mailto:kontakt@tiersitti.de?subject=Futterstation%20vorschlagen"
                 className="inline-block bg-[#2E4A6B] text-white font-semibold rounded-xl px-6 py-3 hover:bg-[#3A5A80] transition-colors"
               >
                 Eintrag vorschlagen →
