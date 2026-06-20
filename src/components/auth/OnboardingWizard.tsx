@@ -8,8 +8,9 @@ import WizardProgress from './WizardProgress'
 import StepRolle from './steps/StepRolle'
 import StepAccount from './steps/StepAccount'
 import StepAdresse from './steps/StepAdresse'
-import StepSitterDetails from './steps/StepSitterDetails'
 import StepZusammenfassung from './steps/StepZusammenfassung'
+import StepSitterOnboarding from '@/components/register/StepSitterOnboarding'
+import StepTierOnboarding from '@/components/register/StepTierOnboarding'
 import SpendenHinweis from '@/components/shared/SpendenHinweis'
 import { registerAction } from '@/app/(auth)/register/actions'
 
@@ -28,6 +29,7 @@ export interface WizardFormData {
   ortschaft: string
   phone: string
   // Sitter-Details
+  bio: string
   erfahrung_jahre: number
   hat_eigene_tiere: boolean
   hat_garten: boolean
@@ -46,6 +48,15 @@ export interface WizardFormData {
   notfall_per_email: boolean
   notfall_per_sms: boolean
   notfall_per_whatsapp: boolean
+  // Tier-Onboarding (Tierhalter)
+  tier_name: string
+  tierart: 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges' | null
+  rasse: string
+  alter_jahre: number
+  vertraeglich_hunde: boolean
+  vertraeglich_katzen: boolean
+  vertraeglich_kinder: boolean
+  besonderheiten: string
   // Abschluss
   agb_akzeptiert: boolean
 }
@@ -56,22 +67,26 @@ const INITIAL_DATA: WizardFormData = {
   rolle: null,
   full_name: '', email: '', password: '', passwordConfirm: '',
   plz: '', ort: '', ortschaft: '', phone: '',
-  erfahrung_jahre: 0, hat_eigene_tiere: false, hat_garten: false,
+  bio: '', erfahrung_jahre: 0, hat_eigene_tiere: false, hat_garten: false,
   kann_medikamente: false, betreut_hunde: true, betreut_katzen: true,
   betreut_kleintiere: false, bietet_gassi: true, bietet_fuettern: true,
   bietet_tagesbetreuung: false, bietet_uebernachtung: false, radius_km: 10,
   notfall_verfuegbar: false, notfall_telefon: '', notfall_per_email: true,
   notfall_per_sms: false, notfall_per_whatsapp: false,
+  tier_name: '', tierart: null, rasse: '', alter_jahre: 0,
+  vertraeglich_hunde: false, vertraeglich_katzen: false, vertraeglich_kinder: false,
+  besonderheiten: '',
   agb_akzeptiert: false,
 }
 
-type Step = 'rolle' | 'account' | 'adresse' | 'sitter-details' | 'zusammenfassung'
+type Step = 'rolle' | 'account' | 'adresse' | 'sitter-onboarding' | 'tier-onboarding' | 'zusammenfassung'
 
 const STEP_LABELS: Record<Step, string> = {
   'rolle': 'Deine Rolle',
   'account': 'Konto',
   'adresse': 'Adresse',
-  'sitter-details': 'Sitter-Details',
+  'sitter-onboarding': 'Sitter-Profil',
+  'tier-onboarding': 'Dein Tier',
   'zusammenfassung': 'Abschluss',
 }
 
@@ -87,7 +102,10 @@ export default function OnboardingWizard() {
   const steps = useMemo<Step[]>(() => {
     const base: Step[] = ['rolle', 'account', 'adresse']
     if (formData.rolle === 'sitter' || formData.rolle === 'beide') {
-      base.push('sitter-details')
+      base.push('sitter-onboarding')
+    }
+    if (formData.rolle === 'tierhalter' || formData.rolle === 'beide') {
+      base.push('tier-onboarding')
     }
     base.push('zusammenfassung')
     return base
@@ -112,7 +130,8 @@ export default function OnboardingWizard() {
         )
       case 'adresse':
         return /^\d{5}$/.test(formData.plz) && formData.ort.trim().length > 0
-      case 'sitter-details':
+      case 'sitter-onboarding':
+      case 'tier-onboarding':
         return true
       case 'zusammenfassung':
         return true
@@ -159,6 +178,7 @@ export default function OnboardingWizard() {
     try {
       const sitterData = (formData.rolle === 'sitter' || formData.rolle === 'beide')
         ? JSON.stringify({
+            bio: formData.bio || null,
             erfahrung_jahre: formData.erfahrung_jahre,
             hat_eigene_tiere: formData.hat_eigene_tiere,
             hat_garten: formData.hat_garten,
@@ -179,6 +199,19 @@ export default function OnboardingWizard() {
           })
         : null
 
+      const tierData = (formData.rolle === 'tierhalter' || formData.rolle === 'beide')
+        ? JSON.stringify({
+            tier_name: formData.tier_name || null,
+            tierart: formData.tierart || null,
+            rasse: formData.rasse || null,
+            alter_jahre: formData.alter_jahre || null,
+            vertraeglich_hunde: formData.vertraeglich_hunde,
+            vertraeglich_katzen: formData.vertraeglich_katzen,
+            vertraeglich_kinder: formData.vertraeglich_kinder,
+            besonderheiten: formData.besonderheiten || null,
+          })
+        : null
+
       const result = await registerAction({
         role: formData.rolle,
         full_name: formData.full_name,
@@ -189,6 +222,7 @@ export default function OnboardingWizard() {
         ortschaft: formData.ortschaft || undefined,
         phone: formData.phone || undefined,
         sitter_data: sitterData ?? undefined,
+        tier_data: tierData ?? undefined,
       })
 
       if (result && 'error' in result) {
@@ -292,8 +326,11 @@ export default function OnboardingWizard() {
           {currentStepId === 'adresse' && (
             <StepAdresse data={formData} onChange={updateField} errors={errors} />
           )}
-          {currentStepId === 'sitter-details' && (
-            <StepSitterDetails data={formData} onChange={updateField} />
+          {currentStepId === 'sitter-onboarding' && (
+            <StepSitterOnboarding data={formData} onChange={updateField} onSkip={handleNext} />
+          )}
+          {currentStepId === 'tier-onboarding' && (
+            <StepTierOnboarding data={formData} onChange={updateField} onSkip={handleNext} />
           )}
           {currentStepId === 'zusammenfassung' && (
             <StepZusammenfassung data={formData} onChange={updateField} errors={errors} />

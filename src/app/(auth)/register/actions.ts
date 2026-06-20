@@ -14,6 +14,7 @@ export interface RegisterData {
   ortschaft?: string;
   phone?: string;
   sitter_data?: string; // JSON-serialisierte Sitter-Details
+  tier_data?: string;   // JSON-serialisierte Tier-Details
 }
 
 export async function registerAction(
@@ -56,6 +57,7 @@ export async function registerAction(
         ortschaft: data.ortschaft || null,
         phone: data.phone || null,
         sitter_data: data.sitter_data || null,
+        tier_data: data.tier_data || null,
       },
     },
   });
