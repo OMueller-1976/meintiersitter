@@ -39,7 +39,7 @@ export default async function DashboardPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('*')
+    .select('id, full_name, role, ort, ortschaft, avatar_url, onboarding_complete')
     .eq('id', user.id)
     .single<Profile>();
 

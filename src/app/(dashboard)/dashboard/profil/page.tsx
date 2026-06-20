@@ -92,9 +92,7 @@ export default function ProfilPage() {
       if (!user) return;
 
       const { data: p } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
+        .rpc('get_my_profile')
         .single<Profile>();
 
       if (p) {

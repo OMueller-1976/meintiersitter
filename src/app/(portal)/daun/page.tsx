@@ -90,7 +90,7 @@ export default async function DaunPage() {
     if (authUser) {
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, full_name, role, ort, ortschaft, avatar_url, onboarding_complete, plz')
         .eq('id', authUser.id)
         .single<Profile>()
       if (error) throw error
