@@ -3,6 +3,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import type { ProfileUpdate, SitterProfileUpdate } from '@/types';
+import { ORTSCHAFT_KOORDINATEN } from '@/lib/ortschaft-koordinaten';
 
 function makeClient() {
   const cookieStore = cookies();
@@ -27,9 +28,17 @@ export async function updateProfile(data: ProfileUpdate): Promise<{ error?: stri
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: 'Nicht eingeloggt.' };
 
+  // Koordinaten automatisch aus Ortschaft ableiten
+  const updateData = { ...data };
+  if ('ortschaft' in data) {
+    const koords = data.ortschaft ? (ORTSCHAFT_KOORDINATEN[data.ortschaft] ?? null) : null;
+    updateData.latitude = koords?.lat ?? null;
+    updateData.longitude = koords?.lng ?? null;
+  }
+
   const { error } = await supabase
     .from('profiles')
-    .update(data)
+    .update(updateData)
     .eq('id', user.id);
 
   if (error) return { error: error.message };

@@ -52,7 +52,6 @@ function getInitials(name: string): string {
   return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2);
 }
 
-const RADIUS_OPTIONS = [5, 10, 20, 50];
 
 export default function ProfilPage() {
   const router = useRouter();
@@ -400,22 +399,16 @@ export default function ProfilPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Radius: <span className="text-[#2D6A4F] font-bold">{radiusKm} km</span>
               </label>
-              <div className="flex gap-2">
-                {RADIUS_OPTIONS.map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setRadiusKm(r)}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                      radiusKm === r
-                        ? 'bg-[#2D6A4F] text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {r} km
-                  </button>
-                ))}
-              </div>
+              <input
+                type="range"
+                min={5}
+                max={50}
+                step={5}
+                value={radiusKm}
+                onChange={(e) => setRadiusKm(Number(e.target.value))}
+                className="w-full accent-[#2D6A4F]"
+              />
+              <p className="text-sm text-center text-gray-500 mt-1">{radiusKm} km Umkreis</p>
             </div>
 
             <button

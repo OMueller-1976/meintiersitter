@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { ORTSCHAFT_KOORDINATEN } from '@/lib/ortschaft-koordinaten';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -65,13 +66,18 @@ export async function GET(request: NextRequest) {
     sitterComplete || tierComplete; // beide: mindestens eine Seite vollständig
 
   // 3. Profil vervollständigen per UPDATE — Trigger hat Zeile bereits angelegt
+  const ortschaft = (meta.ortschaft as string) ?? null;
+  const koords = ortschaft ? (ORTSCHAFT_KOORDINATEN[ortschaft] ?? null) : null;
+
   await supabase.from('profiles').update({
     phone: (meta.phone as string) ?? null,
     plz: (meta.plz as string) ?? null,
     ort: (meta.ort as string) ?? null,
-    ortschaft: (meta.ortschaft as string) ?? null,
+    ortschaft,
     bio: (sitterData.bio as string) ?? null,
     onboarding_complete: onboardingComplete,
+    latitude: koords?.lat ?? null,
+    longitude: koords?.lng ?? null,
   }).eq('id', user.id);
 
   // 4. Sitter-Profil per UPSERT (1:1 zu profiles)

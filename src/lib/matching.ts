@@ -1,13 +1,19 @@
+import { distanzKm } from './distance'
+
 export interface MatchInput {
   tierart: 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges'
   leistung: string // 'gassi' | 'fuettern' | 'tagesbetreuung' | 'uebernachtung'
   posting_ort: string
   posting_plz: string
+  lat?: number | null
+  lng?: number | null
 }
 
 export interface SitterMatchProfil {
   ort: string | null
   plz: string | null
+  lat?: number | null
+  lng?: number | null
   betreut_hunde: boolean
   betreut_katzen: boolean
   betreut_kleintiere: boolean
@@ -46,11 +52,27 @@ export function berechneMatchProzent(
   if (leistungMap[posting.leistung]) score += 35
 
   // 3) Standort-Nähe (20 Punkte)
-  if (sitter.ort && posting.posting_ort) {
+  const hasKoords =
+    posting.lat != null && posting.lng != null &&
+    sitter.lat != null && sitter.lng != null
+
+  if (hasKoords) {
+    const km = distanzKm(sitter.lat!, sitter.lng!, posting.lat!, posting.lng!)
+    const radius = sitter.radius_km ?? 15
+
+    if (km <= radius) {
+      // Innerhalb des Radius: linear von 20 (km=0) bis 10 (km=radius)
+      const anteil = km / radius // 0..1
+      score += Math.round(20 - anteil * 10) // 20..10
+    } else {
+      // Außerhalb: weiche Reduktion — maximal 3 Punkte
+      score += 3
+    }
+  } else if (sitter.ort && posting.posting_ort) {
+    // PLZ-Fallback wenn keine Koordinaten vorhanden
     if (sitter.ort.toLowerCase() === posting.posting_ort.toLowerCase()) {
       score += 20 // gleiche Ortschaft
     } else {
-      // Vereinfachte PLZ-Distanz-Schätzung innerhalb der Vulkaneifel-Region (54xxx)
       const plzSitter = parseInt(sitter.plz ?? '0')
       const plzPosting = parseInt(posting.posting_plz ?? '0')
       const diff = Math.abs(plzSitter - plzPosting)

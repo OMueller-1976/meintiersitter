@@ -21,7 +21,6 @@ const LEISTUNGS_CHIPS = [
   { key: 'bietet_uebernachtung' as const, label: '🌙 Übernachtung' },
 ]
 
-const RADIUS_OPTIONS = [5, 10, 20, 30, 50]
 
 function Toggle({
   checked,
@@ -151,22 +150,16 @@ export default function StepSitterOnboarding({ data, onChange, onSkip }: Props) 
         {/* Radius */}
         <div>
           <p className="text-sm font-medium text-[#2E4A6B] mb-2">In welchem Umkreis?</p>
-          <div className="flex gap-2 flex-wrap">
-            {RADIUS_OPTIONS.map((km) => (
-              <button
-                key={km}
-                type="button"
-                onClick={() => onChange('radius_km', km)}
-                className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
-                  data.radius_km === km
-                    ? 'bg-[#2E4A6B] text-white border-[#2E4A6B]'
-                    : 'bg-white text-[#4E779F] border-[#C8D8EC] hover:border-[#2E4A6B]/50'
-                }`}
-              >
-                {km} km
-              </button>
-            ))}
-          </div>
+          <input
+            type="range"
+            min={5}
+            max={50}
+            step={5}
+            value={data.radius_km ?? 10}
+            onChange={(e) => onChange('radius_km', Number(e.target.value))}
+            className="w-full accent-[#2E4A6B]"
+          />
+          <p className="text-sm text-center text-[#4E779F] mt-1">{data.radius_km ?? 10} km Umkreis</p>
         </div>
 
         {/* Toggles */}

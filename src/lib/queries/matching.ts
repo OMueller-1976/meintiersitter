@@ -1,7 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { berechneMatchProzent, type SitterMatchProfil } from '@/lib/matching'
+import { ORTSCHAFT_KOORDINATEN } from '@/lib/ortschaft-koordinaten'
 
-type SitterMatchProfilCore = Omit<SitterMatchProfil, 'ort' | 'plz'>
+type SitterMatchProfilCore = Omit<SitterMatchProfil, 'ort' | 'plz' | 'lat' | 'lng'>
+
+function postingKoords(ort: string | null) {
+  if (!ort) return { lat: null, lng: null }
+  const k = ORTSCHAFT_KOORDINATEN[ort] ?? null
+  return { lat: k?.lat ?? null, lng: k?.lng ?? null }
+}
 
 // Für Tierhalter: bester Sitter für eigenes offenes Gesuch
 export async function getBesterMatchFuerTierhalter(userId: string) {
@@ -21,7 +28,7 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
   const { data: sitterListe } = await supabase
     .from('profiles')
     .select(`
-      id, full_name, ort, plz,
+      id, full_name, ort, plz, latitude, longitude,
       sitter_profiles (
         betreut_hunde, betreut_katzen, betreut_kleintiere,
         bietet_gassi, bietet_fuettern,
@@ -37,6 +44,8 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
     ? posting.tier_profiles[0]
     : posting.tier_profiles
 
+  const pKoords = postingKoords(posting.ort)
+
   let bester: { sitter: typeof sitterListe[number]; prozent: number } | null = null
 
   for (const s of sitterListe) {
@@ -45,12 +54,20 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
 
     const prozent = berechneMatchProzent(
       {
-        tierart: (tierProfiles as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'sonstiges' ?? 'sonstiges',
+        tierart: (tierProfiles as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges' ?? 'sonstiges',
         leistung: posting.leistung,
         posting_ort: posting.ort ?? '',
         posting_plz: posting.plz ?? '',
+        lat: pKoords.lat,
+        lng: pKoords.lng,
       },
-      sp as unknown as SitterMatchProfil
+      {
+        ort: s.ort ?? null,
+        plz: s.plz ?? null,
+        lat: (s as { latitude?: number | null }).latitude ?? null,
+        lng: (s as { longitude?: number | null }).longitude ?? null,
+        ...(sp as unknown as SitterMatchProfilCore),
+      }
     )
 
     if (!bester || prozent > bester.prozent) {
@@ -76,7 +93,7 @@ export async function getBesterMatchFuerSitter(userId: string) {
   const { data: sitterProfil } = await supabase
     .from('profiles')
     .select(`
-      ort, plz,
+      ort, plz, latitude, longitude,
       sitter_profiles (
         betreut_hunde, betreut_katzen, betreut_kleintiere,
         bietet_gassi, bietet_fuettern,
@@ -102,21 +119,29 @@ export async function getBesterMatchFuerSitter(userId: string) {
 
   if (!postings?.length) return null
 
+  const sLat = (sitterProfil as { latitude?: number | null })?.latitude ?? null
+  const sLng = (sitterProfil as { longitude?: number | null })?.longitude ?? null
+
   let bestes: { posting: typeof postings[number]; prozent: number } | null = null
 
   for (const p of postings) {
     const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles
+    const pKoords = postingKoords(p.ort)
 
     const prozent = berechneMatchProzent(
       {
-        tierart: (tp as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'sonstiges' ?? 'sonstiges',
+        tierart: (tp as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges' ?? 'sonstiges',
         leistung: p.leistung,
         posting_ort: p.ort ?? '',
         posting_plz: p.plz ?? '',
+        lat: pKoords.lat,
+        lng: pKoords.lng,
       },
       {
         ort: sitterProfil?.ort ?? null,
         plz: sitterProfil?.plz ?? null,
+        lat: sLat,
+        lng: sLng,
         ...(sp as unknown as SitterMatchProfilCore),
       }
     )
@@ -149,7 +174,6 @@ export async function getMatchProzenteForTierhalter(
 
   const supabase = await createClient()
 
-  // Aktuelles offenes Posting des Tierhalters
   const { data: posting } = await supabase
     .from('postings')
     .select('leistung, ort, plz, tier_profiles(tierart)')
@@ -162,12 +186,12 @@ export async function getMatchProzenteForTierhalter(
   if (!posting) return {}
 
   const tierProfiles = Array.isArray(posting.tier_profiles) ? posting.tier_profiles[0] : posting.tier_profiles
+  const pKoords = postingKoords(posting.ort)
 
-  // Sitter mit vollständigem Profil laden
   const { data: sitterListe } = await supabase
     .from('profiles')
     .select(`
-      id, ort, plz,
+      id, ort, plz, latitude, longitude,
       sitter_profiles (
         betreut_hunde, betreut_katzen, betreut_kleintiere,
         bietet_gassi, bietet_fuettern,
@@ -187,14 +211,18 @@ export async function getMatchProzenteForTierhalter(
 
     const prozent = berechneMatchProzent(
       {
-        tierart: (tierProfiles as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'sonstiges' ?? 'sonstiges',
+        tierart: (tierProfiles as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges' ?? 'sonstiges',
         leistung: posting.leistung,
         posting_ort: posting.ort ?? '',
         posting_plz: posting.plz ?? '',
+        lat: pKoords.lat,
+        lng: pKoords.lng,
       },
       {
         ort: s.ort ?? null,
         plz: s.plz ?? null,
+        lat: (s as { latitude?: number | null }).latitude ?? null,
+        lng: (s as { longitude?: number | null }).longitude ?? null,
         ...(sp as unknown as SitterMatchProfilCore),
       }
     )
@@ -214,7 +242,7 @@ export async function getMatchProzenteForSitter(
   const { data: sitterProfil } = await supabase
     .from('profiles')
     .select(`
-      ort, plz,
+      ort, plz, latitude, longitude,
       sitter_profiles (
         betreut_hunde, betreut_katzen, betreut_kleintiere,
         bietet_gassi, bietet_fuettern,
@@ -231,20 +259,29 @@ export async function getMatchProzenteForSitter(
 
   if (!sp) return {}
 
+  const sLat = (sitterProfil as { latitude?: number | null })?.latitude ?? null
+  const sLng = (sitterProfil as { longitude?: number | null })?.longitude ?? null
+
   const result: Record<string, number> = {}
 
   for (const p of postings) {
     const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles
+    const pKoords = postingKoords(p.ort)
+
     const prozent = berechneMatchProzent(
       {
-        tierart: (tp as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'sonstiges' ?? 'sonstiges',
+        tierart: (tp as { tierart?: string } | null)?.tierart as 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges' ?? 'sonstiges',
         leistung: p.leistung,
         posting_ort: p.ort ?? '',
         posting_plz: p.plz ?? '',
+        lat: pKoords.lat,
+        lng: pKoords.lng,
       },
       {
         ort: sitterProfil?.ort ?? null,
         plz: sitterProfil?.plz ?? null,
+        lat: sLat,
+        lng: sLng,
         ...(sp as unknown as SitterMatchProfilCore),
       }
     )
