@@ -1,5 +1,5 @@
 export interface MatchInput {
-  tierart: 'hund' | 'katze' | 'vogel' | 'sonstiges'
+  tierart: 'hund' | 'katze' | 'vogel' | 'kleintier' | 'sonstiges'
   leistung: string // 'gassi' | 'fuettern' | 'tagesbetreuung' | 'uebernachtung'
   posting_ort: string
   posting_plz: string
@@ -31,6 +31,7 @@ export function berechneMatchProzent(
     hund: sitter.betreut_hunde,
     katze: sitter.betreut_katzen,
     vogel: sitter.betreut_kleintiere,
+    kleintier: sitter.betreut_kleintiere,
     sonstiges: sitter.betreut_kleintiere,
   }
   if (tierartMap[posting.tierart]) score += 35

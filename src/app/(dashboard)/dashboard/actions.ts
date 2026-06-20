@@ -50,7 +50,7 @@ export async function sendeKontaktanfrageAnSitter(
     .select('id')
     .eq('tierhalter_id', user.id)
     .eq('sitter_id', sitterId)
-    .in('status', ['angefragt', 'akzeptiert'])
+    .in('status', ['angefragt', 'bestaetigt'])
     .maybeSingle();
 
   if (existing) return { success: true, matchId: existing.id };
@@ -252,7 +252,7 @@ export async function sendeChatNachricht(matchId: string, inhalt: string) {
     .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
     .single();
 
-  if (match?.status !== 'akzeptiert') {
+  if (match?.status !== 'bestaetigt' && match?.status !== 'abgeschlossen') {
     return { error: 'Chat ist noch nicht freigeschaltet' };
   }
 

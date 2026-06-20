@@ -159,12 +159,12 @@ export default async function DaunPage() {
       }
     }
 
-    // Aktive Chats (Matches mit Status 'akzeptiert')
+    // Aktive Chats (Matches mit Status 'bestaetigt')
     const { count } = await supabase
       .from('matches')
       .select('id', { count: 'exact', head: true })
       .or(`tierhalter_id.eq.${user.id},sitter_id.eq.${user.id}`)
-      .eq('status', 'akzeptiert')
+      .eq('status', 'bestaetigt')
     aktiveChats = count ?? 0
   }
 
