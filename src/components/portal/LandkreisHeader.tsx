@@ -46,27 +46,6 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
         </span>
       </Link>
 
-      {/* Search placeholder */}
-      <div className="portal-search-wrap">
-        <input
-          type="text"
-          placeholder="Ortschaft suchen..."
-          disabled
-          style={{
-            background: 'rgba(255,255,255,0.12)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: 8,
-            padding: '6px 12px',
-            color: 'white',
-            fontSize: 13,
-            width: 220,
-            outline: 'none',
-            cursor: 'not-allowed',
-            fontFamily: 'inherit',
-          }}
-        />
-      </div>
-
       {/* Account */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         {user ? (

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import {
@@ -43,8 +44,10 @@ export default function NachrichtModal({
 
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true) }, []);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   async function handleSend() {
     if (!text.trim() || sending) return;
@@ -75,10 +78,10 @@ export default function NachrichtModal({
     router.push('/dashboard/anfragen');
   }
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
         className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl"
@@ -129,6 +132,7 @@ export default function NachrichtModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
