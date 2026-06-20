@@ -15,11 +15,8 @@ function getTierhalterNav(): NavItem[] {
   return [
     { icon: '🏠', label: 'Übersicht', href: '/dashboard' },
     { icon: '🐾', label: 'Meine Tiere', href: '/dashboard/tiere' },
-    { icon: '📋', label: 'Meine Gesuche', href: '/dashboard/postings' },
-    { icon: '🔍', label: 'Sitter suchen', href: '/dashboard/sitter-suchen' },
     { icon: '💬', label: 'Nachrichten', href: '/dashboard/nachrichten' },
     { icon: '⭐', label: 'Bewertungen', href: '/dashboard/bewertungen' },
-    { icon: '🏪', label: 'Marktplatz', href: '/marktplatz' },
     { icon: '👤', label: 'Mein Profil', href: '/dashboard/profil' },
   ];
 }
