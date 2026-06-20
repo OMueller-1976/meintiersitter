@@ -161,8 +161,10 @@ export default function GesuchCard({
       )}
 
       {p.nachricht && (
-        <p className="text-xs text-secondary leading-relaxed mb-3 line-clamp-2 flex-1">{p.nachricht}</p>
+        <p className="text-xs text-secondary leading-relaxed mb-3 line-clamp-2">{p.nachricht}</p>
       )}
+
+      <div className="flex-1" />
 
       <div className="mb-3">
         <div className="text-xs text-muted">📅 {formatDateRange(p.datum_von, p.datum_bis)}</div>
