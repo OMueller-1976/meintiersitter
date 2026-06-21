@@ -169,6 +169,15 @@ export default function StepSitterOnboarding({ data, onChange, onSkip }: Props) 
             onChange={(v) => onChange('hat_eigene_tiere', v)}
             label="Ich habe selbst Tiere"
           />
+          {data.hat_eigene_tiere && (
+            <textarea
+              value={data.eigene_tiere_beschreibung}
+              onChange={(e) => onChange('eigene_tiere_beschreibung', e.target.value)}
+              placeholder="Welche Tiere? z.B. 1 Labrador, 2 Katzen"
+              rows={2}
+              className="w-full border border-[#C8D8EC] rounded-xl px-3 py-2 text-sm text-[#1E3249] placeholder-[#B0C8E0] focus:outline-none focus:border-[#2E4A6B] resize-none"
+            />
+          )}
           <Toggle
             checked={data.hat_garten}
             onChange={(v) => onChange('hat_garten', v)}
@@ -179,6 +188,31 @@ export default function StepSitterOnboarding({ data, onChange, onSkip }: Props) 
             onChange={(v) => onChange('kann_medikamente', v)}
             label="Ich kann Medikamente verabreichen"
           />
+        </div>
+
+        {/* Notfall-Erreichbarkeit */}
+        <div className="flex flex-col gap-3 pt-1">
+          <p className="text-sm font-medium text-[#2E4A6B]">Notfall-Erreichbarkeit <span className="font-normal text-[#B0C8E0]">(optional)</span></p>
+          <Toggle
+            checked={data.notfall_verfuegbar}
+            onChange={(v) => onChange('notfall_verfuegbar', v)}
+            label="Ich bin auch für Notfälle verfügbar"
+          />
+          {data.notfall_verfuegbar && (
+            <div className="flex flex-col gap-3 pl-1">
+              <input
+                type="tel"
+                value={data.notfall_telefon}
+                onChange={(e) => onChange('notfall_telefon', e.target.value)}
+                placeholder="Notfall-Telefonnummer"
+                className="w-full border border-[#C8D8EC] rounded-xl px-3 py-2 text-sm text-[#1E3249] placeholder-[#B0C8E0] focus:outline-none focus:border-[#2E4A6B]"
+              />
+              <p className="text-xs text-[#4E779F]">Wie darf man Dich kontaktieren?</p>
+              <Toggle checked={data.notfall_per_email} onChange={(v) => onChange('notfall_per_email', v)} label="Per E-Mail" />
+              <Toggle checked={data.notfall_per_sms} onChange={(v) => onChange('notfall_per_sms', v)} label="Per SMS" />
+              <Toggle checked={data.notfall_per_whatsapp} onChange={(v) => onChange('notfall_per_whatsapp', v)} label="Per WhatsApp" />
+            </div>
+          )}
         </div>
 
       </div>

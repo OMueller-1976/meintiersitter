@@ -82,6 +82,11 @@ export default function ProfilPage() {
   const [bietetUebernachtung, setBietetUebernachtung] = useState(false);
   const [bietetTagesbetreuung, setBietetTagesbetreuung] = useState(false);
   const [radiusKm, setRadiusKm] = useState(10);
+  const [notfallVerfuegbar, setNotfallVerfuegbar] = useState(false);
+  const [notfallTelefon, setNotfallTelefon] = useState('');
+  const [notfallPerEmail, setNotfallPerEmail] = useState(true);
+  const [notfallPerSms, setNotfallPerSms] = useState(false);
+  const [notfallPerWhatsapp, setNotfallPerWhatsapp] = useState(false);
   const [savingSitter, setSavingSitter] = useState(false);
 
   useEffect(() => {
@@ -124,6 +129,11 @@ export default function ProfilPage() {
             setBietetUebernachtung(sp.bietet_uebernachtung);
             setBietetTagesbetreuung(sp.bietet_tagesbetreuung);
             setRadiusKm(sp.radius_km);
+            setNotfallVerfuegbar(sp.notfall_verfuegbar);
+            setNotfallTelefon(sp.notfall_telefon ?? '');
+            setNotfallPerEmail(sp.notfall_per_email);
+            setNotfallPerSms(sp.notfall_per_sms);
+            setNotfallPerWhatsapp(sp.notfall_per_whatsapp);
           }
         }
       }
@@ -192,6 +202,11 @@ export default function ProfilPage() {
       bietet_uebernachtung: bietetUebernachtung,
       bietet_tagesbetreuung: bietetTagesbetreuung,
       radius_km: radiusKm,
+      notfall_verfuegbar: notfallVerfuegbar,
+      notfall_telefon: notfallVerfuegbar ? notfallTelefon || null : null,
+      notfall_per_email: notfallPerEmail,
+      notfall_per_sms: notfallPerSms,
+      notfall_per_whatsapp: notfallPerWhatsapp,
     });
     setSavingSitter(false);
     if (result.error) { toast.error(result.error); return; }
@@ -409,6 +424,33 @@ export default function ProfilPage() {
                 className="w-full accent-[#2D6A4F]"
               />
               <p className="text-sm text-center text-gray-500 mt-1">{radiusKm} km Umkreis</p>
+            </div>
+
+            <Section title="Notfall-Erreichbarkeit" />
+            <div className="flex flex-col gap-3">
+              <Toggle
+                checked={notfallVerfuegbar}
+                onChange={setNotfallVerfuegbar}
+                label="Ich bin auch für Notfälle verfügbar"
+              />
+              {notfallVerfuegbar && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Notfall-Telefon</label>
+                    <input
+                      type="tel"
+                      value={notfallTelefon}
+                      onChange={(e) => setNotfallTelefon(e.target.value)}
+                      placeholder="+49 ..."
+                      className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#2D6A4F]/30"
+                    />
+                  </div>
+                  <p className="text-sm text-gray-500">Kontaktwege:</p>
+                  <Toggle checked={notfallPerEmail} onChange={setNotfallPerEmail} label="Per E-Mail" />
+                  <Toggle checked={notfallPerSms} onChange={setNotfallPerSms} label="Per SMS" />
+                  <Toggle checked={notfallPerWhatsapp} onChange={setNotfallPerWhatsapp} label="Per WhatsApp" />
+                </>
+              )}
             </div>
 
             <button

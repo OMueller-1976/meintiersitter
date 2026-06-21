@@ -32,6 +32,7 @@ export interface WizardFormData {
   bio: string
   erfahrung_jahre: number
   hat_eigene_tiere: boolean
+  eigene_tiere_beschreibung: string
   hat_garten: boolean
   kann_medikamente: boolean
   betreut_hunde: boolean
@@ -67,7 +68,7 @@ const INITIAL_DATA: WizardFormData = {
   rolle: null,
   full_name: '', email: '', password: '', passwordConfirm: '',
   plz: '', ort: '', ortschaft: '', phone: '',
-  bio: '', erfahrung_jahre: 0, hat_eigene_tiere: false, hat_garten: false,
+  bio: '', erfahrung_jahre: 0, hat_eigene_tiere: false, eigene_tiere_beschreibung: '', hat_garten: false,
   kann_medikamente: false, betreut_hunde: true, betreut_katzen: true,
   betreut_kleintiere: false, bietet_gassi: true, bietet_fuettern: true,
   bietet_tagesbetreuung: false, bietet_uebernachtung: false, radius_km: 10,
@@ -182,6 +183,7 @@ export default function OnboardingWizard() {
             bio: formData.bio || null,
             erfahrung_jahre: formData.erfahrung_jahre,
             hat_eigene_tiere: formData.hat_eigene_tiere,
+            eigene_tiere_beschreibung: formData.hat_eigene_tiere ? formData.eigene_tiere_beschreibung || null : null,
             hat_garten: formData.hat_garten,
             kann_medikamente: formData.kann_medikamente,
             betreut_hunde: formData.betreut_hunde,
