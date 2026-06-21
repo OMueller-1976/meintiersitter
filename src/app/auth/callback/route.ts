@@ -47,8 +47,16 @@ export async function GET(request: NextRequest) {
   // Parse JSON-Strings aus user_metadata (wurden als strings gespeichert)
   let sitterData: Record<string, unknown> = {};
   let tierData: Record<string, unknown> = {};
-  try { if (meta.sitter_data) sitterData = JSON.parse(meta.sitter_data as string); } catch { /* ignore */ }
-  try { if (meta.tier_data)   tierData   = JSON.parse(meta.tier_data as string);   } catch { /* ignore */ }
+  try {
+    if (meta.sitter_data) sitterData = JSON.parse(meta.sitter_data as string);
+  } catch (e) {
+    console.error('[auth/callback] Failed to parse sitter_data:', e, { raw: meta.sitter_data });
+  }
+  try {
+    if (meta.tier_data) tierData = JSON.parse(meta.tier_data as string);
+  } catch (e) {
+    console.error('[auth/callback] Failed to parse tier_data:', e, { raw: meta.tier_data });
+  }
 
   // 2. onboarding_complete bestimmen
   const sitterComplete =
@@ -69,7 +77,7 @@ export async function GET(request: NextRequest) {
   const ortschaft = (meta.ortschaft as string) ?? null;
   const koords = ortschaft ? (ORTSCHAFT_KOORDINATEN[ortschaft] ?? null) : null;
 
-  await supabase.from('profiles').update({
+  const { error: updateError } = await supabase.from('profiles').update({
     phone: (meta.phone as string) ?? null,
     plz: (meta.plz as string) ?? null,
     ort: (meta.ort as string) ?? null,
@@ -80,9 +88,13 @@ export async function GET(request: NextRequest) {
     longitude: koords?.lng ?? null,
   }).eq('id', user.id);
 
+  if (updateError) {
+    console.error('[auth/callback] profiles update failed:', updateError);
+  }
+
   // 4. Sitter-Profil per UPSERT (1:1 zu profiles)
   if (role === 'sitter' || role === 'beide') {
-    await supabase.from('sitter_profiles').upsert({
+    const { error: sitterError } = await supabase.from('sitter_profiles').upsert({
       id: user.id,
       erfahrung_jahre:      (sitterData.erfahrung_jahre as number)      ?? 0,
       hat_eigene_tiere:     (sitterData.hat_eigene_tiere as boolean)     ?? false,
@@ -102,23 +114,31 @@ export async function GET(request: NextRequest) {
       notfall_per_sms:      (sitterData.notfall_per_sms as boolean)      ?? false,
       notfall_per_whatsapp: (sitterData.notfall_per_whatsapp as boolean) ?? false,
     }, { onConflict: 'id' });
+
+    if (sitterError) {
+      console.error('[auth/callback] sitter_profiles upsert failed:', sitterError);
+    }
   }
 
   // 5. Tier-Profil per INSERT (mehrere Tiere pro Tierhalter möglich)
   if ((role === 'tierhalter' || role === 'beide') && tierData.tier_name) {
-    await supabase.from('tier_profiles').insert({
+    const { error: tierError } = await supabase.from('tier_profiles').insert({
       owner_id:            user.id,
       name:                tierData.tier_name as string,
-      tierart:             (tierData.tierart as string)            ?? 'sonstiges',
-      rasse:               (tierData.rasse as string)              ?? null,
-      alter_jahre:         (tierData.alter_jahre as number)        ?? null,
-      vertraeglich_hunde:  (tierData.vertraeglich_hunde as boolean)?? true,
+      tierart:             (tierData.tierart as string)             ?? 'sonstiges',
+      rasse:               (tierData.rasse as string)               ?? null,
+      alter_jahre:         (tierData.alter_jahre as number)         ?? null,
+      vertraeglich_hunde:  (tierData.vertraeglich_hunde as boolean) ?? true,
       vertraeglich_katzen: (tierData.vertraeglich_katzen as boolean)?? true,
       vertraeglich_kinder: (tierData.vertraeglich_kinder as boolean)?? true,
-      besonderheiten:      (tierData.besonderheiten as string)     ?? null,
+      besonderheiten:      (tierData.besonderheiten as string)      ?? null,
       is_active:           true,
       foto_urls:           [],
     });
+
+    if (tierError) {
+      console.error('[auth/callback] tier_profiles insert failed:', tierError);
+    }
   }
 
   return NextResponse.redirect(new URL(next, request.url));
