@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GemeindeDaunBadge from '@/components/GemeindeDaunBadge';
-import SpendenHinweis from '@/components/shared/SpendenHinweis';
 
 interface InfoKachel {
   kategorie: string;
@@ -166,9 +165,33 @@ export default function RightSidebar() {
           </nav>
         </div>
 
-        {/* Spenden-Hinweis */}
-        <div className="bg-[#EEF2F8] rounded-xl p-3">
-          <SpendenHinweis variant="kompakt" />
+        {/* Spenden-Kachel */}
+        <div className="tile-sm" style={{ padding: '14px 16px', textAlign: 'center' }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 8 }}>
+            Kostenlos & Ehrenamtlich
+          </p>
+          <div style={{ fontSize: 28, marginBottom: 8 }}>💚</div>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#1E3249', marginBottom: 4 }}>
+            Tiersitti braucht Dich
+          </p>
+          <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 12, lineHeight: 1.5 }}>
+            Keine Werbung, keine Gebühren — hilf uns, das zu erhalten.
+          </p>
+          <Link
+            href="/spenden"
+            style={{
+              display: 'inline-block',
+              background: '#2D6A4F',
+              color: '#fff',
+              fontSize: 12,
+              fontWeight: 700,
+              padding: '7px 16px',
+              borderRadius: 10,
+              textDecoration: 'none',
+            }}
+          >
+            Jetzt unterstützen →
+          </Link>
         </div>
 
       </div>
