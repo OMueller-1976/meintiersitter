@@ -146,26 +146,7 @@ export default function RightSidebar() {
       {/* ── Fixierter unterer Bereich ── */}
       <div className="border-t border-[#E2E8F0] p-4 space-y-4 flex-shrink-0">
 
-        {/* Schnellzugriff */}
-        <div>
-          <p className="text-sm font-medium text-[#4E779F] uppercase tracking-wide mb-2">
-            Schnellzugriff
-          </p>
-          <nav>
-            {SCHNELLZUGRIFF.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2 text-sm text-[#2E4A6B] hover:text-[#1E3249] py-1.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F8FAFC] rounded px-1 transition-colors"
-              >
-                <span>{item.emoji}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </nav>
-        </div>
-
-        {/* Spenden-Kachel */}
+        {/* Kostenlos & Ehrenamtlich (Spenden) */}
         <div className="tile-sm" style={{ padding: '14px 16px', textAlign: 'center' }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 8 }}>
             Kostenlos & Ehrenamtlich
@@ -192,6 +173,25 @@ export default function RightSidebar() {
           >
             Jetzt unterstützen →
           </Link>
+        </div>
+
+        {/* Schnellzugriff */}
+        <div>
+          <p className="text-sm font-medium text-[#4E779F] uppercase tracking-wide mb-2">
+            Schnellzugriff
+          </p>
+          <nav>
+            {SCHNELLZUGRIFF.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-2 text-sm text-[#2E4A6B] hover:text-[#1E3249] py-1.5 border-b border-[#F5F5F5] last:border-0 hover:bg-[#F8FAFC] rounded px-1 transition-colors"
+              >
+                <span>{item.emoji}</span>
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </nav>
         </div>
 
       </div>

@@ -38,6 +38,7 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
   if (fotos.length === 0 && tp?.foto_url) fotos.push(tp.foto_url)
 
   const kannBewerben = currentUserRole === 'sitter' || currentUserRole === 'beide'
+  const nichtAngemeldet = currentUserRole == null
 
   // Escape-Taste schließt Modal
   useEffect(() => {
@@ -177,14 +178,14 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
             >
               Bewerben →
             </button>
-          ) : (
+          ) : nichtAngemeldet ? (
             <Link
               href="/register"
               className="block w-full text-center bg-[#2E4A6B] text-white font-bold py-3 rounded-xl hover:bg-[#1E3249] transition-colors"
             >
               Als Sitter registrieren →
             </Link>
-          )}
+          ) : null /* Tierhalter sieht keinen Bewerben-CTA */}
         </div>
       </div>
     </div>,

@@ -49,6 +49,7 @@ export default function SitterDetailModal({
 
   const initial = name.charAt(0).toUpperCase()
   const kannKontakt = currentUserRole === 'tierhalter' || currentUserRole === 'beide'
+  const nichtAngemeldet = currentUserRole == null
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
@@ -174,14 +175,14 @@ export default function SitterDetailModal({
             >
               Kontakt aufnehmen →
             </button>
-          ) : (
+          ) : nichtAngemeldet ? (
             <Link
               href="/register"
               className="block w-full text-center bg-[#2E4A6B] text-white font-bold py-3 rounded-xl hover:bg-[#1E3249] transition-colors"
             >
               Als Tierhalter registrieren →
             </Link>
-          )}
+          ) : null /* Sitter sieht keinen CTA beim anderen Sitter */}
         </div>
       </div>
     </div>,
