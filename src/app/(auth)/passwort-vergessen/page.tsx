@@ -10,11 +10,6 @@ export default function PasswortVergessenPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setEmailError('');
@@ -25,6 +20,10 @@ export default function PasswortVergessenPage() {
     }
 
     setIsLoading(true);
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: process.env.NEXT_PUBLIC_APP_URL + '/auth/callback?type=recovery',
     });

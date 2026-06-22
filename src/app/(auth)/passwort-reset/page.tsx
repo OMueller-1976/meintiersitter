@@ -15,19 +15,19 @@ export default function PasswortResetPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ password?: string; confirm?: string }>({});
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
   useEffect(() => {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') {
         setReady(true);
       }
     });
     return () => subscription.unsubscribe();
-  }, [supabase]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function validate(): boolean {
     const newErrors: typeof errors = {};
@@ -50,6 +50,10 @@ export default function PasswortResetPage() {
     if (!validate()) return;
 
     setIsLoading(true);
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
       toast.error('Passwort konnte nicht gesetzt werden. Bitte fordere einen neuen Link an.');
