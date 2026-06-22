@@ -19,6 +19,7 @@ export default function PostingNeuPage() {
   const [loading, setLoading] = useState(false);
   const [tiere, setTiere] = useState<TierProfile[]>([]);
   const [istNotfall, setIstNotfall] = useState(false);
+  const [isSitter, setIsSitter] = useState(false);
 
   const [form, setForm] = useState({
     tier_id: '',
@@ -43,7 +44,7 @@ export default function PostingNeuPage() {
       if (!user) return;
       const [{ data: tierData }, { data: profileData }] = await Promise.all([
         supabase.from('tier_profiles').select('*').eq('owner_id', user.id).eq('is_active', true),
-        supabase.from('profiles').select('plz, ort').eq('id', user.id).single(),
+        supabase.from('profiles').select('plz, ort, role').eq('id', user.id).single(),
       ]);
       setTiere(tierData ?? []);
       if (profileData) {
@@ -52,6 +53,7 @@ export default function PostingNeuPage() {
           plz: profileData.plz ?? '',
           ort: profileData.ort ?? '',
         }));
+        if (profileData.role === 'sitter') setIsSitter(true);
       }
     })();
   }, []);
@@ -85,6 +87,26 @@ export default function PostingNeuPage() {
       router.push('/dashboard/postings');
     }
   };
+
+  if (isSitter) {
+    return (
+      <div className="p-6 md:p-8 max-w-2xl">
+        <div className="bg-[#FEF3E2] border border-[#F4A261] rounded-2xl p-6 text-center">
+          <div className="text-3xl mb-3">🔒</div>
+          <h2 className="text-lg font-bold text-[#1E3249] mb-2">Gesuche sind für Tierhalter</h2>
+          <p className="text-sm text-[#8A5A2E] mb-5">
+            Als Sitter kannst Du keine Gesuche aufgeben. Bewerbe Dich stattdessen auf offene Gesuche von Tierhaltern.
+          </p>
+          <a
+            href="/pinnwand"
+            className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors text-sm"
+          >
+            Zur Pinnwand →
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-8 max-w-2xl">

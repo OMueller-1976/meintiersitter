@@ -46,6 +46,14 @@ export default async function PostingsPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+  const userRole = profileData?.role ?? null;
+  const isPureSitter = userRole === 'sitter';
+
   const tab = (searchParams.tab ?? 'offen') as PostingStatus;
 
   const { data: postings } = await supabase
@@ -77,12 +85,14 @@ export default async function PostingsPage({
           <h1 className="text-2xl font-bold text-[#1E3249]">Meine Gesuche</h1>
           <p className="text-[#4E779F] text-sm mt-1">Verwalte deine Betreuungsgesuche</p>
         </div>
-        <Link
-          href="/dashboard/postings/neu"
-          className="bg-[#2E4A6B] text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors text-sm"
-        >
-          + Neues Gesuch
-        </Link>
+        {!isPureSitter && (
+          <Link
+            href="/dashboard/postings/neu"
+            className="bg-[#2E4A6B] text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors text-sm"
+          >
+            + Neues Gesuch
+          </Link>
+        )}
       </div>
 
       {/* Tabs */}
@@ -107,7 +117,7 @@ export default async function PostingsPage({
         <div className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-12 text-center">
           <div className="text-4xl mb-4">📋</div>
           <p className="text-[#4E779F] mb-4">Keine {STATUS_CONFIG[tab].label.toLowerCase()}en Gesuche.</p>
-          {tab === 'offen' && (
+          {tab === 'offen' && !isPureSitter && (
             <Link
               href="/dashboard/postings/neu"
               className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"

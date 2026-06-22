@@ -129,13 +129,27 @@ export default async function PinnwandPage({
             <div className="bg-white rounded-2xl border border-[#C8D8EC] shadow-sm p-16 text-center">
               <div className="text-5xl mb-4">🐾</div>
               <p className="text-[#4E779F] font-medium mb-2">Noch keine Gesuche in dieser Region.</p>
-              <p className="text-sm text-[#7A9DBF] mb-6">Sei der Erste und gib ein Gesuch auf!</p>
-              <Link
-                href="/dashboard/postings/neu"
-                className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"
-              >
-                Jetzt Gesuch aufgeben
-              </Link>
+              {userRole === 'sitter' ? (
+                <>
+                  <p className="text-sm text-[#7A9DBF] mb-6">Schau später nochmal vorbei — neue Gesuche erscheinen hier.</p>
+                  <Link
+                    href="/daun/sitter"
+                    className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"
+                  >
+                    Dein Sitter-Profil ansehen →
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-[#7A9DBF] mb-6">Sei der Erste und gib ein Gesuch auf!</p>
+                  <Link
+                    href="/dashboard/postings/neu"
+                    className="inline-block bg-[#2E4A6B] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#3A5A80] transition-colors"
+                  >
+                    Jetzt Gesuch aufgeben
+                  </Link>
+                </>
+              )}
             </div>
           ) : (
             <>
@@ -183,16 +197,33 @@ export default async function PinnwandPage({
 
           {/* CTA Banner */}
           <div className="mt-10 bg-[#2E4A6B] rounded-2xl p-8 text-center text-white">
-            <p className="text-xl font-bold mb-2">Du hast ein Tier das Betreuung braucht?</p>
-            <p className="text-[#A8C0DC] text-sm mb-5">
-              Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Landkreis Vulkaneifel.
-            </p>
-            <Link
-              href={user ? '/dashboard/postings/neu' : '/register'}
-              className="inline-block bg-[#F4A261] text-white font-semibold px-7 py-3 rounded-xl hover:bg-[#E07B30] transition-colors"
-            >
-              Jetzt Gesuch aufgeben →
-            </Link>
+            {userRole === 'sitter' ? (
+              <>
+                <p className="text-xl font-bold mb-2">Du suchst einen neuen Auftrag?</p>
+                <p className="text-[#A8C0DC] text-sm mb-5">
+                  Bewerbe Dich auf offene Gesuche — kostenlos und direkt in der Vulkaneifel.
+                </p>
+                <Link
+                  href="/pinnwand"
+                  className="inline-block bg-[#F4A261] text-white font-semibold px-7 py-3 rounded-xl hover:bg-[#E07B30] transition-colors"
+                >
+                  Alle Gesuche ansehen →
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="text-xl font-bold mb-2">Du hast ein Tier das Betreuung braucht?</p>
+                <p className="text-[#A8C0DC] text-sm mb-5">
+                  Veröffentliche ein Gesuch — kostenlos, schnell, und nur für den Landkreis Vulkaneifel.
+                </p>
+                <Link
+                  href={user ? '/dashboard/postings/neu' : '/register'}
+                  className="inline-block bg-[#F4A261] text-white font-semibold px-7 py-3 rounded-xl hover:bg-[#E07B30] transition-colors"
+                >
+                  Jetzt Gesuch aufgeben →
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
