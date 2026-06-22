@@ -7,6 +7,7 @@ import { ORTSCHAFT_KOORDINATEN } from '@/lib/ortschaft-koordinaten';
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
+  const type = searchParams.get('type');
   const next = searchParams.get('next') ?? '/dashboard';
 
   if (!code) {
@@ -38,6 +39,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL('/login?error=email_confirmation_failed', request.url)
     );
+  }
+
+  // Passwort-Reset: Session ist gesetzt, direkt zur Reset-Seite
+  if (type === 'recovery') {
+    return NextResponse.redirect(new URL('/passwort-reset', request.url));
   }
 
   const user = data.user;
@@ -108,6 +114,7 @@ export async function GET(request: NextRequest) {
       bietet_uebernachtung: (sitterData.bietet_uebernachtung as boolean) ?? false,
       bietet_tagesbetreuung:(sitterData.bietet_tagesbetreuung as boolean)?? false,
       radius_km:            (sitterData.radius_km as number)             ?? 10,
+      betreuung_beim_sitter:(sitterData.betreuung_beim_sitter as boolean) ?? false,
       notfall_verfuegbar:   (sitterData.notfall_verfuegbar as boolean)   ?? false,
       notfall_telefon:      (sitterData.notfall_telefon as string)       ?? null,
       notfall_per_email:    (sitterData.notfall_per_email as boolean)    ?? true,

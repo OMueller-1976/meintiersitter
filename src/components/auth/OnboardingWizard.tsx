@@ -43,6 +43,7 @@ export interface WizardFormData {
   bietet_tagesbetreuung: boolean
   bietet_uebernachtung: boolean
   radius_km: number
+  betreuung_beim_sitter: boolean
   // Notfall
   notfall_verfuegbar: boolean
   notfall_telefon: string
@@ -72,6 +73,7 @@ const INITIAL_DATA: WizardFormData = {
   kann_medikamente: false, betreut_hunde: true, betreut_katzen: true,
   betreut_kleintiere: false, bietet_gassi: true, bietet_fuettern: true,
   bietet_tagesbetreuung: false, bietet_uebernachtung: false, radius_km: 10,
+  betreuung_beim_sitter: false,
   notfall_verfuegbar: false, notfall_telefon: '', notfall_per_email: true,
   notfall_per_sms: false, notfall_per_whatsapp: false,
   tier_name: '', tierart: null, rasse: '', alter_jahre: 0,
@@ -194,6 +196,7 @@ export default function OnboardingWizard() {
             bietet_tagesbetreuung: formData.bietet_tagesbetreuung,
             bietet_uebernachtung: formData.bietet_uebernachtung,
             radius_km: formData.radius_km,
+            betreuung_beim_sitter: formData.betreuung_beim_sitter,
             notfall_verfuegbar: formData.notfall_verfuegbar,
             notfall_telefon: formData.notfall_telefon || null,
             notfall_per_email: formData.notfall_per_email,

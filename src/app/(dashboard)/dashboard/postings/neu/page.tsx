@@ -30,6 +30,7 @@ export default function PostingNeuPage() {
     nachricht: '',
     plz: '',
     ort: '',
+    betreuungsort: 'eigenheim' as 'eigenheim' | 'beim_sitter' | 'beides',
   });
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export default function PostingNeuPage() {
       plz: form.plz,
       ort: form.ort,
       ist_notfall: istNotfall,
+      betreuungsort: form.betreuungsort,
     });
     setLoading(false);
 
@@ -139,6 +141,34 @@ export default function PostingNeuPage() {
               >
                 <span className="text-2xl">{l.icon}</span>
                 <span className="text-sm font-medium text-[#1E3249]">{l.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Betreuungsort */}
+        <div>
+          <label className="block text-sm font-medium text-[#1E3249] mb-3">
+            Wo soll die Betreuung stattfinden?
+          </label>
+          <div className="flex flex-wrap gap-3">
+            {([
+              { value: 'eigenheim', label: 'Bei mir zu Hause', icon: '🏠' },
+              { value: 'beim_sitter', label: 'Beim Sitter', icon: '🏡' },
+              { value: 'beides', label: 'Beides möglich', icon: '🔄' },
+            ] as const).map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setForm({ ...form, betreuungsort: opt.value })}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-all ${
+                  form.betreuungsort === opt.value
+                    ? 'border-[#2E4A6B] bg-[#EEF2F8] text-[#1E3249]'
+                    : 'border-[#C8D8EC] text-[#4E779F] hover:border-[#A8C0DC]'
+                }`}
+              >
+                <span>{opt.icon}</span>
+                {opt.label}
               </button>
             ))}
           </div>

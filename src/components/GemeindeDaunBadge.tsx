@@ -12,14 +12,14 @@ export default function GemeindeDaunBadge() {
         rel="noopener noreferrer"
         style={{ textDecoration: 'none' }}
       >
-        {/* Logo ist weiß auf schwarz — schwarzer Container damit es sichtbar bleibt */}
-        <div style={{ background: '#000', borderRadius: 12, width: 64, height: 64, overflow: 'hidden', margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Logo ist weiß auf schwarz — dunkler Container damit es sichtbar bleibt */}
+        <div style={{ background: '#111827', borderRadius: 12, width: 80, height: 64, margin: '0 auto 8px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px 8px' }}>
           <Image
             src="/assets/White on Black Kopie.png"
             alt="Dschinn - all you wish! Logo"
             width={64}
-            height={64}
-            style={{ objectFit: 'contain' }}
+            height={52}
+            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
           />
         </div>
         <p style={{ fontSize: 14, fontWeight: 700, color: '#1E3249', marginBottom: 2 }}>Dschinn Catering</p>

@@ -365,6 +365,7 @@ export type PostingInsert = {
   status?: PostingStatus;
   auf_pinnwand?: boolean;
   ist_notfall?: boolean;
+  betreuungsort?: 'eigenheim' | 'beim_sitter' | 'beides';
 };
 
 export type PostingUpdate = Partial<Pick<Posting, 'status' | 'auf_pinnwand' | 'nachricht'>>;

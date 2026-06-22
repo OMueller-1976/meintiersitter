@@ -7,6 +7,7 @@ export interface MatchInput {
   posting_plz: string
   lat?: number | null
   lng?: number | null
+  betreuungsort?: 'eigenheim' | 'beim_sitter' | 'beides' | null
 }
 
 export interface SitterMatchProfil {
@@ -24,12 +25,18 @@ export interface SitterMatchProfil {
   radius_km: number | null
   erfahrung_jahre: number | null
   avg_rating: number | null
+  betreuung_beim_sitter?: boolean | null
 }
 
 export function berechneMatchProzent(
   posting: MatchInput,
   sitter: SitterMatchProfil
 ): number {
+  // Harter Ausschluss: Gesuch verlangt Betreuung beim Sitter, aber Sitter bietet das nicht an
+  if (posting.betreuungsort === 'beim_sitter' && !sitter.betreuung_beim_sitter) {
+    return 0
+  }
+
   let score = 0
 
   // 1) Tierart-Kompatibilität (35 Punkte)

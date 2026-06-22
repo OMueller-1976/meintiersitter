@@ -32,6 +32,7 @@ interface SitterCardProps {
   leistungen?: string[]
   hatGarten?: boolean
   kannMedikamente?: boolean
+  betreuungBeimSitter?: boolean
   notfallVerfuegbar?: boolean
   erfahrungJahre?: number
   radiusKm?: number
@@ -45,7 +46,7 @@ export default function SitterCard({
   sitterId,
   name, ortschaft, beschreibung, fotoUrl,
   avgRating, totalReviews, leistungen = [],
-  hatGarten, kannMedikamente, notfallVerfuegbar, erfahrungJahre, radiusKm,
+  hatGarten, kannMedikamente, betreuungBeimSitter, notfallVerfuegbar, erfahrungJahre, radiusKm,
   isDummy, isLoggedIn, userRole, matchProzent,
 }: SitterCardProps) {
   const [zeigeDetail, setZeigeDetail] = useState(false)
@@ -100,8 +101,13 @@ export default function SitterCard({
         </div>
       )}
 
-      {(hatGarten || kannMedikamente) && (
+      {(hatGarten || kannMedikamente || betreuungBeimSitter) && (
         <div className="flex flex-wrap gap-1">
+          {betreuungBeimSitter && (
+            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(99,102,241,0.1)', color: '#4338ca' }}>
+              🏡 Nimmt Tiere auf
+            </span>
+          )}
           {hatGarten && (
             <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(22,163,74,0.1)', color: '#15803d' }}>
               🌿 Garten

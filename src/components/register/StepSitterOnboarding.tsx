@@ -188,6 +188,16 @@ export default function StepSitterOnboarding({ data, onChange, onSkip }: Props) 
             onChange={(v) => onChange('kann_medikamente', v)}
             label="Ich kann Medikamente verabreichen"
           />
+          <div className="flex flex-col gap-1">
+            <Toggle
+              checked={data.betreuung_beim_sitter}
+              onChange={(v) => onChange('betreuung_beim_sitter', v)}
+              label="Ich kann Tiere auch bei mir aufnehmen 🏡"
+            />
+            <p className="text-xs text-[#7A9DBF] ml-13 pl-0" style={{ paddingLeft: '52px' }}>
+              Besonders für Kleintiere wie Fische, Vögel oder Nager geeignet
+            </p>
+          </div>
         </div>
 
         {/* Notfall-Erreichbarkeit */}
