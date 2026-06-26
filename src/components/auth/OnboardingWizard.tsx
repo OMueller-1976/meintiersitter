@@ -14,6 +14,8 @@ import StepSitterOnboarding from '@/components/register/StepSitterOnboarding'
 import StepTierOnboarding from '@/components/register/StepTierOnboarding'
 import SpendenHinweis from '@/components/shared/SpendenHinweis'
 import { registerAction } from '@/app/(auth)/register/actions'
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
 export type WizardRole = 'tierhalter' | 'sitter' | 'beide'
 
@@ -94,14 +96,17 @@ const STEP_LABELS: Record<Step, string> = {
   'zusammenfassung': 'Abschluss',
 }
 
-function regionFromPathname(pathname: string): string {
-  if (pathname.startsWith('/wittlich')) return 'wittlich'
-  return 'vulkaneifel'
+function regionSlugFromPathname(pathname: string): RegionSlug {
+  const segment = pathname.split('/')[1]
+  if (segment && segment in REGIONS) return segment as RegionSlug
+  return 'daun'
 }
 
 export default function OnboardingWizard() {
   const pathname = usePathname()
-  const region = regionFromPathname(pathname)
+  const regionSlug = regionSlugFromPathname(pathname)
+  const regionCfg = REGIONS[regionSlug]
+  const region = regionCfg.dbRegion
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<WizardFormData>(INITIAL_DATA)
   const [errors, setErrors] = useState<WizardErrors>({})
@@ -320,7 +325,7 @@ export default function OnboardingWizard() {
             <span className="text-2xl">🐾</span>
             <div>
               <p className="text-white font-semibold">MeinTiersitter</p>
-              <p className="text-white/60 text-xs">Landkreis Vulkaneifel</p>
+              <p className="text-white/60 text-xs">{regionCfg.name}</p>
             </div>
           </div>
         </div>

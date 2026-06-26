@@ -14,6 +14,7 @@ interface Props {
   isLoggedIn?: boolean
   userRole?: string
   matchProzente?: Record<string, number>
+  region?: string
 }
 
 function CarouselView({ postings, isLoggedIn, userRole, matchProzente }: { postings: PostingRow[]; isLoggedIn?: boolean; userRole?: string; matchProzente?: Record<string, number> }) {
@@ -89,7 +90,7 @@ function CarouselView({ postings, isLoggedIn, userRole, matchProzente }: { posti
   );
 }
 
-export default function GesucheCarousel({ postings, isLoggedIn, userRole, matchProzente }: Props) {
+export default function GesucheCarousel({ postings, isLoggedIn, userRole, matchProzente, region = 'daun' }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -100,7 +101,7 @@ export default function GesucheCarousel({ postings, isLoggedIn, userRole, matchP
             {postings.length} offen
           </span>
         </div>
-        <Link href="/pinnwand" className="text-xs font-semibold hover:opacity-80 transition-opacity"
+        <Link href={`/${region}`} className="text-xs font-semibold hover:opacity-80 transition-opacity"
           style={{ color: 'var(--accent-green)' }}>
           Alle anzeigen →
         </Link>

@@ -22,6 +22,7 @@ interface MatchKachelnProps {
   bestMatch?: BestMatch | null
   eigenesGesuch?: EigenesGesuch | null
   aktiveChats?: number
+  region?: string
 }
 
 export default function MatchKacheln({
@@ -30,6 +31,7 @@ export default function MatchKacheln({
   bestMatch,
   eigenesGesuch,
   aktiveChats = 0,
+  region = 'daun',
 }: MatchKachelnProps) {
   if (!isLoggedIn) {
     return (
@@ -50,7 +52,7 @@ export default function MatchKacheln({
           titel="Marktplatz"
           text="Tiergeschäfte und Tierärzte in der Region"
           buttonLabel="Zum Marktplatz →"
-          href="/marktplatz"
+          href={`/${region}/marktplatz`}
         />
       </div>
     );

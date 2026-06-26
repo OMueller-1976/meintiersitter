@@ -1,6 +1,6 @@
 'use client'
 
-const SPENDEN_TEXT = `Tiersitti wird ehrenamtlich betrieben und ist für Tierhalter und Sitter komplett kostenlos. Wir freuen uns über jede Unterstützung zur Kostendeckung — bei höheren Spenden geben wir einen Teil an regionale Tierschutzvereine und -verbände in der Vulkaneifel weiter.`
+const SPENDEN_TEXT = `Tiersitti wird ehrenamtlich betrieben und ist für Tierhalter und Sitter komplett kostenlos. Wir freuen uns über jede Unterstützung zur Kostendeckung — bei höheren Spenden geben wir einen Teil an regionale Tierschutzvereine und -verbände weiter.`
 
 interface Props {
   variant?: 'kompakt' | 'ausführlich'

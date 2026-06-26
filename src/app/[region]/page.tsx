@@ -128,7 +128,7 @@ export default async function RegionPage({ params }: Props) {
     const role = profile?.role
 
     if (role === 'tierhalter' || role === 'beide') {
-      const match = await getBesterMatchFuerTierhalter(user.id)
+      const match = await getBesterMatchFuerTierhalter(user.id, regionConfig.dbRegion)
       if (match) {
         const nameKurz = match.sitterName
           ? match.sitterName.split(' ')[0] + (match.sitterName.split(' ')[1]?.[0] ? ' ' + match.sitterName.split(' ')[1][0] + '.' : '')
@@ -157,13 +157,13 @@ export default async function RegionPage({ params }: Props) {
         eigenesGesuch = { tierName, href: `/dashboard/postings` }
       }
     } else if (role === 'sitter') {
-      const match = await getBesterMatchFuerSitter(user.id)
+      const match = await getBesterMatchFuerSitter(user.id, regionConfig.dbRegion)
       if (match) {
         bestMatch = {
           label: match.tierName,
           ortLabel: match.postingOrt ? `aus ${match.postingOrt}` : '',
           prozent: match.prozent,
-          href: `/pinnwand`,
+          href: `/${region}`,
           linkLabel: 'Gesuch ansehen →',
         }
       }
@@ -215,10 +215,11 @@ export default async function RegionPage({ params }: Props) {
         bestMatch={bestMatch}
         eigenesGesuch={eigenesGesuch}
         aktiveChats={aktiveChats}
+        region={region}
       />
 
       <div className="tile p-4">
-        <GesucheCarousel postings={postings} isLoggedIn={!!user} userRole={profile?.role} matchProzente={matchProzente} />
+        <GesucheCarousel postings={postings} isLoggedIn={!!user} userRole={profile?.role} matchProzente={matchProzente} region={region} />
       </div>
 
       <div className="tile p-4">

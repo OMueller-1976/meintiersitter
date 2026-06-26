@@ -11,7 +11,7 @@ function postingKoords(ort: string | null) {
 }
 
 // Für Tierhalter: bester Sitter für eigenes offenes Gesuch
-export async function getBesterMatchFuerTierhalter(userId: string) {
+export async function getBesterMatchFuerTierhalter(userId: string, dbRegion?: string) {
   const supabase = await createClient()
 
   const { data: posting } = await supabase
@@ -25,7 +25,7 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
 
   if (!posting) return null
 
-  const { data: sitterListe } = await supabase
+  let sitterQuery = supabase
     .from('profiles')
     .select(`
       id, full_name, ort, plz, latitude, longitude,
@@ -37,6 +37,8 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
       )
     `)
     .in('role', ['sitter', 'beide'])
+  if (dbRegion) sitterQuery = sitterQuery.eq('region', dbRegion)
+  const { data: sitterListe } = await sitterQuery
 
   if (!sitterListe?.length) return null
 
@@ -87,7 +89,7 @@ export async function getBesterMatchFuerTierhalter(userId: string) {
 }
 
 // Für Sitter: bestes Gesuch für eigenes Profil
-export async function getBesterMatchFuerSitter(userId: string) {
+export async function getBesterMatchFuerSitter(userId: string, dbRegion?: string) {
   const supabase = await createClient()
 
   const { data: sitterProfil } = await supabase
@@ -110,12 +112,14 @@ export async function getBesterMatchFuerSitter(userId: string) {
 
   if (!sp) return null
 
-  const { data: postings } = await supabase
+  let postingsQuery = supabase
     .from('postings')
     .select('id, leistung, ort, plz, tier_profiles(name, tierart)')
     .eq('status', 'offen')
     .eq('auf_pinnwand', true)
     .limit(50)
+  if (dbRegion) postingsQuery = postingsQuery.eq('region', dbRegion)
+  const { data: postings } = await postingsQuery
 
   if (!postings?.length) return null
 
