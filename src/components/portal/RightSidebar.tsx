@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GemeindeDaunBadge from '@/components/GemeindeDaunBadge';
+import { REGION_CONTENT } from '@/lib/region-content';
 
 interface InfoKachel {
   kategorie: string;
@@ -14,54 +15,65 @@ interface InfoKachel {
 }
 
 function buildInfoKacheln(region: string): InfoKachel[] {
-  return [
-    {
+  const content = REGION_CONTENT[region] ?? REGION_CONTENT['daun'];
+  const kacheln: InfoKachel[] = [];
+
+  if (content.wanderrouten[0]) {
+    kacheln.push({
       kategorie: 'Wandertipp',
       emoji: '🥾',
-      titel: 'Dauner Maare Runde',
-      text: 'Ca. 12 km rund um Gemündener, Weinfelder und Schalkenmehrener Maar. Hund an der Leine.',
+      titel: content.wanderrouten[0].titel,
+      text: content.wanderrouten[0].beschreibung,
       link: `/${region}/ratgeber/wandern`,
       link_label: 'Zur Route →',
-    },
-    {
-      kategorie: 'Hundestrand',
-      emoji: '🏖',
-      titel: 'Freilinger See',
-      text: 'Offizieller Hundestrand bei Blankenheim — Liegewiese, Badebereich, Kiosk. Leinenpflicht.',
-      link: `/${region}/ratgeber/hundestrand`,
-      link_label: 'Mehr erfahren →',
-    },
-    {
+    });
+  }
+
+  if (content.wanderrouten[1]) {
+    kacheln.push({
       kategorie: 'Wandertipp',
       emoji: '🏆',
-      titel: 'HeimatSpur MaareGlück',
-      text: 'Nominiert für Deutschlands schönsten Wanderweg 2026. Ideal für Hundebesitzer.',
+      titel: content.wanderrouten[1].titel,
+      text: content.wanderrouten[1].beschreibung,
       link: `/${region}/ratgeber/wandern`,
       link_label: 'Zur Route →',
-    },
-    {
-      kategorie: 'Marktplatz',
-      emoji: '🏪',
-      titel: 'Tiergeschäfte in der Region',
-      text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
-      link: `/${region}/marktplatz`,
-      link_label: 'Zum Marktplatz →',
-    },
-    {
-      kategorie: 'Tipp',
-      emoji: '💡',
-      titel: 'Erstes Kennenlernen',
-      text: 'Vor dem ersten Match empfehlen wir ein kurzes Kennenlernen — für Mensch und Tier.',
-      link: `/${region}/ratgeber`,
-      link_label: 'Tipps lesen →',
-    },
-  ];
+    });
+  }
+
+  kacheln.push({
+    kategorie: 'Special Hunde',
+    emoji: '🐕',
+    titel: content.hundestrand.name,
+    text: content.hundestrand.beschreibung,
+    link: `/${region}/hundestrand`,
+    link_label: 'Mehr erfahren →',
+  });
+
+  kacheln.push({
+    kategorie: 'Marktplatz',
+    emoji: '🏪',
+    titel: 'Tiergeschäfte in der Region',
+    text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
+    link: `/${region}/marktplatz`,
+    link_label: 'Zum Marktplatz →',
+  });
+
+  kacheln.push({
+    kategorie: 'Tipp',
+    emoji: '💡',
+    titel: 'Erstes Kennenlernen',
+    text: 'Vor dem ersten Match empfehlen wir ein kurzes Kennenlernen — für Mensch und Tier.',
+    link: `/${region}/ratgeber`,
+    link_label: 'Tipps lesen →',
+  });
+
+  return kacheln;
 }
 
 function buildSchnellzugriff(region: string) {
   return [
     { emoji: '🗺', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
-    { emoji: '🏖', label: 'Hundestrand', href: `/${region}/ratgeber/hundestrand` },
+    { emoji: '🐕', label: 'Special Hunde', href: `/${region}/hundestrand` },
     { emoji: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
     { emoji: '📋', label: 'Alle Gesuche', href: '/pinnwand' },
   ];
