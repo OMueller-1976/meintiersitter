@@ -30,7 +30,7 @@ export default async function MarktplatzPage({ params }: Props) {
       </p>
 
       {Object.keys(gruppen).length === 0 && (
-        <p className="text-sm text-[#7A9DBF]">Aktuell sind keine Einträge vorhanden.</p>
+        <p className="text-sm text-[#7A9DBF]">Noch keine Einträge für diese Region. Kommt bald!</p>
       )}
 
       {Object.entries(gruppen).map(([kategorie, items]) => (

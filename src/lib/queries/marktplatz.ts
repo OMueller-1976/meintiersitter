@@ -17,16 +17,6 @@ export async function getMarktplatzEintraege(region?: string) {
   const { data, error } = await query
 
   if (error) {
-    // Fallback: region-Spalte existiert möglicherweise noch nicht — alle Einträge laden
-    if (region) {
-      const { data: allData, error: allError } = await supabase
-        .from('marktplatz_eintraege')
-        .select('*')
-        .eq('is_active', true)
-        .order('kategorie')
-        .order('name')
-      if (!allError) return allData ?? []
-    }
     console.error('getMarktplatzEintraege error:', error)
     return []
   }
