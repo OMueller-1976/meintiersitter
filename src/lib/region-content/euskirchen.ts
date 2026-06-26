@@ -79,12 +79,14 @@ export const euskirchenContent: RegionContent = {
     {
       name: 'Tierheim Euskirchen',
       adresse: 'Euskirchen, Nordrhein-Westfalen',
+      oeffnungszeiten: 'Di–Fr 14–17 Uhr, Sa+So 14–17 Uhr',
       beschreibung:
         'Tierheim des Tierschutzvereins Euskirchen und Umgebung e.V. Fundtiere, Hunde- und Katzenvermittlung.',
     },
     {
       name: 'Tierheim Rheinbach',
       adresse: 'Rheinbach, Nordrhein-Westfalen',
+      oeffnungszeiten: 'Mi+Sa 14–17 Uhr, So 10–12 Uhr',
       beschreibung:
         'Tierschutzverein Rheinbach e.V. Vermittlung von Hunden, Katzen und Kleintieren.',
     },

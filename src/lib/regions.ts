@@ -30,3 +30,8 @@ export const REGIONS = {
 }
 
 export type RegionSlug = keyof typeof REGIONS
+
+export function getRegionSlugByDbRegion(dbRegion: string): RegionSlug {
+  const entry = Object.entries(REGIONS).find(([, v]) => v.dbRegion === dbRegion)
+  return (entry?.[0] ?? 'daun') as RegionSlug
+}

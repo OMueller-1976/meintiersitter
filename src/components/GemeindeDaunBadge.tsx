@@ -1,6 +1,11 @@
 import Image from 'next/image'
 
-export default function GemeindeDaunBadge() {
+interface Props {
+  region?: string
+}
+
+export default function GemeindeDaunBadge({ region }: Props) {
+  if (region && region !== 'daun') return null
   return (
     <div className="tile-sm" style={{ padding: '14px 16px', textAlign: 'center' }}>
       <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 10 }}>

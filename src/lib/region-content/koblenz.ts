@@ -80,12 +80,14 @@ export const koblenzContent: RegionContent = {
       name: 'Tierheim Koblenz',
       adresse: 'Koblenz, Rheinland-Pfalz',
       website: 'tierheim-koblenz.de',
+      oeffnungszeiten: 'Di–Fr 14–17 Uhr, Sa+So 13–17 Uhr',
       beschreibung:
         'Städtisches Tierheim für Koblenz und Umgebung. Fundtiere, Vermittlung und Tierschutz.',
     },
     {
       name: 'Tierheim Mayen',
       adresse: 'Mayen, Rheinland-Pfalz',
+      oeffnungszeiten: 'Mi+Sa 14–17 Uhr, So 10–12 Uhr',
       beschreibung:
         'Tierheim des Tierschutzvereins Mayen und Umgebung e.V. Annahme und Vermittlung von Fundtieren.',
     },

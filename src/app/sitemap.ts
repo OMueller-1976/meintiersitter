@@ -1,26 +1,27 @@
 import { MetadataRoute } from 'next'
+import { REGIONS } from '@/lib/regions'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://tiersitti.de'
   const now = new Date()
 
-  const routes = [
-    { url: `${base}/daun`, priority: 1.0 },
-    { url: `${base}/pinnwand`, priority: 0.9 },
-    { url: `${base}/daun/sitter`, priority: 0.9 },
-    { url: `${base}/ratgeber`, priority: 0.8 },
-    { url: `${base}/ratgeber/wandern`, priority: 0.7 },
-    { url: `${base}/ratgeber/hundestrand`, priority: 0.7 },
-    { url: `${base}/ratgeber/unterkuenfte`, priority: 0.7 },
-    { url: `${base}/anlaufstellen`, priority: 0.7 },
-    { url: `${base}/marktplatz`, priority: 0.7 },
-    { url: `${base}/foerderer`, priority: 0.5 },
+  const staticRoutes = [
     { url: `${base}/impressum`, priority: 0.3 },
     { url: `${base}/datenschutz`, priority: 0.3 },
-    { url: `${base}/agb`, priority: 0.3 },
   ]
 
-  return routes.map(({ url, priority }) => ({
+  const regionRoutes = Object.keys(REGIONS).flatMap((slug) => [
+    { url: `${base}/${slug}`, priority: 1.0 },
+    { url: `${base}/${slug}/sitter`, priority: 0.9 },
+    { url: `${base}/${slug}/marktplatz`, priority: 0.7 },
+    { url: `${base}/${slug}/wanderrouten`, priority: 0.7 },
+    { url: `${base}/${slug}/hundestrand`, priority: 0.7 },
+    { url: `${base}/${slug}/anlaufstellen`, priority: 0.7 },
+    { url: `${base}/${slug}/unterkunfte`, priority: 0.7 },
+    { url: `${base}/${slug}/ratgeber`, priority: 0.7 },
+  ])
+
+  return [...staticRoutes, ...regionRoutes].map(({ url, priority }) => ({
     url,
     lastModified: now,
     changeFrequency: 'weekly' as const,

@@ -162,7 +162,7 @@ export default function RightSidebar({ region = 'daun' }: RightSidebarProps) {
         </div>
 
         {/* Kachel 2: Gemeinde Daun */}
-        <GemeindeDaunBadge />
+        <GemeindeDaunBadge region={region} />
 
       </div>
 
