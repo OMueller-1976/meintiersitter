@@ -1,100 +1,112 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { REGIONS } from '@/lib/regions';
+import type { RegionSlug } from '@/lib/regions';
 
-const kategorien = [
-  {
-    icon: '🥾',
-    iconBg: 'bg-[#EEF2F8]',
-    iconColor: 'text-[#2E4A6B]',
-    title: 'Wandern & Gassi',
-    desc: 'Die schönsten Routen in der Vulkaneifel – von der kurzen Abendrunde bis zur Tageswanderung.',
-    badge: '4 Routen',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: '/ratgeber/wandern',
-  },
-  {
-    icon: '🏖',
-    iconBg: 'bg-[#EEF2F8]',
-    iconColor: 'text-[#2E4A6B]',
-    title: 'Bademöglichkeiten',
-    desc: 'Wo Hunde planschen dürfen – Seen und Bäche in der Region mit Hundebereich.',
-    badge: '3 Spots',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: '/ratgeber/hundestrand',
-  },
-  {
-    icon: '🏨',
-    iconBg: 'bg-orange-100',
-    iconColor: 'text-[#F4A261]',
-    title: 'Hundefreundliche Unterkünfte',
-    desc: 'Hotels, Pensionen und Ferienhäuser in der Vulkaneifel und Umgebung.',
-    badge: '3 Tipps',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: '/ratgeber/unterkuenfte',
-  },
-  {
-    icon: '🍖',
-    iconBg: 'bg-[#EEF2F8]',
-    iconColor: 'text-[#2E4A6B]',
-    title: 'Ernährung & Gesundheit',
-    desc: 'Richtige Fütterung, häufige Krankheiten und Erste Hilfe beim Hund.',
-    badge: '4 Artikel',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: null,
-  },
-  {
-    icon: '⚖',
-    iconBg: 'bg-[#EEF2F8]',
-    iconColor: 'text-[#2E4A6B]',
-    title: 'Recht & Regeln',
-    desc: 'Leinenpflicht in RLP, Naturschutzgebiete, Maulkorbpflicht – was gilt wo?',
-    badge: '3 Artikel',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: null,
-  },
-  {
-    icon: '🗺',
-    iconBg: 'bg-[#EEF2F8]',
-    iconColor: 'text-[#2E4A6B]',
-    title: 'Ausflugsziele',
-    desc: 'Burgen, Maare, Cafés – hundefreundliche Ausflugsziele rund um Daun.',
-    badge: '6 Tipps',
-    badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
-    href: null,
-  },
-];
+interface Props {
+  params: { region: string }
+}
 
-const wanderrouten = [
-  {
-    icon: '🗻',
-    title: 'Dauner Maare Runde',
-    subtitle: 'Gemündener, Weinfelder & Schalkenmehrener Maar',
-    meta: 'ca. 12 km · mittel · Hund an der Leine',
-    detail: 'Start: Parkplatz Gemündener Maar',
-  },
-  {
-    icon: '🌿',
-    title: 'HeimatSpur MaareGlück',
-    subtitle: 'Offiziell nominiert als Deutschlands schönster Wanderweg 2026',
-    meta: 'variabel · leicht bis mittel · hundefreundlich',
-    detail: '',
-  },
-  {
-    icon: '🚴',
-    title: 'Maare-Mosel-Radweg',
-    subtitle: 'Daun → Wittlich · 60 km · flach · Ideal für Hunde',
-    meta: 'Ehemalige Bahntrasse, kaum Steigungen',
-    detail: '',
-  },
-];
+export default function RatgeberPage({ params }: Props) {
+  const { region } = params;
+  if (!(region in REGIONS)) notFound();
 
-export default function RatgeberPage() {
+  const kategorien = [
+    {
+      icon: '🥾',
+      iconBg: 'bg-[#EEF2F8]',
+      iconColor: 'text-[#2E4A6B]',
+      title: 'Wandern & Gassi',
+      desc: 'Die schönsten Routen in der Vulkaneifel – von der kurzen Abendrunde bis zur Tageswanderung.',
+      badge: '4 Routen',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: `/${region}/ratgeber/wandern`,
+    },
+    {
+      icon: '🏖',
+      iconBg: 'bg-[#EEF2F8]',
+      iconColor: 'text-[#2E4A6B]',
+      title: 'Bademöglichkeiten',
+      desc: 'Wo Hunde planschen dürfen – Seen und Bäche in der Region mit Hundebereich.',
+      badge: '3 Spots',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: `/${region}/ratgeber/hundestrand`,
+    },
+    {
+      icon: '🏨',
+      iconBg: 'bg-orange-100',
+      iconColor: 'text-[#F4A261]',
+      title: 'Hundefreundliche Unterkünfte',
+      desc: 'Hotels, Pensionen und Ferienhäuser in der Vulkaneifel und Umgebung.',
+      badge: '3 Tipps',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: `/${region}/ratgeber/unterkuenfte`,
+    },
+    {
+      icon: '🍖',
+      iconBg: 'bg-[#EEF2F8]',
+      iconColor: 'text-[#2E4A6B]',
+      title: 'Ernährung & Gesundheit',
+      desc: 'Richtige Fütterung, häufige Krankheiten und Erste Hilfe beim Hund.',
+      badge: '4 Artikel',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: null,
+    },
+    {
+      icon: '⚖',
+      iconBg: 'bg-[#EEF2F8]',
+      iconColor: 'text-[#2E4A6B]',
+      title: 'Recht & Regeln',
+      desc: 'Leinenpflicht in RLP, Naturschutzgebiete, Maulkorbpflicht – was gilt wo?',
+      badge: '3 Artikel',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: null,
+    },
+    {
+      icon: '🗺',
+      iconBg: 'bg-[#EEF2F8]',
+      iconColor: 'text-[#2E4A6B]',
+      title: 'Ausflugsziele',
+      desc: 'Burgen, Maare, Cafés – hundefreundliche Ausflugsziele rund um Daun.',
+      badge: '6 Tipps',
+      badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
+      href: null,
+    },
+  ];
+
+  const regionConfig = REGIONS[region as RegionSlug];
+
+  const wanderrouten = [
+    {
+      icon: '🗻',
+      title: 'Dauner Maare Runde',
+      subtitle: 'Gemündener, Weinfelder & Schalkenmehrener Maar',
+      meta: 'ca. 12 km · mittel · Hund an der Leine',
+      detail: 'Start: Parkplatz Gemündener Maar',
+    },
+    {
+      icon: '🌿',
+      title: 'HeimatSpur MaareGlück',
+      subtitle: 'Offiziell nominiert als Deutschlands schönster Wanderweg 2026',
+      meta: 'variabel · leicht bis mittel · hundefreundlich',
+      detail: '',
+    },
+    {
+      icon: '🚴',
+      title: 'Maare-Mosel-Radweg',
+      subtitle: 'Daun → Wittlich · 60 km · flach · Ideal für Hunde',
+      meta: 'Ehemalige Bahntrasse, kaum Steigungen',
+      detail: '',
+    },
+  ];
+
   return (
     <main>
         {/* ── Hero klein ────────────────────────────────────────── */}
         <section className="bg-[#EEF2F8] py-14 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-[#1E3249] mb-4">
-              Ratgeber für Hundebesitzer in der Vulkaneifel
+              Ratgeber für Hundebesitzer in {regionConfig.name}
             </h1>
             <p className="text-[#4E779F] text-lg">
               Ausflugstipps, Wanderrouten und nützliches Basiswissen für Dich und Deinen Hund.
@@ -171,7 +183,7 @@ export default function RatgeberPage() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-[#1E3249] mb-3">Featured Wanderrouten</h2>
             <p className="text-[#4E779F] mb-10">
-              Die beliebtesten Touren für Hund und Halter in der Vulkaneifel
+              Die beliebtesten Touren für Hund und Halter in {regionConfig.name}
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {wanderrouten.map((r) => (

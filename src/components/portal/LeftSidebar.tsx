@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 interface LeftSidebarProps {
   isLoggedIn?: boolean;
+  region?: string;
 }
 
 interface NavItem {
@@ -18,32 +19,34 @@ interface NavGroup {
   items: NavItem[];
 }
 
-const navGroups: NavGroup[] = [
-  {
-    items: [
-      { icon: '🏠', label: 'Portal Vulkaneifel', href: '/daun' },
-      { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
-      { icon: '🐾', label: 'Sitter entdecken', href: '/daun/sitter' },
-    ],
-  },
-  {
-    label: 'ERKUNDEN',
-    items: [
-      { icon: '🥾', label: 'Wanderrouten', href: '/ratgeber/wandern' },
-      { icon: '🏖', label: 'Hundestrand', href: '/ratgeber/hundestrand' },
-      { icon: '🏨', label: 'Unterkünfte', href: '/ratgeber/unterkuenfte' },
-      { icon: '🏪', label: 'Marktplatz', href: '/marktplatz' },
-      { icon: '📖', label: 'Ratgeber', href: '/ratgeber' },
-    ],
-  },
-  {
-    label: 'ANLAUFSTELLEN',
-    items: [
-      { icon: '🏠', label: 'Tierheime & Vereine', href: '/anlaufstellen' },
-      { icon: '🍖', label: 'Futterstationen', href: '/anlaufstellen#futterstationen' },
-    ],
-  },
-];
+function buildNavGroups(region: string): NavGroup[] {
+  return [
+    {
+      items: [
+        { icon: '🏠', label: 'Portal', href: `/${region}` },
+        { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
+        { icon: '🐾', label: 'Sitter entdecken', href: `/${region}/sitter` },
+      ],
+    },
+    {
+      label: 'ERKUNDEN',
+      items: [
+        { icon: '🥾', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
+        { icon: '🏖', label: 'Hundestrand', href: `/${region}/ratgeber/hundestrand` },
+        { icon: '🏨', label: 'Unterkünfte', href: `/${region}/ratgeber/unterkuenfte` },
+        { icon: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
+        { icon: '📖', label: 'Ratgeber', href: `/${region}/ratgeber` },
+      ],
+    },
+    {
+      label: 'ANLAUFSTELLEN',
+      items: [
+        { icon: '🏠', label: 'Tierheime & Vereine', href: `/${region}/anlaufstellen` },
+        { icon: '🍖', label: 'Futterstationen', href: `/${region}/anlaufstellen#futterstationen` },
+      ],
+    },
+  ];
+}
 
 const loggedInGroup: NavGroup = {
   label: 'MEIN BEREICH',
@@ -54,9 +57,10 @@ const loggedInGroup: NavGroup = {
   ],
 };
 
-export default function LeftSidebar({ isLoggedIn }: LeftSidebarProps) {
+export default function LeftSidebar({ isLoggedIn, region = 'daun' }: LeftSidebarProps) {
   const pathname = usePathname();
 
+  const navGroups = buildNavGroups(region);
   const groups = isLoggedIn ? [...navGroups, loggedInGroup] : navGroups;
 
   return (

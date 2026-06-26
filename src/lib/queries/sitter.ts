@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function getAktiveSitter(filters?: {
   ort?: string
+  region?: string
 }) {
   const supabase = await createClient()
 
@@ -18,6 +19,9 @@ export async function getAktiveSitter(filters?: {
     `)
     .eq('role', 'sitter')
 
+  if (filters?.region) {
+    query = query.eq('region', filters.region)
+  }
   if (filters?.ort && filters.ort !== 'Alle Ortschaften') {
     query = query.eq('ort', filters.ort)
   }

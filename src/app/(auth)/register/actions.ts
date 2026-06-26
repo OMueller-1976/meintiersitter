@@ -18,7 +18,8 @@ export interface RegisterData {
 }
 
 export async function registerAction(
-  data: RegisterData
+  data: RegisterData,
+  region: string = 'vulkaneifel'
 ): Promise<{ error: string } | { success: true; email: string } | undefined> {
   const cookieStore = await cookies();
 
@@ -56,6 +57,7 @@ export async function registerAction(
         ort: data.ort,
         ortschaft: data.ortschaft || null,
         phone: data.phone || null,
+        region,
         sitter_data: data.sitter_data || null,
         tier_data: data.tier_data || null,
       },

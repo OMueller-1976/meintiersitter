@@ -4,6 +4,7 @@ export async function getOffenePostings(filters?: {
   ort?: string
   leistung?: string
   nurNotfall?: boolean
+  region?: string
 }) {
   const supabase = await createClient()
 
@@ -23,6 +24,9 @@ export async function getOffenePostings(filters?: {
     .order('ist_notfall', { ascending: false })
     .order('created_at', { ascending: false })
 
+  if (filters?.region) {
+    query = query.eq('region', filters.region)
+  }
   if (filters?.ort && filters.ort !== 'Alle Ortschaften') {
     query = query.eq('ort', filters.ort)
   }

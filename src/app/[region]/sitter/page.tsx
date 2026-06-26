@@ -8,14 +8,20 @@ import Link from 'next/link'
 import SitterCard from '@/components/portal/SitterCard'
 import { getAktiveSitter } from '@/lib/queries/sitter'
 import { getMatchProzenteForTierhalter } from '@/lib/queries/matching'
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
-const BUNDESLAND = 'rheinland-pfalz'
-const LANDKREIS = 'daun'
-const LANDKREIS_NAME = 'Daun'
+interface Props {
+  params: { region: string }
+}
 
-export const metadata: Metadata = {
-  title: `Sitter in ${LANDKREIS_NAME} – Tiersitti`,
-  description: `Alle Tiersitter im Kreis ${LANDKREIS_NAME} auf einen Blick.`,
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cfg = REGIONS[params.region as RegionSlug]
+  if (!cfg) return {}
+  return {
+    title: `Sitter in ${cfg.name} – Tiersitti`,
+    description: `Alle Tiersitter im ${cfg.name} auf einen Blick.`,
+  }
 }
 
 function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
@@ -33,16 +39,21 @@ function getLeistungen(sp: {
   bietet_tagesbetreuung: boolean | null
   bietet_uebernachtung: boolean | null
 } | null | undefined): string[] {
-  if (!sp) return [];
-  const l: string[] = [];
-  if (sp.bietet_gassi) l.push('gassi');
-  if (sp.bietet_fuettern) l.push('fuettern');
-  if (sp.bietet_tagesbetreuung) l.push('tagesbetreuung');
-  if (sp.bietet_uebernachtung) l.push('uebernachtung');
-  return l;
+  if (!sp) return []
+  const l: string[] = []
+  if (sp.bietet_gassi) l.push('gassi')
+  if (sp.bietet_fuettern) l.push('fuettern')
+  if (sp.bietet_tagesbetreuung) l.push('tagesbetreuung')
+  if (sp.bietet_uebernachtung) l.push('uebernachtung')
+  return l
 }
 
-export default async function SitterOverviewPage() {
+export default async function RegionSitterPage({ params }: Props) {
+  const { region } = params
+
+  if (!(region in REGIONS)) notFound()
+  const regionConfig = REGIONS[region as RegionSlug]
+
   const cookieStore = await cookies()
 
   // Region validieren
@@ -51,17 +62,15 @@ export default async function SitterOverviewPage() {
     const { data, error } = await supabase
       .from('regions')
       .select('id, is_active')
-      .eq('bundesland_slug', BUNDESLAND)
-      .eq('landkreis_slug', LANDKREIS)
+      .eq('landkreis_slug', region)
       .maybeSingle()
     if (error) throw error
-    if (!data) notFound()
-    if (!data.is_active) notFound()
+    if (!data || !data.is_active) notFound()
   } catch {
     // Bei DB-Fehler trotzdem anzeigen
   }
 
-  // User laden für Kontakt-Button
+  // User laden für Kontakt-Button + Match-Prozente
   let userId: string | null = null
   let userRole: string | null = null
   try {
@@ -78,9 +87,8 @@ export default async function SitterOverviewPage() {
     }
   } catch { /* ignore */ }
 
-  const sitters = await getAktiveSitter()
+  const sitters = await getAktiveSitter({ region: regionConfig.dbRegion })
 
-  // Match-Prozente für Tierhalter berechnen
   let matchProzente: Record<string, number> = {}
   if (userId && (userRole === 'tierhalter' || userRole === 'beide') && sitters.length > 0) {
     matchProzente = await getMatchProzenteForTierhalter(userId, sitters.map((s) => s.id))
@@ -90,16 +98,16 @@ export default async function SitterOverviewPage() {
     <div className="flex flex-col gap-5">
       <div>
         <Link
-          href="/daun"
+          href={`/${region}`}
           className="text-sm hover:opacity-80 transition-opacity"
           style={{ color: 'var(--accent-green)' }}
         >
-          ← Portal {LANDKREIS_NAME}
+          ← Portal {regionConfig.name}
         </Link>
       </div>
 
       <div>
-        <h1 className="text-2xl font-extrabold">Sitter in {LANDKREIS_NAME} 🐾</h1>
+        <h1 className="text-2xl font-extrabold">Sitter in {regionConfig.name} 🐾</h1>
         <p className="text-sm text-secondary mt-1">Alle verfügbaren Tiersitter in Deiner Region.</p>
       </div>
 
@@ -107,7 +115,7 @@ export default async function SitterOverviewPage() {
         <div className="tile p-12 text-center">
           <div className="text-4xl mb-3">🐾</div>
           <p className="text-secondary font-medium mb-1">Noch keine Sitter registriert.</p>
-          <p className="text-sm text-muted mb-4">Sei der Erste in {LANDKREIS_NAME}!</p>
+          <p className="text-sm text-muted mb-4">Sei der Erste in {regionConfig.name}!</p>
           <Link
             href="/register?role=sitter"
             className="inline-block text-sm font-bold hover:opacity-80 transition-opacity"
@@ -119,7 +127,7 @@ export default async function SitterOverviewPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {sitters.map((s) => {
-            const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles;
+            const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles
             return (
               <SitterCard
                 key={s.id}
@@ -142,7 +150,7 @@ export default async function SitterOverviewPage() {
                 userRole={userRole ?? undefined}
                 matchProzent={matchProzente[s.id]}
               />
-            );
+            )
           })}
         </div>
       )}

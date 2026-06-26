@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import GesucheCarousel from '@/components/portal/GesucheCarousel'
 import SitterCarousel from '@/components/portal/SitterCarousel'
@@ -9,14 +10,18 @@ import MatchKacheln from '@/components/portal/MatchKacheln'
 import { getOffenePostings } from '@/lib/queries/postings'
 import { getAktiveSitter } from '@/lib/queries/sitter'
 import { getBesterMatchFuerTierhalter, getBesterMatchFuerSitter, getMatchProzenteForSitter, getMatchProzenteForTierhalter } from '@/lib/queries/matching'
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 import type { Profile } from '@/types'
 
-const BUNDESLAND = 'rheinland-pfalz'
-const LANDKREIS = 'daun'
-const LANDKREIS_NAME = 'Vulkaneifel'
+interface Props {
+  params: { region: string }
+}
 
-export const metadata: Metadata = {
-  title: `Tiersitti – ${LANDKREIS_NAME}`,
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cfg = REGIONS[params.region as RegionSlug]
+  if (!cfg) return {}
+  return { title: `Tiersitti – ${cfg.name}` }
 }
 
 function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
@@ -28,39 +33,43 @@ function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   })
 }
 
-export default async function DaunPage() {
+export default async function RegionPage({ params }: Props) {
+  const { region } = params
+
+  if (!(region in REGIONS)) notFound()
+  const regionConfig = REGIONS[region as RegionSlug]
+
   const cookieStore = await cookies()
 
-  // Region laden
-  let region: { id: string; landkreis_name: string; is_active: boolean } | null = null
+  // Region aus DB laden
+  let regionRow: { id: string; landkreis_name: string; is_active: boolean } | null = null
   try {
     const supabase = buildSupabase(cookieStore)
     const { data, error } = await supabase
       .from('regions')
       .select('id, landkreis_name, is_active')
-      .eq('bundesland_slug', BUNDESLAND)
-      .eq('landkreis_slug', LANDKREIS)
+      .eq('landkreis_slug', region)
       .maybeSingle()
     if (error) throw error
-    region = data
+    regionRow = data
   } catch (err) {
-    console.error('[DaunPage] Fehler beim Laden der Region:', err)
+    console.error(`[RegionPage/${region}] Fehler beim Laden der Region:`, err)
   }
 
-  if (region && !region.is_active) {
+  if (regionRow && !regionRow.is_active) {
     return (
       <div className="flex items-center justify-center min-h-full py-16">
         <div className="tile text-center p-12 max-w-lg">
           <div className="text-4xl mb-4">🐾</div>
           <h1 className="text-2xl font-extrabold mb-3">
-            Tiersitti kommt nach {region.landkreis_name}!
+            Tiersitti kommt nach {regionConfig.name}!
           </h1>
           <p className="text-secondary mb-6">
             Wir arbeiten daran, Tiersitti in Deiner Region zu starten.
             Trag Dich auf die Warteliste ein – Du wirst als Erster informiert.
           </p>
           <form action="/api/v1/waitlist" method="POST" className="flex flex-col gap-3 max-w-sm mx-auto">
-            <input type="hidden" name="landkreis" value={LANDKREIS} />
+            <input type="hidden" name="landkreis" value={region} />
             <input
               type="email"
               name="email"
@@ -97,7 +106,7 @@ export default async function DaunPage() {
       profile = data
     }
   } catch (err) {
-    console.error('[DaunPage] Fehler beim Laden des Profils:', err)
+    console.error(`[RegionPage/${region}] Fehler beim Laden des Profils:`, err)
   }
 
   // Match-Daten + eigenes Gesuch + aktive Chats laden (nur wenn eingeloggt)
@@ -127,7 +136,7 @@ export default async function DaunPage() {
           label: nameKurz,
           ortLabel: match.sitterOrt ? `aus ${match.sitterOrt}` : '',
           prozent: match.prozent,
-          href: `/daun/sitter`,
+          href: `/${region}/sitter`,
           linkLabel: 'Match ansehen →',
         }
       }
@@ -168,24 +177,20 @@ export default async function DaunPage() {
     aktiveChats = count ?? 0
   }
 
-  // Echte Daten laden
   const [postings, sitter] = await Promise.all([
-    getOffenePostings(),
-    getAktiveSitter(),
+    getOffenePostings({ region: regionConfig.dbRegion }),
+    getAktiveSitter({ region: regionConfig.dbRegion }),
   ])
 
-  // Match-Prozente für Sitter (zeigt Prozent auf Posting-Karten)
   if (user && (profile?.role === 'sitter' || profile?.role === 'beide') && postings.length > 0) {
     matchProzente = await getMatchProzenteForSitter(user.id, postings)
   }
-
-  // Match-Prozente für Tierhalter (zeigt Prozent auf Sitter-Karten)
   if (user && (profile?.role === 'tierhalter' || profile?.role === 'beide') && sitter.length > 0) {
     matchProzenteForSitters = await getMatchProzenteForTierhalter(user.id, sitter.map((s) => s.id))
   }
 
   const vorname = profile?.full_name?.split(' ')[0] ?? ''
-  const regionName = region?.landkreis_name ?? LANDKREIS_NAME
+  const displayName = regionRow?.landkreis_name ?? regionConfig.name
 
   return (
     <div className="flex flex-col gap-5">
@@ -193,12 +198,12 @@ export default async function DaunPage() {
         <h1 className="text-2xl font-extrabold">
           {user && vorname
             ? `Guten Tag, ${vorname}! 🐾`
-            : `Willkommen bei Tiersitti ${regionName} 🐾`}
+            : `Willkommen bei Tiersitti ${displayName} 🐾`}
         </h1>
         <p className="text-sm text-secondary mt-1">
           {user
             ? 'Hier ist was heute in der Region los ist.'
-            : `Finde oder werde ein Tiersitter im Landkreis ${regionName}.`}
+            : `Finde oder werde ein Tiersitter im ${displayName}.`}
         </p>
       </div>
 

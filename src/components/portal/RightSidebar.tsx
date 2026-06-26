@@ -13,57 +13,68 @@ interface InfoKachel {
   link_label: string;
 }
 
-const INFO_KACHELN: InfoKachel[] = [
-  {
-    kategorie: 'Wandertipp',
-    emoji: '🥾',
-    titel: 'Dauner Maare Runde',
-    text: 'Ca. 12 km rund um Gemündener, Weinfelder und Schalkenmehrener Maar. Hund an der Leine.',
-    link: '/ratgeber/wandern',
-    link_label: 'Zur Route →',
-  },
-  {
-    kategorie: 'Hundestrand',
-    emoji: '🏖',
-    titel: 'Freilinger See',
-    text: 'Offizieller Hundestrand bei Blankenheim — Liegewiese, Badebereich, Kiosk. Leinenpflicht.',
-    link: '/ratgeber/hundestrand',
-    link_label: 'Mehr erfahren →',
-  },
-  {
-    kategorie: 'Wandertipp',
-    emoji: '🏆',
-    titel: 'HeimatSpur MaareGlück',
-    text: 'Nominiert für Deutschlands schönsten Wanderweg 2026. Ideal für Hundebesitzer.',
-    link: '/ratgeber/wandern',
-    link_label: 'Zur Route →',
-  },
-  {
-    kategorie: 'Marktplatz',
-    emoji: '🏪',
-    titel: 'Tiergeschäfte in der Vulkaneifel',
-    text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
-    link: '/marktplatz',
-    link_label: 'Zum Marktplatz →',
-  },
-  {
-    kategorie: 'Tipp',
-    emoji: '💡',
-    titel: 'Erstes Kennenlernen',
-    text: 'Vor dem ersten Match empfehlen wir ein kurzes Kennenlernen — für Mensch und Tier.',
-    link: '/ratgeber',
-    link_label: 'Tipps lesen →',
-  },
-];
+function buildInfoKacheln(region: string): InfoKachel[] {
+  return [
+    {
+      kategorie: 'Wandertipp',
+      emoji: '🥾',
+      titel: 'Dauner Maare Runde',
+      text: 'Ca. 12 km rund um Gemündener, Weinfelder und Schalkenmehrener Maar. Hund an der Leine.',
+      link: `/${region}/ratgeber/wandern`,
+      link_label: 'Zur Route →',
+    },
+    {
+      kategorie: 'Hundestrand',
+      emoji: '🏖',
+      titel: 'Freilinger See',
+      text: 'Offizieller Hundestrand bei Blankenheim — Liegewiese, Badebereich, Kiosk. Leinenpflicht.',
+      link: `/${region}/ratgeber/hundestrand`,
+      link_label: 'Mehr erfahren →',
+    },
+    {
+      kategorie: 'Wandertipp',
+      emoji: '🏆',
+      titel: 'HeimatSpur MaareGlück',
+      text: 'Nominiert für Deutschlands schönsten Wanderweg 2026. Ideal für Hundebesitzer.',
+      link: `/${region}/ratgeber/wandern`,
+      link_label: 'Zur Route →',
+    },
+    {
+      kategorie: 'Marktplatz',
+      emoji: '🏪',
+      titel: 'Tiergeschäfte in der Region',
+      text: 'Finde Tierärzte, Hundeschulen und Tiershops direkt in Deiner Ortschaft.',
+      link: `/${region}/marktplatz`,
+      link_label: 'Zum Marktplatz →',
+    },
+    {
+      kategorie: 'Tipp',
+      emoji: '💡',
+      titel: 'Erstes Kennenlernen',
+      text: 'Vor dem ersten Match empfehlen wir ein kurzes Kennenlernen — für Mensch und Tier.',
+      link: `/${region}/ratgeber`,
+      link_label: 'Tipps lesen →',
+    },
+  ];
+}
 
-const SCHNELLZUGRIFF = [
-  { emoji: '🗺', label: 'Wanderrouten', href: '/ratgeber/wandern' },
-  { emoji: '🏖', label: 'Hundestrand', href: '/ratgeber/hundestrand' },
-  { emoji: '🏪', label: 'Marktplatz', href: '/marktplatz' },
-  { emoji: '📋', label: 'Alle Gesuche', href: '/pinnwand' },
-];
+function buildSchnellzugriff(region: string) {
+  return [
+    { emoji: '🗺', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
+    { emoji: '🏖', label: 'Hundestrand', href: `/${region}/ratgeber/hundestrand` },
+    { emoji: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
+    { emoji: '📋', label: 'Alle Gesuche', href: '/pinnwand' },
+  ];
+}
 
-export default function RightSidebar() {
+interface RightSidebarProps {
+  region?: string;
+}
+
+export default function RightSidebar({ region = 'daun' }: RightSidebarProps) {
+  const INFO_KACHELN = buildInfoKacheln(region);
+  const SCHNELLZUGRIFF = buildSchnellzugriff(region);
+  const infoCount = INFO_KACHELN.length;
   const [activeIndex, setActiveIndex] = useState(0);
   const [fading, setFading] = useState(false);
 
@@ -71,12 +82,12 @@ export default function RightSidebar() {
     const interval = setInterval(() => {
       setFading(true);
       setTimeout(() => {
-        setActiveIndex((i) => (i + 1) % INFO_KACHELN.length);
+        setActiveIndex((i) => (i + 1) % infoCount);
         setFading(false);
       }, 300);
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [infoCount]);
 
   const current = INFO_KACHELN[activeIndex];
 

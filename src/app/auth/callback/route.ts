@@ -88,6 +88,7 @@ export async function GET(request: NextRequest) {
     plz: (meta.plz as string) ?? null,
     ort: (meta.ort as string) ?? null,
     ortschaft,
+    region: (meta.region as string) ?? 'vulkaneifel',
     bio: (sitterData.bio as string) ?? null,
     onboarding_complete: onboardingComplete,
     latitude: koords?.lat ?? null,

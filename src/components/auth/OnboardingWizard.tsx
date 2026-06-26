@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
@@ -93,7 +94,14 @@ const STEP_LABELS: Record<Step, string> = {
   'zusammenfassung': 'Abschluss',
 }
 
+function regionFromPathname(pathname: string): string {
+  if (pathname.startsWith('/wittlich')) return 'wittlich'
+  return 'vulkaneifel'
+}
+
 export default function OnboardingWizard() {
+  const pathname = usePathname()
+  const region = regionFromPathname(pathname)
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<WizardFormData>(INITIAL_DATA)
   const [errors, setErrors] = useState<WizardErrors>({})
@@ -229,7 +237,7 @@ export default function OnboardingWizard() {
         phone: formData.phone || undefined,
         sitter_data: sitterData ?? undefined,
         tier_data: tierData ?? undefined,
-      })
+      }, region)
 
       if (result && 'error' in result) {
         if (result.error.includes('bereits registriert')) {
