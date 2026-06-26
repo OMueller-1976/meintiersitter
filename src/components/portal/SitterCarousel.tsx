@@ -45,7 +45,7 @@ function getLeistungen(sp: SpEntry | null | undefined): string[] {
   return l;
 }
 
-function SitterCardInner({ s, isLoggedIn, userRole, matchProzent }: { s: SitterRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number }) {
+function SitterCardInner({ s, isLoggedIn, userRole, matchProzent, region = 'daun' }: { s: SitterRow; isLoggedIn?: boolean; userRole?: string; matchProzent?: number; region?: string }) {
   const [zeigeDetail, setZeigeDetail] = useState(false);
   const [zeigeKontakt, setZeigeKontakt] = useState(false);
   const sp = Array.isArray(s.sitter_profiles) ? s.sitter_profiles[0] : s.sitter_profiles;
@@ -129,7 +129,7 @@ function SitterCardInner({ s, isLoggedIn, userRole, matchProzent }: { s: SitterR
 
       <div className="flex items-center gap-2 mt-auto">
         <Link
-          href="/daun/sitter"
+          href={`/${region}/sitter`}
           className="text-xs font-bold hover:opacity-80 transition-opacity"
           style={{ color: 'var(--accent-green)' }}
           onClick={(e) => e.stopPropagation()}
@@ -190,7 +190,7 @@ function SitterCardInner({ s, isLoggedIn, userRole, matchProzent }: { s: SitterR
   );
 }
 
-function CarouselView({ sitter, isLoggedIn, userRole, matchProzente }: { sitter: SitterRow[]; isLoggedIn?: boolean; userRole?: string; matchProzente?: Record<string, number> }) {
+function CarouselView({ sitter, isLoggedIn, userRole, matchProzente, region = 'daun' }: { sitter: SitterRow[]; isLoggedIn?: boolean; userRole?: string; matchProzente?: Record<string, number>; region?: string }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 5000, stopOnInteraction: true })]
@@ -230,7 +230,7 @@ function CarouselView({ sitter, isLoggedIn, userRole, matchProzente }: { sitter:
         <div className="flex gap-3">
           {sitter.map((s) => (
             <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
-              <SitterCardInner s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
+              <SitterCardInner s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} region={region} />
             </div>
           ))}
         </div>
@@ -263,14 +263,15 @@ interface Props {
   isLoggedIn?: boolean
   userRole?: string
   matchProzente?: Record<string, number>
+  region?: string
 }
 
-export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProzente }: Props) {
+export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProzente, region = 'daun' }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-base font-bold">Sitter in Deiner Region</h2>
-        <Link href="/daun/sitter" className="text-xs font-semibold hover:opacity-80 transition-opacity"
+        <Link href={`/${region}/sitter`} className="text-xs font-semibold hover:opacity-80 transition-opacity"
           style={{ color: 'var(--accent-green)' }}>
           Alle Sitter →
         </Link>
@@ -288,7 +289,7 @@ export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProz
           </Link>
         </div>
       ) : sitter.length >= 3 ? (
-        <CarouselView sitter={sitter} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} />
+        <CarouselView sitter={sitter} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} region={region} />
       ) : (
         <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${sitter.length}, 1fr)` }}>
           {sitter.map((s) => (

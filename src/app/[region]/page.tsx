@@ -222,7 +222,7 @@ export default async function RegionPage({ params }: Props) {
       </div>
 
       <div className="tile p-4">
-        <SitterCarousel sitter={sitter} isLoggedIn={!!user} userRole={profile?.role} matchProzente={matchProzenteForSitters} />
+        <SitterCarousel sitter={sitter} isLoggedIn={!!user} userRole={profile?.role} matchProzente={matchProzenteForSitters} region={region} />
       </div>
 
       {content && (

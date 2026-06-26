@@ -75,7 +75,7 @@ function buildSchnellzugriff(region: string) {
     { emoji: '🗺', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
     { emoji: '🐕', label: 'Special Hunde', href: `/${region}/hundestrand` },
     { emoji: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
-    { emoji: '📋', label: 'Alle Gesuche', href: '/pinnwand' },
+    { emoji: '📋', label: 'Alle Gesuche', href: `/${region}#pinnwand` },
   ];
 }
 

@@ -32,7 +32,7 @@ function buildNavGroups(region: string): NavGroup[] {
       label: 'ERKUNDEN',
       items: [
         { icon: '🥾', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
-        { icon: '🐕', label: 'Special Hunde', href: `/${region}/ratgeber/hundestrand` },
+        { icon: '🐕', label: 'Special Hunde', href: `/${region}/hundestrand` },
         { icon: '🏨', label: 'Unterkünfte', href: `/${region}/ratgeber/unterkuenfte` },
         { icon: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
         { icon: '📖', label: 'Ratgeber', href: `/${region}/ratgeber` },
