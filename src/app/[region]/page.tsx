@@ -12,6 +12,7 @@ import { getAktiveSitter } from '@/lib/queries/sitter'
 import { getBesterMatchFuerTierhalter, getBesterMatchFuerSitter, getMatchProzenteForSitter, getMatchProzenteForTierhalter } from '@/lib/queries/matching'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
+import { REGION_CONTENT } from '@/lib/region-content'
 import type { Profile } from '@/types'
 
 interface Props {
@@ -191,6 +192,7 @@ export default async function RegionPage({ params }: Props) {
 
   const vorname = profile?.full_name?.split(' ')[0] ?? ''
   const displayName = regionRow?.landkreis_name ?? regionConfig.name
+  const content = REGION_CONTENT[regionConfig.contentFile]
 
   return (
     <div className="flex flex-col gap-5">
@@ -222,6 +224,44 @@ export default async function RegionPage({ params }: Props) {
       <div className="tile p-4">
         <SitterCarousel sitter={sitter} isLoggedIn={!!user} userRole={profile?.role} matchProzente={matchProzenteForSitters} />
       </div>
+
+      {content && (
+        <div className="flex flex-col gap-3">
+          {/* Wanderrouten-Teaser */}
+          {content.wanderrouten.length > 0 && (
+            <div className="tile p-4">
+              <h2 className="text-sm font-bold uppercase tracking-wide text-secondary mb-3">
+                🥾 Wandertipp der Woche
+              </h2>
+              <div className="flex flex-col gap-1">
+                <p className="font-semibold text-sm">{content.wanderrouten[0].titel}</p>
+                <p className="text-xs text-secondary line-clamp-2">{content.wanderrouten[0].beschreibung}</p>
+                {(content.wanderrouten[0].laenge || content.wanderrouten[0].hundInfo) && (
+                  <p className="text-xs text-muted mt-1">
+                    {content.wanderrouten[0].laenge && `📏 ${content.wanderrouten[0].laenge}`}
+                    {content.wanderrouten[0].laenge && content.wanderrouten[0].hundInfo && ' · '}
+                    {content.wanderrouten[0].hundInfo && `🐕 ${content.wanderrouten[0].hundInfo}`}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Hundestrand-Teaser */}
+          <div className="tile p-4">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-secondary mb-3">
+              🏖 Special Hunde – Badestelle
+            </h2>
+            <div className="flex flex-col gap-1">
+              <p className="font-semibold text-sm">{content.hundestrand.name}</p>
+              <p className="text-xs text-secondary line-clamp-2">{content.hundestrand.beschreibung}</p>
+              {content.hundestrand.entfernung && (
+                <p className="text-xs text-muted mt-1">📍 {content.hundestrand.entfernung}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
