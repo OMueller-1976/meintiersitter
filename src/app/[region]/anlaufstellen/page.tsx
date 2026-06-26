@@ -1,8 +1,16 @@
 
 
-export const metadata = { title: 'Tierheime & Anlaufstellen – MeinTiersitter Vulkaneifel' };
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
-export default function AnlaufstellenPage() {
+interface Props {
+  params: { region: string }
+}
+
+export default function AnlaufstellenPage({ params }: Props) {
+  const regionConfig = REGIONS[params.region as RegionSlug]
+  const regionName = regionConfig?.name ?? 'der Region'
+
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
 
@@ -10,8 +18,7 @@ export default function AnlaufstellenPage() {
         <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
             <h1 className="text-3xl font-bold mb-3">🏠 Im Ernstfall helfen sie weiter</h1>
             <p className="text-white/80 text-lg leading-relaxed max-w-2xl">
-              Tierheime, Tierschutzvereine und Anlaufstellen in der Vulkaneifel, Eifel und bis
-              Wittlich — für alle Fälle wenn dringende Hilfe gebraucht wird.
+              Tierheime, Tierschutzvereine und Anlaufstellen in {regionName} — für alle Fälle wenn dringende Hilfe gebraucht wird.
             </p>
         </div>
 

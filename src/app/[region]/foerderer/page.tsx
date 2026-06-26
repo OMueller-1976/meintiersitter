@@ -1,8 +1,16 @@
 
 
-export const metadata = { title: 'Förderer & Sponsoren – MeinTiersitter Vulkaneifel' };
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
-export default function FoerdererPage() {
+interface Props {
+  params: { region: string }
+}
+
+export default function FoerdererPage({ params }: Props) {
+  const regionConfig = REGIONS[params.region as RegionSlug]
+  const regionName = regionConfig?.name ?? 'der Region'
+
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
 
@@ -11,7 +19,7 @@ export default function FoerdererPage() {
             <h1 className="text-3xl font-bold mb-3">🤝 Förderer & Sponsoren</h1>
             <p className="text-white/80 text-lg leading-relaxed max-w-2xl">
               Diese Unternehmen und Organisationen unterstützen MeinTiersitter und das Tierwohl
-              in der Vulkaneifel.
+              in {regionName}.
             </p>
         </div>
 
@@ -85,7 +93,7 @@ export default function FoerdererPage() {
               &ldquo;
             </span>
             <p className="text-[#2E4A6B] text-lg font-medium leading-relaxed text-center px-8 pt-4">
-              Gemeinsam für das Tierwohl in der Vulkaneifel — regional verwurzelt, digital vernetzt.
+              Gemeinsam für das Tierwohl in {regionName} — regional verwurzelt, digital vernetzt.
             </p>
           </div>
 
@@ -100,7 +108,7 @@ export default function FoerdererPage() {
                 </h2>
                 <p className="text-white/80 leading-relaxed mb-5">
                   Werden Sie Förderer von MeinTiersitter und unterstützen Sie aktiv das Tierwohl
-                  sowie die Nachbarschaftshilfe in der Vulkaneifel. Als Sponsor profitieren Sie
+                  sowie die Nachbarschaftshilfe in {regionName}. Als Sponsor profitieren Sie
                   von sichtbarer Präsenz in unserer wachsenden Community.
                 </p>
                 <ul className="space-y-2 text-white/90 text-sm">

@@ -1,11 +1,18 @@
 
 
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
+
 export const metadata = { title: 'Hundefreundliche Unterkünfte – MeinTiersitter Ratgeber' };
+
+interface Props {
+  params: { region: string }
+}
 
 const weitereKacheln = [
   {
     icon: '🏡',
-    titel: 'Ferienhäuser Vulkaneifel',
+    titel: 'Ferienhäuser in der Region',
     text: 'Zahlreiche Ferienwohnungen und -häuser in der Region akzeptieren Hunde. Viele mit eingezäuntem Garten.',
     tipp: 'Nach „eingezäuntes Grundstück" filtern auf Buchungsplattformen',
   },
@@ -39,13 +46,16 @@ const hundeparadiesFeatures = [
   'Stauseen zum Baden in der Nähe (Stausee Udersdorf)',
 ];
 
-export default function UnterkuenftePage() {
+export default function UnterkuenftePage({ params }: Props) {
+  const regionConfig = REGIONS[params.region as RegionSlug]
+  const regionName = regionConfig?.name ?? 'der Region'
+
   return (
     <main className="min-h-screen">
         {/* Hero */}
         <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
             <h1 className="text-3xl font-bold text-white mb-2">
-              🏨 Hundefreundliche Unterkünfte in der Vulkaneifel
+              🏨 Hundefreundliche Unterkünfte in {regionName}
             </h1>
             <p className="text-[#A8C0DC] text-lg">
               Übernachten mit Vierbeiner — diese Unterkünfte heißen Euren Hund herzlich willkommen.
@@ -63,7 +73,7 @@ export default function UnterkuenftePage() {
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-[#1E3249]">Hundeparadies Eifel</h2>
-                  <p className="text-[#4E779F] text-sm mt-0.5">Jünkerath · Vulkaneifel</p>
+                  <p className="text-[#4E779F] text-sm mt-0.5">Jünkerath · Eifel</p>
                   <p className="text-sm text-[#4E779F] mt-1">
                     Speziell für Hundebesitzer konzipiert — hier steht der Vierbeiner im Mittelpunkt.
                   </p>
