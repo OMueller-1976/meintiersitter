@@ -72,10 +72,10 @@ function buildInfoKacheln(region: string): InfoKachel[] {
 
 function buildSchnellzugriff(region: string) {
   return [
-    { emoji: '🗺', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
+    { emoji: '🗺', label: 'Wanderrouten', href: `/${region}/wanderrouten` },
     { emoji: '🐕', label: 'Special Hunde', href: `/${region}/hundestrand` },
     { emoji: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
-    { emoji: '📋', label: 'Alle Gesuche', href: `/${region}#pinnwand` },
+    { emoji: '📋', label: 'Alle Gesuche', href: `/${region}` },
   ];
 }
 

@@ -24,7 +24,7 @@ function buildNavGroups(region: string): NavGroup[] {
     {
       items: [
         { icon: '🏠', label: 'Portal', href: `/${region}` },
-        { icon: '📋', label: 'Pinnwand', href: '/pinnwand' },
+        { icon: '📋', label: 'Pinnwand', href: `/${region}#pinnwand` },
         { icon: '🐾', label: 'Sitter entdecken', href: `/${region}/sitter` },
       ],
     },

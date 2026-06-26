@@ -1,11 +1,19 @@
 export const dynamic = 'force-dynamic'
 
 import { getMarktplatzEintraege, KATEGORIE_LABELS } from '@/lib/queries/marktplatz'
+import { REGIONS } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
 type Eintrag = Awaited<ReturnType<typeof getMarktplatzEintraege>>[number]
 
-export default async function MarktplatzPage() {
-  const eintraege = await getMarktplatzEintraege()
+interface Props {
+  params: { region: string }
+}
+
+export default async function MarktplatzPage({ params }: Props) {
+  const { region } = params
+  const cfg = REGIONS[region as RegionSlug]
+  const eintraege = await getMarktplatzEintraege(cfg?.dbRegion)
 
   // Nach Kategorie gruppieren
   const gruppen = eintraege.reduce<Record<string, Eintrag[]>>((acc, e) => {
@@ -18,7 +26,7 @@ export default async function MarktplatzPage() {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-[#1E3249] mb-2">Marktplatz</h1>
       <p className="text-sm text-[#4E779F] mb-8">
-        Tierärzte, Tierbedarf und weitere Anbieter in der Vulkaneifel — geprüft und mit aktuellen Kontaktdaten.
+        Tierärzte, Tierbedarf und weitere Anbieter {cfg ? `im ${cfg.name}` : 'in Deiner Region'} — geprüft und mit aktuellen Kontaktdaten.
       </p>
 
       {Object.keys(gruppen).length === 0 && (
