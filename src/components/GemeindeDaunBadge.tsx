@@ -4,8 +4,10 @@ interface Props {
   region?: string
 }
 
-export default function GemeindeDaunBadge({ region }: Props) {
-  if (region && region !== 'daun') return null
+// Dschinn Catering ist regionsübergreifender Standard-Sponsor und wird auf
+// allen Landkreis-Seiten angezeigt (nicht nur Daun).
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function GemeindeDaunBadge(_props: Props) {
   return (
     <div className="tile-sm" style={{ padding: '14px 16px', textAlign: 'center' }}>
       <p style={{ fontSize: 11, fontWeight: 700, color: '#4E779F', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: 10 }}>
