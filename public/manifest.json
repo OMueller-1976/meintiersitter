@@ -1,13 +1,19 @@
 {
+  "id": "/",
   "name": "Tiersitti",
   "short_name": "Tiersitti",
-  "description": "Tierbetreuung und Tierhilfe in Deiner Region",
-  "start_url": "/",
+  "description": "Tierbetreuung und Tierhilfe in Deiner Region — finde oder werde Tiersitter, kostenlos und ehrenamtlich.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0f4c81",
+  "orientation": "portrait-primary",
+  "background_color": "#1E3249",
   "theme_color": "#1a7a5e",
+  "lang": "de",
+  "categories": ["lifestyle", "social"],
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

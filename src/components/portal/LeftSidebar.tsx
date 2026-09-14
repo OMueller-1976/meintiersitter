@@ -144,55 +144,22 @@ export default function LeftSidebar({ isLoggedIn, region = 'daun' }: LeftSidebar
         >
           APP
         </div>
-        <div className="mx-3 mb-4 bg-[#1E3249] rounded-xl p-3">
+        <Link href="/app" className="block mx-3 mb-4 bg-[#1E3249] rounded-xl p-3 hover:bg-[#243B58] transition-colors">
           <p className="text-white text-xs font-medium mb-3 text-center">📱 App herunterladen</p>
           <div className="flex gap-2 justify-center">
             {/* iOS QR Code */}
             <div className="flex flex-col items-center gap-1">
               <div className="w-[72px] h-[72px] bg-white rounded-lg p-1.5">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <rect x="0" y="0" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="10" y="10" width="20" height="20" fill="#1E3249"/>
-                  <rect x="60" y="0" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="70" y="10" width="20" height="20" fill="#1E3249"/>
-                  <rect x="0" y="60" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="10" y="70" width="20" height="20" fill="#1E3249"/>
-                  <rect x="45" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="57" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="69" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="45" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="69" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="57" y="69" width="8" height="8" fill="#1E3249"/>
-                  <rect x="45" y="81" width="8" height="8" fill="#1E3249"/>
-                  <rect x="69" y="81" width="8" height="8" fill="#1E3249"/>
-                  <rect x="81" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="81" y="69" width="8" height="8" fill="#1E3249"/>
-                </svg>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/qr-app-ios.svg" alt="QR-Code: Tiersitti als App auf dem iPhone installieren" className="w-full h-full" />
               </div>
               <span className="text-[10px] text-white/70 text-center leading-tight"> iOS</span>
             </div>
             {/* Android QR Code */}
             <div className="flex flex-col items-center gap-1">
               <div className="w-[72px] h-[72px] bg-white rounded-lg p-1.5">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <rect x="0" y="0" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="10" y="10" width="20" height="20" fill="#1E3249"/>
-                  <rect x="60" y="0" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="70" y="10" width="20" height="20" fill="#1E3249"/>
-                  <rect x="0" y="60" width="40" height="40" fill="none" stroke="#1E3249" strokeWidth="8"/>
-                  <rect x="10" y="70" width="20" height="20" fill="#1E3249"/>
-                  <rect x="45" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="57" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="81" y="45" width="8" height="8" fill="#1E3249"/>
-                  <rect x="45" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="57" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="69" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="81" y="57" width="8" height="8" fill="#1E3249"/>
-                  <rect x="45" y="69" width="8" height="8" fill="#1E3249"/>
-                  <rect x="69" y="69" width="8" height="8" fill="#1E3249"/>
-                  <rect x="57" y="81" width="8" height="8" fill="#1E3249"/>
-                  <rect x="81" y="81" width="8" height="8" fill="#1E3249"/>
-                </svg>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/qr-app-android.svg" alt="QR-Code: Tiersitti als App auf Android installieren" className="w-full h-full" />
               </div>
               <span className="text-[10px] text-white/70 text-center leading-tight">🤖 Android</span>
             </div>
@@ -200,7 +167,7 @@ export default function LeftSidebar({ isLoggedIn, region = 'daun' }: LeftSidebar
           <p className="text-[10px] text-white/50 text-center mt-2 leading-tight">
             QR-Code scannen &amp; App installieren
           </p>
-        </div>
+        </Link>
       </div>
 
       {/* Rechtliche Links unten */}
