@@ -25,15 +25,11 @@ const GRUENDE = [
   },
 ];
 
+const PAYPAL_SPENDEN_LINK = 'https://www.paypal.com/donate/?hosted_button_id=6WJWUSZHHAEGN';
+
 function SpendenButton() {
-  const link = process.env.NEXT_PUBLIC_STRIPE_DONATION_LINK;
-  if (!link || link.includes('PLATZHALTER')) {
-    return (
-      <div className="inline-block bg-[#EEF2F8] border border-[#C8D8EC] text-[#4E779F] text-sm px-6 py-3 rounded-2xl">
-        Spendenfunktion kommt bald 🕐
-      </div>
-    );
-  }
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_DONATION_LINK;
+  const link = stripeLink && !stripeLink.includes('PLATZHALTER') ? stripeLink : PAYPAL_SPENDEN_LINK;
   return (
     <a
       href={link}

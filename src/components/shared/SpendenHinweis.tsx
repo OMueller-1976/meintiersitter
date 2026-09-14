@@ -6,9 +6,11 @@ interface Props {
   variant?: 'kompakt' | 'ausführlich'
 }
 
+const PAYPAL_SPENDEN_LINK = 'https://www.paypal.com/donate/?hosted_button_id=6WJWUSZHHAEGN'
+
 function SpendenButton() {
-  const link = process.env.NEXT_PUBLIC_STRIPE_DONATION_LINK
-  if (!link || link.includes('PLATZHALTER')) return null
+  const stripeLink = process.env.NEXT_PUBLIC_STRIPE_DONATION_LINK
+  const link = stripeLink && !stripeLink.includes('PLATZHALTER') ? stripeLink : PAYPAL_SPENDEN_LINK
   return (
     <a
       href={link}

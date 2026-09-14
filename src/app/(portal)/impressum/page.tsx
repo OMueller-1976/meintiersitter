@@ -11,16 +11,11 @@ export default function ImpressumPage() {
 
           <p className="text-[#4E779F] leading-relaxed mb-6">Angaben gemäß § 5 TMG</p>
 
-          {/* TODO-Box Adresse */}
-          <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 mb-6">
-            ⚠️ <strong>Vor Veröffentlichung ausfüllen:</strong> Bitte vollständige Postadresse eintragen.
-          </div>
-
           <p className="text-[#2E4A6B] leading-relaxed">
             OneTitel – Digital &amp; Business Solutions<br />
             Markus Müller<br />
-            [ADRESSE BITTE NACHTRAGEN]<br />
-            [PLZ ORT BITTE NACHTRAGEN]
+            Am Bruchborn 6<br />
+            54570 Kirchweiler
           </p>
 
           <div className="border-t border-[#C8D8EC] my-6" />
