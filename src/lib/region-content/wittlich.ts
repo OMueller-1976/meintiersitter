@@ -118,4 +118,35 @@ export const wittlichContent: RegionContent = {
       website: 'tiertellereifel.jimdofree.com',
     },
   ],
+
+  unterkuenfte: [
+    {
+      name: 'Ferienhaus an der Traumschleife',
+      ort: 'Hinzerath · Hunsrück (Kreis Bernkastel-Wittlich)',
+      beschreibung: 'Historisches Bauernhaus direkt an der Traumschleife „Land-Zeit-Tour", komplett eingezäuntes Grundstück.',
+      website: 'https://ferienhaus-an-der-traumschleife.de',
+      empfehlung: true,
+      features: [
+        'Komplett eingezäuntes Grundstück (ca. 2.000 m², 2 m hoher Doppelstabmattenzaun)',
+        'Bis zu 7 Hunde ohne Aufpreis',
+        'Hundewaschplatz und Hundekorb vorhanden',
+        'Bademöglichkeit für Hunde und Tierarzt in der Nähe',
+      ],
+    },
+    {
+      name: 'Ferienwohnung Maria',
+      ort: 'Wittlich · Moseleifel',
+      beschreibung: 'Ferienwohnung für bis zu 4 Personen, bis zu 2 Hunde kostenlos. Hunde dürfen allein in der Wohnung bleiben, Hundesitting nach Absprache möglich.',
+      website: 'https://www.hunde-urlaub.net/ferienunterkunft/a11354/',
+    },
+  ],
+  unterkunftTipps: [
+    {
+      icon: '🏡',
+      titel: 'Ferienhäuser in der Region',
+      text: 'Viele Ferienwohnungen und -häuser in der Region akzeptieren Hunde. Oft mit eingezäuntem Garten.',
+      tipp: 'Nach „eingezäuntes Grundstück" filtern auf Buchungsplattformen',
+    },
+  ],
+  futterstationen: [],
 }

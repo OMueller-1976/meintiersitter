@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GemeindeDaunBadge from '@/components/GemeindeDaunBadge';
-import { REGION_CONTENT } from '@/lib/region-content';
+import { getRegionContent } from '@/lib/region-content';
 
 interface InfoKachel {
   kategorie: string;
@@ -15,8 +15,9 @@ interface InfoKachel {
 }
 
 function buildInfoKacheln(region: string): InfoKachel[] {
-  const content = REGION_CONTENT[region] ?? REGION_CONTENT['daun'];
+  const content = getRegionContent(region);
   const kacheln: InfoKachel[] = [];
+  if (!content) return kacheln;
 
   if (content.wanderrouten[0]) {
     kacheln.push({

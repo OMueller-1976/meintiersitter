@@ -125,4 +125,45 @@ export const daunContent: RegionContent = {
       website: 'katzenhilfe-suedeifel.de',
     },
   ],
+
+  unterkuenfte: [
+    {
+      name: 'Hundeparadies Eifel',
+      ort: 'Jünkerath · Eifel',
+      beschreibung: 'Speziell für Hundebesitzer konzipiert — hier steht der Vierbeiner im Mittelpunkt.',
+      website: 'https://www.hundeparadies-eifel.de',
+      empfehlung: true,
+      features: [
+        'Eingezäunte Gärten je Ferienhaus',
+        'Große Hundewiese + Waldstück direkt am Gelände',
+        'Agilityplatz für aktive Hunde',
+        'Bis zu 10 Hunde gleichzeitig möglich',
+        'Stauseen zum Baden in der Nähe (Stausee Udersdorf)',
+      ],
+    },
+  ],
+  unterkunftTipps: [
+    {
+      icon: '🏡',
+      titel: 'Ferienhäuser in der Region',
+      text: 'Zahlreiche Ferienwohnungen und -häuser in der Vulkaneifel akzeptieren Hunde. Viele mit eingezäuntem Garten.',
+      tipp: 'Nach „eingezäuntes Grundstück" filtern auf Buchungsplattformen',
+    },
+    {
+      icon: '💧',
+      titel: 'Urlaub mit Hund · Bad Bertrich',
+      text: 'Ausgangspunkt für Deutschlands schönsten Wanderweg 2023 — die HeimatSpur Wasserfall-Erlebnisroute.',
+    },
+  ],
+  futterstationen: [
+    {
+      name: 'Tierteller Eifel e.V.',
+      typ: 'tiertafel',
+      ort: 'Jünkerath',
+      adresse: 'Bahnhofstraße 28',
+      beschreibung: 'Tiertafel für einkommensschwache Tierhalter.',
+      ausgabezeiten: 'Jeden 2. und 4. Donnerstag, 14–16 Uhr',
+      website: 'tiertellereifel.jimdofree.com',
+    },
+  ],
 }

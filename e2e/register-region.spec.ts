@@ -109,3 +109,32 @@ test('Desktop: keine Mobile-Nav', async ({ page }) => {
   await page.goto('/wittlich')
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toBeHidden()
 })
+
+test.describe('Regionsinhalte (kein Daun-Fallback)', () => {
+  test('Wittlich: Unterkuenfte ohne Eifel/Daun-Inhalte, mit eigenen Eintraegen', async ({ page }) => {
+    await page.goto('/wittlich/ratgeber/unterkuenfte')
+    await expect(page.getByRole('heading', { name: /Bernkastel-Wittlich/ })).toBeVisible()
+    await expect(page.getByText('Ferienhaus an der Traumschleife')).toBeVisible()
+    await expect(page.getByText('Hundeparadies Eifel')).toHaveCount(0)
+    await expect(page.getByText('Bad Bertrich')).toHaveCount(0)
+  })
+
+  test('Daun: Unterkuenfte zeigt Hundeparadies Eifel', async ({ page }) => {
+    await page.goto('/daun/ratgeber/unterkuenfte')
+    await expect(page.getByText('Hundeparadies Eifel').first()).toBeVisible()
+  })
+
+  test('Euskirchen: Unterkunft und Tiertafel regional', async ({ page }) => {
+    await page.goto('/euskirchen/ratgeber/unterkuenfte')
+    await expect(page.getByText('Eifelpark Kronenburger See').first()).toBeVisible()
+    await page.goto('/euskirchen/anlaufstellen')
+    await expect(page.locator('#futterstationen')).toContainText('Tiertafel Kreis Euskirchen')
+  })
+
+  for (const r of ['daun', 'wittlich', 'koblenz', 'euskirchen']) {
+    test(`/${r}/anlaufstellen hat Futterstationen-Abschnitt (Anker)`, async ({ page }) => {
+      await page.goto(`/${r}/anlaufstellen`)
+      await expect(page.locator('#futterstationen')).toBeVisible()
+    })
+  }
+})

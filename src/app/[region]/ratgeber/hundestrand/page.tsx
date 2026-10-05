@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
-import { REGION_CONTENT } from '@/lib/region-content'
+import { getRegionContent } from '@/lib/region-content'
 
 interface Props {
   params: { region: string }
@@ -18,7 +18,8 @@ export default function HundestrandPage({ params }: Props) {
   if (!(region in REGIONS)) notFound()
 
   const regionConfig = REGIONS[region as RegionSlug]
-  const content = REGION_CONTENT[region] ?? REGION_CONTENT['daun']
+  const content = getRegionContent(region)
+  if (!content) notFound()
   const spot = content.hundestrand
 
   return (

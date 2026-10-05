@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
-import { REGION_CONTENT } from '@/lib/region-content'
+import { getRegionContent } from '@/lib/region-content'
 
 interface Props {
   params: { region: string }
@@ -12,8 +12,9 @@ export default function AnlaufstellenPage({ params }: Props) {
   if (!(region in REGIONS)) notFound()
 
   const regionConfig = REGIONS[region as RegionSlug]
-  const content = REGION_CONTENT[region] ?? REGION_CONTENT['daun']
-  const { tierheime, anlaufstellen } = content
+  const content = getRegionContent(region)
+  if (!content) notFound()
+  const { tierheime, anlaufstellen, futterstationen } = content
 
   const TYP_LABEL: Record<string, string> = {
     verein: 'Tierschutzverein',
@@ -135,6 +136,46 @@ export default function AnlaufstellenPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        {/* Futterstationen */}
+        <section id="futterstationen" className="scroll-mt-4">
+          <h2 className="text-xl font-bold text-[#1E3249] mb-4 flex items-center gap-2">
+            <span>🍖</span> Futterstationen & Tiertafeln
+          </h2>
+          {futterstationen.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {futterstationen.map((f) => (
+                <div key={f.name} className="bg-white rounded-2xl border border-[#C8D8EC] p-6 flex flex-col gap-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-bold text-[#1E3249] text-base leading-tight">{f.name}</h3>
+                    <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#FEF3E2] text-[#9A4A0F] whitespace-nowrap flex-shrink-0">
+                      {f.typ === 'tiertafel' ? 'Tiertafel' : f.typ === 'futterstelle' ? 'Futterstelle' : 'Spendenannahme'}
+                    </span>
+                  </div>
+                  <div className="text-sm text-[#4E779F] space-y-1">
+                    <p>📍 {f.adresse ? `${f.adresse}, ` : ''}{f.ort}</p>
+                    {f.ausgabezeiten && <p>🕐 {f.ausgabezeiten}</p>}
+                  </div>
+                  <p className="text-sm text-[#2E4A6B] leading-relaxed">{f.beschreibung}</p>
+                  {f.website && (
+                    <a
+                      href={f.website.startsWith('http') ? f.website : `https://${f.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto inline-block text-sm font-medium text-white bg-[#2E4A6B] hover:bg-[#3A5A80] rounded-xl px-4 py-2 text-center transition-colors"
+                    >
+                      Zur Website →
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="bg-white rounded-2xl border border-[#C8D8EC] p-6 text-sm text-[#4E779F]">
+              Für {regionConfig.name} sind noch keine Futterstationen oder Tiertafeln erfasst.
+            </p>
+          )}
+        </section>
 
         {/* CTA */}
         <section className="bg-[#2E4A6B] rounded-2xl p-8 text-white text-center">

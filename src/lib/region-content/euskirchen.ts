@@ -131,4 +131,41 @@ export const euskirchenContent: RegionContent = {
       website: 'nationalpark-eifel.de',
     },
   ],
+
+  unterkuenfte: [
+    {
+      name: 'Eifelpark Kronenburger See',
+      ort: 'Dahlem · Kronenburger See',
+      beschreibung: 'Ferienhaus-Park am Kronenburger See. Hunde sind in ausgewählten Häusern erlaubt, einzelne Häuser sind eingezäunt. Bitte bei der Buchung angeben, dass Du mit Hund anreist.',
+      website: 'https://eifelpark-eks.de',
+    },
+  ],
+  unterkunftTipps: [
+    {
+      icon: '🌲',
+      titel: 'Nähe Rursee / Nationalpark Eifel',
+      text: 'Im Nationalpark Eifel nahe Heimbach: Viele Unterkünfte direkt am See. Bootsverleih, Wanderwege, hundefreundlich.',
+      tipp: 'Leinenpflicht im Nationalpark beachten',
+    },
+    {
+      icon: '🏡',
+      titel: 'Ferienhäuser in der Region',
+      text: 'Viele Ferienwohnungen und -häuser in der Region akzeptieren Hunde. Oft mit eingezäuntem Garten.',
+    },
+  ],
+  futterstationen: [
+    {
+      name: 'Tiertafel Kreis Euskirchen e.V.',
+      typ: 'tiertafel',
+      ort: 'Zülpich',
+      beschreibung: 'Eingetragener Verein mit Sitz in Zülpich (Vereinsregister Bonn VR 10073). Ausgabezeiten bitte direkt beim Verein erfragen.',
+    },
+    {
+      name: 'Tierschutzverein Mechernich – Tiertafel',
+      typ: 'tiertafel',
+      ort: 'Mechernich',
+      beschreibung: 'Der Tierschutzverein Mechernich betreibt eine Tiertafel. Details zu Ausgabe und Voraussetzungen stehen auf der Vereinsseite.',
+      website: 'https://www.tsv-mechernich.de/tiertafel',
+    },
+  ],
 }

@@ -78,11 +78,12 @@ export const koblenzContent: RegionContent = {
   tierheime: [
     {
       name: 'Tierheim Koblenz',
-      adresse: 'Koblenz, Rheinland-Pfalz',
+      adresse: 'Zaunheimer Str. 26, 56072 Koblenz',
+      telefon: '0261 40638-0',
       website: 'tierheim-koblenz.de',
-      oeffnungszeiten: 'Di–Fr 14–17 Uhr, Sa+So 13–17 Uhr',
+      oeffnungszeiten: 'Besuchszeiten Mi + So 14–17 Uhr; telefonisch Mo–Sa 10–13 und 14–17 Uhr',
       beschreibung:
-        'Städtisches Tierheim für Koblenz und Umgebung. Fundtiere, Vermittlung und Tierschutz.',
+        'Tierheim des Tierschutzvereins Koblenz und Umgebung e.V. Fundtiere, Vermittlung und Tierschutz.',
     },
     {
       name: 'Tierheim Mayen',
@@ -123,6 +124,37 @@ export const koblenzContent: RegionContent = {
       adresse: 'Cochem',
       beschreibung:
         'Tierschutz für den Landkreis Cochem-Zell. Fundtier-Aufnahme und Vermittlung.',
+    },
+  ],
+
+  unterkuenfte: [
+    {
+      name: 'Ferienwohnung „Reif für die Insel"',
+      ort: 'Urbar bei Koblenz',
+      beschreibung: 'Hunde sind laut Anbieter willkommen. Zu Zaun und Garten bitte direkt beim Vermieter nachfragen.',
+    },
+    {
+      name: 'Ferienwohnung an Rhein und Mosel',
+      ort: 'Urbar bei Koblenz',
+      beschreibung: 'Hunde sind laut Anbieter willkommen. Zu Zaun und Garten bitte direkt beim Vermieter nachfragen.',
+    },
+  ],
+  unterkunftTipps: [
+    {
+      icon: '🏡',
+      titel: 'Ferienhäuser in der Region',
+      text: 'Viele Ferienwohnungen und -häuser in der Region akzeptieren Hunde. Oft mit eingezäuntem Garten.',
+      tipp: 'Nach „eingezäuntes Grundstück" filtern auf Buchungsplattformen',
+    },
+  ],
+  futterstationen: [
+    {
+      name: 'Tierhilfe Rhein-Hunsrück e.V. – Tiertafel / Futtertonne',
+      typ: 'tiertafel',
+      ort: 'Külz (Rhein-Hunsrück-Kreis)',
+      adresse: 'In der Michelbach 8, 55471 Külz',
+      beschreibung: 'Futterausgabe für bedürftige Tierhalter. Ausgabetermine und aktuelle Standort-Änderungen werden auf der Website bekannt gegeben. Telefon: 06761 5123.',
+      website: 'https://www.tierhilfe-rhein-hunsrueck.de',
     },
   ],
 }

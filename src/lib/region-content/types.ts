@@ -41,10 +41,41 @@ export interface HundestrandHighlight {
   details: string[]
 }
 
+export interface Unterkunft {
+  name: string
+  ort: string
+  beschreibung: string
+  website?: string
+  features?: string[]
+  /** Als Empfehlung der Redaktion hervorheben (max. 1 pro Region) */
+  empfehlung?: boolean
+}
+
+/** Allgemeine Hinweis-Kachel (Region-Tipps) in "Unterkuenfte" */
+export interface UnterkunftTipp {
+  icon: string
+  titel: string
+  text: string
+  tipp?: string
+}
+
+export interface Futterstation {
+  name: string
+  typ: 'tiertafel' | 'futterstelle' | 'spendenannahme'
+  ort: string
+  adresse?: string
+  beschreibung: string
+  ausgabezeiten?: string
+  website?: string
+}
+
 export interface RegionContent {
   wanderrouten: Wanderroute[]
   sehenswuerdigkeiten: Sehenswuerdigkeit[]
   tierheime: Tierheim[]
   hundestrand: HundestrandHighlight
   anlaufstellen: Anlaufstelle[]
+  unterkuenfte: Unterkunft[]
+  unterkunftTipps: UnterkunftTipp[]
+  futterstationen: Futterstation[]
 }
