@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { LEISTUNGS_CHIPS } from '@/lib/mock-data'
 import { matchColor, matchLabel } from '@/lib/matching'
 
+import { usePathname } from 'next/navigation'
+import { registerHref, regionSlugFromPath } from '@/lib/regions'
 interface Props {
   sitterId: string
   name: string
@@ -45,6 +47,7 @@ export default function SitterDetailModal({
   onKontakt,
 }: Props) {
   const [mounted, setMounted] = useState(false)
+  const registerLink = registerHref(regionSlugFromPath(usePathname()))
   useEffect(() => { setMounted(true) }, [])
 
   const initial = name.charAt(0).toUpperCase()
@@ -177,7 +180,7 @@ export default function SitterDetailModal({
             </button>
           ) : nichtAngemeldet ? (
             <Link
-              href="/register"
+              href={registerLink}
               className="block w-full text-center bg-[#2E4A6B] text-white font-bold py-3 rounded-xl hover:bg-[#1E3249] transition-colors"
             >
               Als Tierhalter registrieren →

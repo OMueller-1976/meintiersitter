@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { matchLabel, matchColor } from '@/lib/matching';
 
+import { registerHref } from '@/lib/regions'
 interface BestMatch {
   label: string        // z.B. "Maria H." oder "Bello"
   ortLabel: string     // z.B. "aus Gillenfeld"
@@ -40,13 +41,13 @@ export default function MatchKacheln({
           titel="Tier registrieren"
           text="Lege ein Profil für Deinen Vierbeiner an"
           buttonLabel="Jetzt starten →"
-          href="/register?role=tierhalter"
+          href={registerHref(region, 'tierhalter')}
         />
         <KachelCard
           titel="Als Sitter anbieten"
           text="Hilf Tierhaltern in Deiner Nachbarschaft"
           buttonLabel="Gratis registrieren →"
-          href="/register?role=sitter"
+          href={registerHref(region, 'sitter')}
         />
         <KachelCard
           titel="Marktplatz"

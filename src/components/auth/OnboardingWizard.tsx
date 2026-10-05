@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
@@ -14,7 +14,7 @@ import StepSitterOnboarding from '@/components/register/StepSitterOnboarding'
 import StepTierOnboarding from '@/components/register/StepTierOnboarding'
 import SpendenHinweis from '@/components/shared/SpendenHinweis'
 import { registerAction } from '@/app/(auth)/register/actions'
-import { REGIONS } from '@/lib/regions'
+import { REGIONS, isRegionSlug, regionSlugFromPath } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 
 export type WizardRole = 'tierhalter' | 'sitter' | 'beide'
@@ -96,19 +96,22 @@ const STEP_LABELS: Record<Step, string> = {
   'zusammenfassung': 'Abschluss',
 }
 
-function regionSlugFromPathname(pathname: string): RegionSlug {
-  const segment = pathname.split('/')[1]
-  if (segment && segment in REGIONS) return segment as RegionSlug
-  return 'daun'
-}
-
 export default function OnboardingWizard() {
   const pathname = usePathname()
-  const regionSlug = regionSlugFromPathname(pathname)
-  const regionCfg = REGIONS[regionSlug]
-  const region = regionCfg.dbRegion
+  const searchParams = useSearchParams()
+  const regionParam = searchParams.get('region')
+  const roleParam = searchParams.get('role')
+  // Region: ?region= > URL-Pfad > null (Nutzer muss im Schritt "Adresse" waehlen)
+  const [regionSlug, setRegionSlug] = useState<RegionSlug | null>(
+    isRegionSlug(regionParam) ? regionParam : regionSlugFromPath(pathname)
+  )
+  const regionCfg = regionSlug ? REGIONS[regionSlug] : null
+  const region = regionCfg?.dbRegion ?? ''
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<WizardFormData>(INITIAL_DATA)
+  const [formData, setFormData] = useState<WizardFormData>(() => ({
+    ...INITIAL_DATA,
+    rolle: roleParam === 'sitter' || roleParam === 'tierhalter' || roleParam === 'beide' ? roleParam : null,
+  }))
   const [errors, setErrors] = useState<WizardErrors>({})
   const [loading, setLoading] = useState(false)
   const [registered, setRegistered] = useState(false)
@@ -146,7 +149,7 @@ export default function OnboardingWizard() {
           formData.password === formData.passwordConfirm
         )
       case 'adresse':
-        return /^\d{5}$/.test(formData.plz) && formData.ort.trim().length > 0
+        return /^\d{5}$/.test(formData.plz) && formData.ort.trim().length > 0 && regionSlug !== null
       case 'sitter-onboarding':
       case 'tier-onboarding':
         return true
@@ -169,6 +172,7 @@ export default function OnboardingWizard() {
     if (step === 'adresse') {
       if (!/^\d{5}$/.test(formData.plz)) e.plz = 'PLZ muss 5 Ziffern haben.'
       if (!formData.ort.trim()) e.ort = 'Ort ist erforderlich.'
+      if (!regionSlug) e.region = 'Bitte wähle Deinen Landkreis.'
     }
     return e
   }
@@ -231,6 +235,7 @@ export default function OnboardingWizard() {
           })
         : null
 
+      if (!regionSlug) { toast.error('Bitte wähle Deinen Landkreis.'); setLoading(false); return }
       const result = await registerAction({
         role: formData.rolle,
         full_name: formData.full_name,
@@ -325,7 +330,7 @@ export default function OnboardingWizard() {
             <span className="text-2xl">🐾</span>
             <div>
               <p className="text-white font-semibold">MeinTiersitter</p>
-              <p className="text-white/60 text-xs">{regionCfg.name}</p>
+              <p className="text-white/60 text-xs">{regionCfg?.name ?? 'Tiersitti'}</p>
             </div>
           </div>
         </div>
@@ -347,7 +352,7 @@ export default function OnboardingWizard() {
             <StepAccount data={formData} onChange={updateField} errors={errors} />
           )}
           {currentStepId === 'adresse' && (
-            <StepAdresse data={formData} onChange={updateField} errors={errors} />
+            <StepAdresse data={formData} onChange={updateField} errors={errors} regionSlug={regionSlug} onRegionChange={setRegionSlug} />
           )}
           {currentStepId === 'sitter-onboarding' && (
             <StepSitterOnboarding data={formData} onChange={updateField} onSkip={handleNext} />

@@ -7,6 +7,8 @@ import { LEISTUNGS_LABELS } from '@/lib/mock-data'
 import { matchColor, matchLabel } from '@/lib/matching'
 import { TIERART_EMOJI, type PostingRow } from './GesuchCard'
 
+import { usePathname } from 'next/navigation'
+import { registerHref, regionSlugFromPath } from '@/lib/regions'
 interface Props {
   posting: PostingRow
   matchProzent?: number
@@ -22,6 +24,7 @@ function formatDate(d: string): string {
 
 export default function GesuchDetailModal({ posting: p, matchProzent, currentUserRole, onClose, onBewerben }: Props) {
   const [mounted, setMounted] = useState(false)
+  const registerLink = registerHref(regionSlugFromPath(usePathname()))
   useEffect(() => { setMounted(true) }, [])
 
   const tp = Array.isArray(p.tier_profiles) ? p.tier_profiles[0] : p.tier_profiles
@@ -180,7 +183,7 @@ export default function GesuchDetailModal({ posting: p, matchProzent, currentUse
             </button>
           ) : nichtAngemeldet ? (
             <Link
-              href="/register"
+              href={registerLink}
               className="block w-full text-center bg-[#2E4A6B] text-white font-bold py-3 rounded-xl hover:bg-[#1E3249] transition-colors"
             >
               Als Sitter registrieren →

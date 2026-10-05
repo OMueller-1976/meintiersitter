@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 import LogoutButton from '@/components/auth/LogoutButton'
 
+import { registerHref, getRegionSlugByDbRegion } from '@/lib/regions'
 interface LandkreisHeaderProps {
   user?: User | null
   bundesland: string
@@ -98,7 +99,7 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
             }}>
               Anmelden
             </Link>
-            <Link href="/register" style={{
+            <Link href={registerHref(getRegionSlugByDbRegion(landkreis))} style={{
               background: 'var(--accent-green)', color: '#0f172a',
               padding: '6px 14px', borderRadius: 8, fontSize: 13,
               textDecoration: 'none', fontWeight: 700,

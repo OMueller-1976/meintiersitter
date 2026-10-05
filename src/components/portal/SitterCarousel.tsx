@@ -9,6 +9,7 @@ import NachrichtModal from '@/components/dashboard/NachrichtModal';
 import { matchColor, matchLabel } from '@/lib/matching';
 import SitterDetailModal from './SitterDetailModal';
 
+import { registerHref } from '@/lib/regions'
 // Typ passend zur getAktiveSitter-Query
 export type SitterRow = {
   id: string
@@ -282,7 +283,7 @@ export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProz
           <div className="text-3xl mb-2">🐾</div>
           <p className="text-sm text-secondary mb-1">Noch keine Sitter registriert.</p>
           <p className="text-xs text-muted mb-3">Sei der Erste!</p>
-          <Link href="/register?role=sitter"
+          <Link href={registerHref(region, 'sitter')}
             className="text-xs font-bold hover:opacity-80 transition-opacity"
             style={{ color: 'var(--accent-green)' }}>
             Als Sitter registrieren →

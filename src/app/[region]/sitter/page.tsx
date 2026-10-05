@@ -8,7 +8,7 @@ import Link from 'next/link'
 import SitterCard from '@/components/portal/SitterCard'
 import { getAktiveSitter } from '@/lib/queries/sitter'
 import { getMatchProzenteForTierhalter } from '@/lib/queries/matching'
-import { REGIONS } from '@/lib/regions'
+import { REGIONS, registerHref } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 
 interface Props {
@@ -117,7 +117,7 @@ export default async function RegionSitterPage({ params }: Props) {
           <p className="text-secondary font-medium mb-1">Noch keine Sitter registriert.</p>
           <p className="text-sm text-muted mb-4">Sei der Erste in {regionConfig.name}!</p>
           <Link
-            href="/register?role=sitter"
+            href={registerHref(region, 'sitter')}
             className="inline-block text-sm font-bold hover:opacity-80 transition-opacity"
             style={{ color: 'var(--accent-green)' }}
           >

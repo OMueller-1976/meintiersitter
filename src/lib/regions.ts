@@ -35,3 +35,22 @@ export function getRegionSlugByDbRegion(dbRegion: string): RegionSlug {
   const entry = Object.entries(REGIONS).find(([, v]) => v.dbRegion === dbRegion)
   return (entry?.[0] ?? 'daun') as RegionSlug
 }
+
+export function isRegionSlug(value: string | null | undefined): value is RegionSlug {
+  return !!value && Object.prototype.hasOwnProperty.call(REGIONS, value)
+}
+
+/** Registrierungs-Link mit expliziter Region (kein stiller Fallback auf Daun). */
+export function registerHref(region?: string | null, role?: string): string {
+  const params = new URLSearchParams()
+  if (isRegionSlug(region)) params.set('region', region)
+  if (role) params.set('role', role)
+  const qs = params.toString()
+  return qs ? `/register?${qs}` : '/register'
+}
+
+/** Region-Slug aus URL-Pfad (/wittlich/sitter -> 'wittlich'), sonst null. */
+export function regionSlugFromPath(pathname: string | null | undefined): RegionSlug | null {
+  const segment = (pathname ?? '').split('/')[1]
+  return isRegionSlug(segment) ? segment : null
+}

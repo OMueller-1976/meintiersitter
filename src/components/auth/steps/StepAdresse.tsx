@@ -1,12 +1,16 @@
 import type { WizardFormData, WizardErrors } from '../OnboardingWizard'
+import { REGIONS, isRegionSlug } from '@/lib/regions'
+import type { RegionSlug } from '@/lib/regions'
 
 interface Props {
   data: WizardFormData
   onChange: <K extends keyof WizardFormData>(key: K, value: WizardFormData[K]) => void
   errors: WizardErrors
+  regionSlug: RegionSlug | null
+  onRegionChange: (slug: RegionSlug | null) => void
 }
 
-export default function StepAdresse({ data, onChange, errors }: Props) {
+export default function StepAdresse({ data, onChange, errors, regionSlug, onRegionChange }: Props) {
   const inputClass = (hasError: boolean) =>
     `w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
       hasError ? 'border-red-400' : 'border-[#C8D8EC]'
@@ -20,6 +24,22 @@ export default function StepAdresse({ data, onChange, errors }: Props) {
       </p>
 
       <div className="flex flex-col gap-4">
+        <div>
+          <label className="block text-sm font-medium text-[#1E3249] mb-1">
+            Landkreis / Region <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={regionSlug ?? ''}
+            onChange={(e) => onRegionChange(isRegionSlug(e.target.value) ? e.target.value : null)}
+            className={inputClass(!!errors.region)}
+          >
+            <option value="">Bitte wählen…</option>
+            {Object.entries(REGIONS).map(([slug, cfg]) => (
+              <option key={slug} value={slug}>{cfg.name}</option>
+            ))}
+          </select>
+          {errors.region && <p className="text-red-500 text-xs mt-1">{errors.region}</p>}
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-medium text-[#1E3249] mb-1">
