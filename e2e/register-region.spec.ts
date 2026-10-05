@@ -17,8 +17,8 @@ async function toAdresseStep(page: Page) {
   await page.getByPlaceholder('Max Mustermann').fill('Test Nutzer')
   await page.locator('input[type="email"]').fill('test@example.com')
   const pw = page.locator('input[type="password"]')
-  await pw.nth(0).fill('Passwort123!')
-  await pw.nth(1).fill('Passwort123!')
+  await pw.nth(0).fill('Passwort1234!')
+  await pw.nth(1).fill('Passwort1234!')
   await page.getByRole('button', { name: /Weiter/ }).click()
 }
 
@@ -42,7 +42,70 @@ test('/register ohne Region: kein Fallback auf Daun, Auswahl erzwungen', async (
   await expect(page.locator('select')).toHaveValue('')
   await page.getByPlaceholder('54550').fill('54470')
   await page.getByPlaceholder('Daun', { exact: true }).fill('Bernkastel-Kues')
-  await expect(page.getByRole('button', { name: /Weiter/ })).toBeDisabled()
+  await page.getByRole('button', { name: /Weiter/ }).click()
+  await expect(page.getByRole('alert').filter({ hasText: 'Landkreis' })).toBeVisible()
   await page.locator('select').selectOption('wittlich')
-  await expect(page.getByRole('button', { name: /Weiter/ })).toBeEnabled()
+  await page.getByRole('button', { name: /Weiter/ }).click()
+  await expect(page.getByText(/Schritt 4 von/)).toBeVisible()
+})
+
+test('Validierung: schwaches Passwort, ungueltige E-Mail, Name zu kurz', async ({ page }) => {
+  await page.goto('/register?region=wittlich&role=tierhalter')
+  await page.getByRole('button', { name: /Weiter/ }).click()
+  await page.locator('#reg-name').fill('A')
+  await page.locator('#reg-email').fill('foo@bar')
+  await page.locator('#reg-pw').fill('123456789')
+  await page.locator('#reg-pw2').fill('abc')
+  await page.getByRole('button', { name: /Weiter/ }).click()
+  await expect(page.locator('#reg-name-error')).toBeVisible()
+  await expect(page.locator('#reg-email-error')).toBeVisible()
+  await expect(page.locator('#reg-pw-error')).toBeVisible()
+  await expect(page.locator('#reg-pw2-error')).toBeVisible()
+  await expect(page.locator('#reg-email')).toHaveAttribute('aria-invalid', 'true')
+})
+
+test('Validierung: Ort "1" wird abgelehnt', async ({ page }) => {
+  await page.goto('/register?region=wittlich&role=tierhalter')
+  await toAdresseStep(page)
+  await page.locator('#reg-plz').fill('54470')
+  await page.locator('#reg-ort').fill('1')
+  await page.getByRole('button', { name: /Weiter/ }).click()
+  await expect(page.locator('#reg-ort-error')).toBeVisible()
+})
+
+test('Stepper: Schrittzahl bleibt nach Rollenwahl stabil (Tierhalter)', async ({ page }) => {
+  await page.goto('/register?region=wittlich')
+  await expect(page.getByText(/Schritt 1 von 5/)).toBeVisible()
+  await page.getByRole('button', { name: /Ich suche einen Sitter/ }).click()
+  await expect(page.getByText(/Schritt 1 von 5/)).toBeVisible()
+})
+
+test.describe('Mobile Navigation', () => {
+  test.use({ viewport: { width: 375, height: 700 } })
+
+  test('Bottom-Nav sichtbar, Mehr-Sheet oeffnet, Sidebar versteckt', async ({ page }) => {
+    await page.goto('/wittlich')
+    const nav = page.getByRole('navigation', { name: 'Hauptnavigation' })
+    await expect(nav).toBeVisible()
+    await expect(nav.getByRole('link', { name: /Sitter/ })).toHaveAttribute('href', '/wittlich/sitter')
+    await nav.getByRole('button', { name: /Mehr/ }).click()
+    const sheet = page.getByRole('dialog', { name: 'Navigation' })
+    await expect(sheet).toBeVisible()
+    await expect(sheet.getByRole('link', { name: 'Wanderrouten' })).toHaveAttribute('href', '/wittlich/ratgeber/wandern')
+    await expect(sheet.getByRole('link', { name: 'Special Hunde' })).toHaveAttribute('href', '/wittlich/ratgeber/hundestrand')
+    await page.keyboard.press('Escape')
+    await expect(sheet).toBeHidden()
+  })
+
+  test('kein horizontaler Scroll', async ({ page }) => {
+    await page.goto('/wittlich')
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+    expect(overflow).toBeLessThanOrEqual(1)
+  })
+})
+
+test('Desktop: keine Mobile-Nav', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/wittlich')
+  await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toBeHidden()
 })

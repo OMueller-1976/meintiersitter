@@ -6,14 +6,15 @@ interface Props {
   data: WizardFormData
   onChange: <K extends keyof WizardFormData>(key: K, value: WizardFormData[K]) => void
   errors: WizardErrors
+  onBlurField: (key: keyof WizardFormData) => void
   regionSlug: RegionSlug | null
   onRegionChange: (slug: RegionSlug | null) => void
 }
 
-export default function StepAdresse({ data, onChange, errors, regionSlug, onRegionChange }: Props) {
+export default function StepAdresse({ data, onChange, onBlurField, errors, regionSlug, onRegionChange }: Props) {
   const inputClass = (hasError: boolean) =>
-    `w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/30 ${
-      hasError ? 'border-red-400' : 'border-[#C8D8EC]'
+    `w-full border rounded-xl px-3 py-2.5 text-base sm:text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/40 ${
+      hasError ? 'border-red-500 bg-red-50' : 'border-[#C8D8EC]'
     }`
 
   return (
@@ -25,56 +26,67 @@ export default function StepAdresse({ data, onChange, errors, regionSlug, onRegi
 
       <div className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#1E3249] mb-1">
-            Landkreis / Region <span className="text-red-500">*</span>
+          <label htmlFor="reg-region" className="block text-sm font-medium text-[#1E3249] mb-1">
+            Landkreis / Region <span className="text-red-600" aria-hidden="true">*</span>
           </label>
-          <select
+          <select id="reg-region"
             value={regionSlug ?? ''}
             onChange={(e) => onRegionChange(isRegionSlug(e.target.value) ? e.target.value : null)}
             className={inputClass(!!errors.region)}
+              aria-invalid={!!errors.region}
+              aria-describedby={errors.region ? "reg-region-error" : undefined}
           >
             <option value="">Bitte wählen…</option>
             {Object.entries(REGIONS).map(([slug, cfg]) => (
               <option key={slug} value={slug}>{cfg.name}</option>
             ))}
           </select>
-          {errors.region && <p className="text-red-500 text-xs mt-1">{errors.region}</p>}
+          {errors.region && <p id="reg-region-error" role="alert" className="text-red-600 text-xs mt-1">{errors.region}</p>}
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-[#1E3249] mb-1">
-              PLZ <span className="text-red-500">*</span>
+            <label htmlFor="reg-plz" className="block text-sm font-medium text-[#1E3249] mb-1">
+              PLZ <span className="text-red-600" aria-hidden="true">*</span>
             </label>
-            <input
+            <input id="reg-plz"
               type="text"
               value={data.plz}
-              onChange={(e) => onChange('plz', e.target.value)}
+              onChange={(e) => onChange('plz', e.target.value.replace(/\D/g, ''))}
+              onBlur={() => onBlurField('plz')}
+              inputMode="numeric"
+              autoComplete="postal-code"
               placeholder="54550"
               maxLength={5}
               className={inputClass(!!errors.plz)}
+              aria-invalid={!!errors.plz}
+              aria-describedby={errors.plz ? "reg-plz-error" : undefined}
             />
-            {errors.plz && <p className="text-red-500 text-xs mt-1">{errors.plz}</p>}
+            {errors.plz && <p id="reg-plz-error" role="alert" className="text-red-600 text-xs mt-1">{errors.plz}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#1E3249] mb-1">
-              Ort <span className="text-red-500">*</span>
+            <label htmlFor="reg-ort" className="block text-sm font-medium text-[#1E3249] mb-1">
+              Ort <span className="text-red-600" aria-hidden="true">*</span>
             </label>
-            <input
+            <input id="reg-ort"
               type="text"
               value={data.ort}
               onChange={(e) => onChange('ort', e.target.value)}
+              onBlur={() => onBlurField('ort')}
+              autoComplete="address-level2"
               placeholder="Daun"
               className={inputClass(!!errors.ort)}
+              aria-invalid={!!errors.ort}
+              aria-describedby={errors.ort ? "reg-ort-error" : undefined}
             />
-            {errors.ort && <p className="text-red-500 text-xs mt-1">{errors.ort}</p>}
+            {errors.ort && <p id="reg-ort-error" role="alert" className="text-red-600 text-xs mt-1">{errors.ort}</p>}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#1E3249] mb-1">
+          <label htmlFor="reg-ortschaft" className="block text-sm font-medium text-[#1E3249] mb-1">
             Ortschaft <span className="text-[#7A9DBF] font-normal">(optional)</span>
           </label>
-          <input
+          <input id="reg-ortschaft"
             type="text"
             value={data.ortschaft}
             onChange={(e) => onChange('ortschaft', e.target.value)}
@@ -84,10 +96,10 @@ export default function StepAdresse({ data, onChange, errors, regionSlug, onRegi
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#1E3249] mb-1">
+          <label htmlFor="reg-phone" className="block text-sm font-medium text-[#1E3249] mb-1">
             Telefon <span className="text-[#7A9DBF] font-normal">(optional)</span>
           </label>
-          <input
+          <input id="reg-phone"
             type="tel"
             value={data.phone}
             onChange={(e) => onChange('phone', e.target.value)}

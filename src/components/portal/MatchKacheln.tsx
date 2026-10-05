@@ -36,7 +36,7 @@ export default function MatchKacheln({
 }: MatchKachelnProps) {
   if (!isLoggedIn) {
     return (
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <KachelCard
           titel="Tier registrieren"
           text="Lege ein Profil für Deinen Vierbeiner an"
@@ -63,7 +63,7 @@ export default function MatchKacheln({
   const isTierhalter = userRole === 'tierhalter' || userRole === 'beide';
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
       {/* Kachel 1: Bester Match */}
       {bestMatch ? (
         <div

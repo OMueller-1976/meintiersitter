@@ -121,7 +121,7 @@ export default function GesucheCarousel({ postings, isLoggedIn, userRole, matchP
       ) : postings.length >= 3 ? (
         <CarouselView postings={postings} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} />
       ) : (
-        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${postings.length}, 1fr)` }}>
+        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 230px), 1fr))' }}>
           {postings.map((p) => (
             <GesuchCard
               key={p.id}

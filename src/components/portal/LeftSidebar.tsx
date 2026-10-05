@@ -14,12 +14,12 @@ interface NavItem {
   href: string;
 }
 
-interface NavGroup {
+export interface NavGroup {
   label?: string;
   items: NavItem[];
 }
 
-function buildNavGroups(region: string): NavGroup[] {
+export function buildNavGroups(region: string): NavGroup[] {
   return [
     {
       items: [
@@ -32,7 +32,7 @@ function buildNavGroups(region: string): NavGroup[] {
       label: 'ERKUNDEN',
       items: [
         { icon: '🥾', label: 'Wanderrouten', href: `/${region}/ratgeber/wandern` },
-        { icon: '🐕', label: 'Special Hunde', href: `/${region}/hundestrand` },
+        { icon: '🐕', label: 'Special Hunde', href: `/${region}/ratgeber/hundestrand` },
         { icon: '🏨', label: 'Unterkünfte', href: `/${region}/ratgeber/unterkuenfte` },
         { icon: '🏪', label: 'Marktplatz', href: `/${region}/marktplatz` },
         { icon: '📖', label: 'Ratgeber', href: `/${region}/ratgeber` },
@@ -41,14 +41,14 @@ function buildNavGroups(region: string): NavGroup[] {
     {
       label: 'ANLAUFSTELLEN',
       items: [
-        { icon: '🏠', label: 'Tierheime & Vereine', href: `/${region}/anlaufstellen` },
+        { icon: '❤️', label: 'Tierheime & Vereine', href: `/${region}/anlaufstellen` },
         { icon: '🍖', label: 'Futterstationen', href: `/${region}/anlaufstellen#futterstationen` },
       ],
     },
   ];
 }
 
-const loggedInGroup: NavGroup = {
+export const loggedInGroup: NavGroup = {
   label: 'MEIN BEREICH',
   items: [
     { icon: '📊', label: 'Dashboard', href: '/dashboard' },

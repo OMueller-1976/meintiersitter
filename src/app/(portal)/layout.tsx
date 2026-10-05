@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import LandkreisHeader from '@/components/portal/LandkreisHeader'
 import LeftSidebar from '@/components/portal/LeftSidebar'
+import MobileNav from '@/components/portal/MobileNav'
 import RightSidebar from '@/components/portal/RightSidebar'
 import SpendenModalTrigger from '@/components/shared/SpendenModalTrigger'
 import { REGIONS, getRegionSlugByDbRegion } from '@/lib/regions'
@@ -51,6 +52,7 @@ export default async function PortalLayout({ children }: { children: React.React
           <RightSidebar region={regionSlug} />
         </div>
       </div>
+      <MobileNav isLoggedIn={!!user} region={regionSlug} />
       <SpendenModalTrigger />
     </div>
   )

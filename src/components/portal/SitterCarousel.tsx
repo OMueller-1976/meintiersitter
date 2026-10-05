@@ -292,7 +292,7 @@ export default function SitterCarousel({ sitter, isLoggedIn, userRole, matchProz
       ) : sitter.length >= 3 ? (
         <CarouselView sitter={sitter} isLoggedIn={isLoggedIn} userRole={userRole} matchProzente={matchProzente} region={region} />
       ) : (
-        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${sitter.length}, 1fr)` }}>
+        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 230px), 1fr))' }}>
           {sitter.map((s) => (
             <SitterCardInner key={s.id} s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} />
           ))}

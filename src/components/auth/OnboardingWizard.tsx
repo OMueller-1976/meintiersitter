@@ -14,6 +14,7 @@ import StepSitterOnboarding from '@/components/register/StepSitterOnboarding'
 import StepTierOnboarding from '@/components/register/StepTierOnboarding'
 import SpendenHinweis from '@/components/shared/SpendenHinweis'
 import { registerAction } from '@/app/(auth)/register/actions'
+import { validateName, validateEmail, validatePassword, validatePlz, validateOrt } from '@/lib/validation'
 import { REGIONS, isRegionSlug, regionSlugFromPath } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 
@@ -121,6 +122,8 @@ export default function OnboardingWizard() {
 
   const steps = useMemo<Step[]>(() => {
     const base: Step[] = ['rolle', 'account', 'adresse']
+    // Vor der Rollenwahl einen Platzhalter-Schritt zaehlen, damit sich die Schrittzahl nicht aendert
+    if (formData.rolle === null) base.push('sitter-onboarding')
     if (formData.rolle === 'sitter' || formData.rolle === 'beide') {
       base.push('sitter-onboarding')
     }
@@ -136,42 +139,43 @@ export default function OnboardingWizard() {
     if (errors[key]) setErrors(prev => ({ ...prev, [key]: undefined }))
   }
 
+  // Nur die Rollenwahl blockiert "Weiter". Alle anderen Schritte pruefen beim Klick
+  // und zeigen die Fehler direkt am Feld (statt eines stumm deaktivierten Buttons).
   function canProceed(): boolean {
-    const step = steps[currentStep]
-    switch (step) {
-      case 'rolle':
-        return formData.rolle !== null
-      case 'account':
-        return (
-          formData.full_name.trim().length > 0 &&
-          formData.email.trim().length > 0 &&
-          formData.password.length >= 8 &&
-          formData.password === formData.passwordConfirm
-        )
-      case 'adresse':
-        return /^\d{5}$/.test(formData.plz) && formData.ort.trim().length > 0 && regionSlug !== null
-      case 'sitter-onboarding':
-      case 'tier-onboarding':
-        return true
-      case 'zusammenfassung':
-        return true
-      default:
-        return false
+    return steps[currentStep] !== 'rolle' || formData.rolle !== null
+  }
+
+  function fieldError(key: string, data: WizardFormData = formData): string | undefined {
+    switch (key) {
+      case 'full_name': return validateName(data.full_name)
+      case 'email': return validateEmail(data.email)
+      case 'password': return validatePassword(data.password)
+      case 'passwordConfirm':
+        return data.password !== data.passwordConfirm ? 'Passwörter stimmen nicht überein.' : undefined
+      case 'plz': return validatePlz(data.plz)
+      case 'ort': return validateOrt(data.ort)
+      default: return undefined
     }
+  }
+
+  function blurField(key: keyof WizardFormData) {
+    setErrors(prev => ({ ...prev, [key]: fieldError(key as string) }))
   }
 
   function validateStep(): WizardErrors {
     const step = steps[currentStep]
     const e: WizardErrors = {}
     if (step === 'account') {
-      if (!formData.full_name.trim()) e.full_name = 'Name ist erforderlich.'
-      if (!formData.email.trim()) e.email = 'E-Mail ist erforderlich.'
-      if (formData.password.length < 8) e.password = 'Mindestens 8 Zeichen.'
-      if (formData.password !== formData.passwordConfirm) e.passwordConfirm = 'Passwörter stimmen nicht überein.'
+      for (const k of ['full_name', 'email', 'password', 'passwordConfirm']) {
+        const msg = fieldError(k)
+        if (msg) e[k] = msg
+      }
     }
     if (step === 'adresse') {
-      if (!/^\d{5}$/.test(formData.plz)) e.plz = 'PLZ muss 5 Ziffern haben.'
-      if (!formData.ort.trim()) e.ort = 'Ort ist erforderlich.'
+      for (const k of ['plz', 'ort']) {
+        const msg = fieldError(k)
+        if (msg) e[k] = msg
+      }
       if (!regionSlug) e.region = 'Bitte wähle Deinen Landkreis.'
     }
     return e
@@ -349,10 +353,10 @@ export default function OnboardingWizard() {
             />
           )}
           {currentStepId === 'account' && (
-            <StepAccount data={formData} onChange={updateField} errors={errors} />
+            <StepAccount data={formData} onChange={updateField} onBlurField={blurField} errors={errors} />
           )}
           {currentStepId === 'adresse' && (
-            <StepAdresse data={formData} onChange={updateField} errors={errors} regionSlug={regionSlug} onRegionChange={setRegionSlug} />
+            <StepAdresse data={formData} onChange={updateField} onBlurField={blurField} errors={errors} regionSlug={regionSlug} onRegionChange={setRegionSlug} />
           )}
           {currentStepId === 'sitter-onboarding' && (
             <StepSitterOnboarding data={formData} onChange={updateField} onSkip={handleNext} />
@@ -375,9 +379,7 @@ export default function OnboardingWizard() {
             ← Zurück
           </button>
 
-          <span className="text-xs text-[#7A9DBF]">
-            Schritt {currentStep + 1} von {steps.length}
-          </span>
+          <span />
 
           {currentStep < steps.length - 1 ? (
             <button

@@ -139,6 +139,11 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
 }
 
+/* Mobile Navigation (Bottom-Bar) nur auf kleinen Viewports */
+.portal-mobile-nav {
+  display: none;
+}
+
 .portal-search-wrap {
   display: flex;
 }
@@ -154,6 +159,11 @@ h1, h2, h3, h4, h5, h6 {
 
   .portal-search-wrap {
     display: none;
+  }
+
+  .portal-mobile-nav {
+    display: block;
+    flex-shrink: 0;
   }
 }
 
