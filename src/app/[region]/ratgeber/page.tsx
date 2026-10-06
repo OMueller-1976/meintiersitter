@@ -48,6 +48,16 @@ export default function RatgeberPage({ params }: Props) {
       href: `/${region}/ratgeber/unterkuenfte`,
     },
     {
+      icon: '🚨',
+      iconBg: 'bg-red-100',
+      iconColor: 'text-red-700',
+      title: 'Hund entlaufen? Das hilft jetzt',
+      desc: 'Erste Schritte, Vorsorge beim Hundesitter und die Hundesuchhilfe Saving Paws.',
+      badge: 'Soforthilfe',
+      badgeColor: 'bg-red-100 text-red-800',
+      href: `/${region}/ratgeber/hund-entlaufen`,
+    },
+    {
       icon: '🍖',
       iconBg: 'bg-[#EEF2F8]',
       iconColor: 'text-[#2E4A6B]',
@@ -127,6 +137,7 @@ export default function RatgeberPage({ params }: Props) {
                   {k.href ? (
                     <Link
                       href={k.href}
+                      aria-label={`${k.title} – zur Kategorie`}
                       className="mt-4 text-sm text-[#2E4A6B] font-medium hover:underline text-left"
                     >
                       Zur Kategorie →

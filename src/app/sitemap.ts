@@ -14,10 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/${slug}`, priority: 1.0 },
     { url: `${base}/${slug}/sitter`, priority: 0.9 },
     { url: `${base}/${slug}/marktplatz`, priority: 0.7 },
-    { url: `${base}/${slug}/wanderrouten`, priority: 0.7 },
-    { url: `${base}/${slug}/hundestrand`, priority: 0.7 },
+    { url: `${base}/${slug}/ratgeber/wandern`, priority: 0.7 },
+    { url: `${base}/${slug}/ratgeber/hundestrand`, priority: 0.7 },
+    { url: `${base}/${slug}/ratgeber/hund-entlaufen`, priority: 0.7 },
     { url: `${base}/${slug}/anlaufstellen`, priority: 0.7 },
-    { url: `${base}/${slug}/unterkunfte`, priority: 0.7 },
+    { url: `${base}/${slug}/ratgeber/unterkuenfte`, priority: 0.7 },
     { url: `${base}/${slug}/ratgeber`, priority: 0.7 },
   ])
 

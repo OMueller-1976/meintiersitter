@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
@@ -47,6 +48,13 @@ export default function AnlaufstellenPage({ params }: Props) {
             <span className="text-amber-800 font-semibold">Notfallnummer:</span>
             <span className="text-amber-900 font-bold text-lg">110 (Polizei)</span>
           </div>
+          <p className="text-amber-700 leading-relaxed mt-3">
+            Hund entlaufen?{' '}
+            <Link href={`/${region}/ratgeber/hund-entlaufen`} className="font-semibold underline">
+              Das hilft jetzt
+            </Link>
+            .
+          </p>
         </div>
 
         {/* Tierheime */}

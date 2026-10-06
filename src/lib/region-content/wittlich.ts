@@ -101,6 +101,14 @@ export const wittlichContent: RegionContent = {
 
   anlaufstellen: [
     {
+      name: 'Hundesuchhilfe Saving Paws',
+      typ: 'notfall',
+      adresse: 'Birresborn (Vulkaneifel)',
+      beschreibung:
+        'Gemeinnütziger Verein aus der Vulkaneifel/Südeifel, Helfer in der Eifel bis Trier. Ob ein Einsatz im Kreis Bernkastel-Wittlich möglich ist, bitte telefonisch klären. Hilfe bei entlaufenen Hunden: Suchflyer, Futterstellen, Suchhunde, Wärmebilddrohnen und Lebendfallen. Notfall-Hotline: 0170 7350767.',
+      website: 'hundesuchhilfe.de',
+    },
+    {
       name: 'Förderverein Eifeltierheim e.V.',
       typ: 'verein',
       adresse: 'Postfach 13 15, 54503 Wittlich',

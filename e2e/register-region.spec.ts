@@ -138,3 +138,31 @@ test.describe('Regionsinhalte (kein Daun-Fallback)', () => {
     })
   }
 })
+
+test.describe('Hundesuchhilfe Saving Paws', () => {
+  for (const r of ['daun', 'wittlich', 'koblenz', 'euskirchen']) {
+    test(`/${r}: Anlaufstelle, Special Hunde und Ratgeber verlinkt`, async ({ page }) => {
+      await page.goto(`/${r}/anlaufstellen`)
+      await expect(page.getByText('Hundesuchhilfe Saving Paws').first()).toBeVisible()
+
+      await page.goto(`/${r}/ratgeber/hundestrand`)
+      const tel = page.locator('a[href="tel:+491707350767"]').first()
+      await expect(tel).toBeVisible()
+      await page.getByRole('link', { name: /Ratgeber: Das hilft jetzt/ }).click()
+      await expect(page).toHaveURL(new RegExp(`/${r}/ratgeber/hund-entlaufen`))
+      await expect(page.getByRole('heading', { name: /Hund entlaufen/ }).first()).toBeVisible()
+      await expect(page.locator('a[href="https://www.hundesuchhilfe.de"]').first()).toBeVisible()
+    })
+  }
+
+  test('Ratgeber-Uebersicht enthaelt Karte "Hund entlaufen?"', async ({ page }) => {
+    await page.goto('/wittlich/ratgeber')
+    await page.getByRole('link', { name: /Hund entlaufen/ }).click()
+    await expect(page).toHaveURL(/\/wittlich\/ratgeber\/hund-entlaufen/)
+  })
+
+  test('Wittlich: Einsatzgebiet wird ehrlich benannt', async ({ page }) => {
+    await page.goto('/wittlich/ratgeber/hund-entlaufen')
+    await expect(page.getByText(/telefonisch klären|per Telefon/).first()).toBeVisible()
+  })
+})

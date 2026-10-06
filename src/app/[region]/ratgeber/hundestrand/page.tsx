@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
+import Link from 'next/link'
+import { SAVING_PAWS, savingPawsRegionHinweis } from '@/lib/saving-paws'
 import { getRegionContent } from '@/lib/region-content'
 
 interface Props {
@@ -67,6 +69,34 @@ export default function HundestrandPage({ params }: Props) {
                 <p className="text-sm text-[#D4E3F0]">{spot.adresse}</p>
               </div>
             )}
+          </div>
+
+          {/* Soforthilfe: Hund entlaufen */}
+          <div className="bg-white border-2 border-red-300 rounded-2xl p-6">
+            <h3 className="font-semibold text-red-800 mb-2">🚨 Hund entlaufen?</h3>
+            <p className="text-sm text-[#2E4A6B] leading-relaxed mb-3">
+              {SAVING_PAWS.name} hilft bei der Suche nach entlaufenen Hunden.{' '}
+              {savingPawsRegionHinweis(region)}
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={SAVING_PAWS.telefonHref}
+                className="inline-block bg-red-700 text-white text-sm font-semibold rounded-xl px-4 py-2 hover:bg-red-800 transition-colors"
+              >
+                📞 {SAVING_PAWS.telefon}
+              </a>
+              <a
+                href={SAVING_PAWS.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[#2E4A6B] underline"
+              >
+                hundesuchhilfe.de →
+              </a>
+              <Link href={`/${region}/ratgeber/hund-entlaufen`} className="text-sm font-medium text-[#2E4A6B] underline">
+                Ratgeber: Das hilft jetzt →
+              </Link>
+            </div>
           </div>
 
           {/* Allgemeiner Hinweis */}

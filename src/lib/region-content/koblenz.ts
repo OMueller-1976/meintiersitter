@@ -111,6 +111,14 @@ export const koblenzContent: RegionContent = {
 
   anlaufstellen: [
     {
+      name: 'Hundesuchhilfe Saving Paws',
+      typ: 'notfall',
+      adresse: 'Birresborn (Vulkaneifel)',
+      beschreibung:
+        'Gemeinnütziger Verein aus der Vulkaneifel/Südeifel. Ob ein Einsatz in der Region Koblenz/Hunsrück möglich ist, bitte telefonisch klären. Hilfe bei entlaufenen Hunden: Suchflyer, Futterstellen, Suchhunde, Wärmebilddrohnen und Lebendfallen. Notfall-Hotline: 0170 7350767.',
+      website: 'hundesuchhilfe.de',
+    },
+    {
       name: 'Tierschutzverein Koblenz und Umgebung e.V.',
       typ: 'verein',
       adresse: 'Koblenz',

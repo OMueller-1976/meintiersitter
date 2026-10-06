@@ -100,6 +100,14 @@ export const daunContent: RegionContent = {
 
   anlaufstellen: [
     {
+      name: 'Hundesuchhilfe Saving Paws',
+      typ: 'notfall',
+      adresse: 'Birresborn (Vulkaneifel)',
+      beschreibung:
+        'Gemeinnütziger Verein mit Sitz in Birresborn, Einsatz in der Vulkaneifel/Südeifel. Hilfe bei entlaufenen Hunden: Suchflyer, Futterstellen, Suchhunde, Wärmebilddrohnen und Lebendfallen. Notfall-Hotline: 0170 7350767.',
+      website: 'hundesuchhilfe.de',
+    },
+    {
       name: 'Förderverein Eifeltierheim e.V.',
       typ: 'verein',
       adresse: 'Postfach 13 15, 54503 Wittlich',
