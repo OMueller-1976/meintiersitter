@@ -102,6 +102,7 @@ export default function OnboardingWizard() {
   const searchParams = useSearchParams()
   const regionParam = searchParams.get('region')
   const roleParam = searchParams.get('role')
+  const plzParam = searchParams.get('plz')
   // Region: ?region= > URL-Pfad > null (Nutzer muss im Schritt "Adresse" waehlen)
   const [regionSlug, setRegionSlug] = useState<RegionSlug | null>(
     isRegionSlug(regionParam) ? regionParam : regionSlugFromPath(pathname)
@@ -111,6 +112,7 @@ export default function OnboardingWizard() {
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<WizardFormData>(() => ({
     ...INITIAL_DATA,
+    plz: plzParam && /^\d{5}$/.test(plzParam) ? plzParam : '',
     rolle: roleParam === 'sitter' || roleParam === 'tierhalter' || roleParam === 'beide' ? roleParam : null,
   }))
   const [errors, setErrors] = useState<WizardErrors>({})

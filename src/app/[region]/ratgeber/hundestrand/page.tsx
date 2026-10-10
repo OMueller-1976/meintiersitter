@@ -39,7 +39,24 @@ export default function HundestrandPage({ params }: Props) {
       <div className="bg-[#F1F5F9]">
         <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
 
+          {!spot && (
+            <div className="bg-white border border-[#C8D8EC] rounded-2xl p-8">
+              <h2 className="text-xl font-bold text-[#1E3249] mb-2">
+                Noch kein geprüfter Hundestrand in {regionConfig.kurzname}
+              </h2>
+              <p className="text-sm text-[#4E779F] leading-relaxed">
+                Wir listen nur Badestellen, die wir belegen können. Für diese Region haben wir noch keine
+                gesicherte Stelle. Kennst Du einen schönen Platz zum Baden oder Toben mit Hund?{' '}
+                <a href="mailto:kontakt@tiersitti.de" className="underline font-semibold text-[#2D6A4F]">
+                  Schreib uns
+                </a>
+                .
+              </p>
+            </div>
+          )}
+
           {/* Highlight-Card */}
+          {spot && (
           <div className="bg-[#2E4A6B] rounded-2xl p-8 text-white">
             <div className="inline-flex items-center gap-2 bg-[#F4A261] text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
               ⭐ Hundestrand der Region
@@ -70,6 +87,7 @@ export default function HundestrandPage({ params }: Props) {
               </div>
             )}
           </div>
+          )}
 
           {/* Soforthilfe: Hund entlaufen */}
           <div className="bg-white border-2 border-red-300 rounded-2xl p-6">

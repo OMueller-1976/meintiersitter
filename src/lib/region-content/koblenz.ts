@@ -1,46 +1,29 @@
 import type { RegionContent } from './types'
+import { BUNDESWEIT_ANLAUFSTELLEN, UNTERKUNFT_TIPP_ALLGEMEIN } from './shared'
 
+// Quellen: siehe docs/regionen-quellen.md (Abschnitt koblenz)
 export const koblenzContent: RegionContent = {
   wanderrouten: [
     {
-      titel: 'Rheinsteig Boppard – St. Goar',
+      titel: 'Rheinsteig',
       beschreibung:
-        'Spektakulärer Höhenweg auf der rechten Rheinseite mit Blick auf die Loreley-Schleife. Weinberge, Burgen und Aussichtspunkte wechseln sich ab.',
-      laenge: 'ca. 20 km',
-      dauer: '5–6 Stunden',
-      schwierigkeit: 'Mittel',
-      hundInfo: 'Hundefreundlich, Leine in Weinbergen',
-      startpunkt: 'Boppard Bahnhof',
+        'Fernwanderweg auf der rechten Rheinseite von Bonn nach Wiesbaden. Er führt durch Koblenz-Ehrenbreitstein und überquert bei Lahnstein die Lahn.',
+      laenge: 'ca. 320 km (Gesamtstrecke)',
+      startpunkt: 'Bonn (Marktplatz)',
     },
     {
-      titel: 'Moselhöhenweg Cochem – Treis-Karden',
+      titel: 'Moselsteig',
       beschreibung:
-        'Traumhafter Höhenweg oberhalb der Moselschlingen. Ausblicke auf Burg Eltz, Weinberge und das Moseltal. Zu den schönsten Wanderungen der Region.',
-      laenge: 'ca. 16 km',
-      dauer: '4–5 Stunden',
-      schwierigkeit: 'Mittel',
-      hundInfo: 'Hundefreundlich, teils Leinenpflicht',
-      startpunkt: 'Cochem Marktplatz',
+        'Fernwanderweg von Perl an der Obermosel bis Koblenz, wo die Mosel in den Rhein mündet. Etappenweise als Tagestour gehbar.',
+      laenge: '365 km (Gesamtstrecke)',
+      startpunkt: 'Perl (Ziel: Koblenz)',
     },
     {
-      titel: 'Maifeld-Höhenweg bei Polch',
+      titel: 'Rheinburgenweg',
       beschreibung:
-        'Ruhiger Panoramarundweg durch das hügelige Maifeld. Weite Ausblicke über die Landschaft, kaum Steigungen, ideal für Hunde.',
-      laenge: 'ca. 12 km',
-      dauer: '3 Stunden',
-      schwierigkeit: 'Leicht',
-      hundInfo: 'Sehr hundefreundlich',
-      startpunkt: 'Polch Ortsmitte',
-    },
-    {
-      titel: 'Festungsweg Koblenz – Ehrenbreitstein',
-      beschreibung:
-        'Aufstieg zur Festung Ehrenbreitstein mit atemberaubendem Blick auf das Deutsche Eck, die Mosel- und Rheinmündung.',
-      laenge: 'ca. 6 km',
-      dauer: '2 Stunden',
-      schwierigkeit: 'Mittel (Aufstieg)',
-      hundInfo: 'Hunde auf Festungsgelände erlaubt',
-      startpunkt: 'Koblenz Altstadt / Sessellift (Hunde erlaubt)',
+        'Fernwanderweg am linken Rheinufer von Bingen bis zum Rolandsbogen bei Remagen, u. a. über Boppard, Koblenz und Andernach.',
+      laenge: 'ca. 196 km (Gesamtstrecke)',
+      startpunkt: 'Bingen am Rhein',
     },
   ],
 
@@ -49,65 +32,61 @@ export const koblenzContent: RegionContent = {
       name: 'Festung Ehrenbreitstein',
       emoji: '🏰',
       beschreibung:
-        'Eine der größten erhaltenen Festungsanlagen Europas, hoch über dem Deutschen Eck. Welterbe-Panorama über Rhein und Mosel.',
-      tipp: 'Hunde erlaubt, Sessellift mit Hund nutzbar.',
-    },
-    {
-      name: 'Deutsches Eck – Moselmündung',
-      emoji: '🌊',
-      beschreibung:
-        'Die Mündung der Mosel in den Rhein — das Wahrzeichen von Koblenz. Eindrucksvoller Spaziergang entlang der Promenade.',
-      tipp: 'Breite Promenade perfekt für Hunde, überall Leine.',
-    },
-    {
-      name: 'Boppard Rheinstrecke',
-      emoji: '🚂',
-      beschreibung:
-        'Der schönste Abschnitt des Mittelrheins mit der großen Rheinschleife. Von der Gedeonseck-Aussicht spektakulärer Blick auf die Schleife.',
-      tipp: 'Stuhlsesselbahn Boppard — Hunde erlaubt.',
+        'Festung auf einem rund 180 m hohen Bergsporn in Koblenz, gegenüber der Moselmündung. Teil des UNESCO-Welterbes Oberes Mittelrheintal; heute u. a. Landesmuseum Koblenz.',
     },
     {
       name: 'Burg Eltz',
       emoji: '🏯',
       beschreibung:
-        'Vollständig erhaltene Burg im Elztal, nie zerstört. Eine der beeindruckendsten Burgen Deutschlands, umgeben von Wäldern.',
-      tipp: 'Hunde auf dem Außengelände erlaubt. Parkplatz mit Fußweg zur Burg (ca. 30 Min.).',
+        'Höhenburg aus dem 12. Jahrhundert im Elztal bei Wierschem (Kreis Mayen-Koblenz), seit über 800 Jahren im Besitz der Familie Eltz und nie gewaltsam erobert. Heute öffentlich zugängliches Museum.',
     },
   ],
 
   tierheime: [
     {
       name: 'Tierheim Koblenz',
-      adresse: 'Zaunheimer Str. 26, 56072 Koblenz',
-      telefon: '0261 40638-0',
+      adresse: 'Zaunheimer Straße 26, 56072 Koblenz-Rübenach',
+      telefon: '0261 406380',
       website: 'tierheim-koblenz.de',
-      oeffnungszeiten: 'Besuchszeiten Mi + So 14–17 Uhr; telefonisch Mo–Sa 10–13 und 14–17 Uhr',
-      beschreibung:
-        'Tierheim des Tierschutzvereins Koblenz und Umgebung e.V. Fundtiere, Vermittlung und Tierschutz.',
+      beschreibung: 'Tierheim des Tierschutzvereins Koblenz und Umgebung e. V. Zeiten bitte auf der Website prüfen.',
     },
     {
-      name: 'Tierheim Mayen',
-      adresse: 'Mayen, Rheinland-Pfalz',
-      oeffnungszeiten: 'Mi+Sa 14–17 Uhr, So 10–12 Uhr',
-      beschreibung:
-        'Tierheim des Tierschutzvereins Mayen und Umgebung e.V. Annahme und Vermittlung von Fundtieren.',
+      name: 'Tierheim Mayen (Tierschutzverein Mayen und Umgebung e. V.)',
+      adresse: 'In der Pluns 1, 56727 Mayen',
+      telefon: '02651 77438',
+      website: 'tierschutzverein-mayen.de',
+      oeffnungszeiten: 'Di–So 14–16 Uhr (laut Website auch an Sonn- und Feiertagen).',
+      beschreibung: 'Tierheim in Mayen (E-Mail: info@tierheim-mayen.de).',
+    },
+    {
+      name: 'Tierheim Andernach',
+      adresse: 'Augsbergweg 62, 56626 Andernach',
+      telefon: '02632 44343',
+      website: 'tierheim-andernach.de',
+      beschreibung: 'Tierheim in Andernach, gelistet beim Tierschutzbund Rheinland-Pfalz.',
+    },
+    {
+      name: 'Tierheim Montabaur',
+      adresse: 'Zur Hüttenmühle 5, 56410 Montabaur',
+      telefon: '02602 180826',
+      website: 'tierheim-montabaur.de',
+      beschreibung: 'Tierheim im Westerwald.',
+    },
+    {
+      name: 'Tierheim Diez e. V.',
+      adresse: 'Am Hammerberg, 65558 Holzheim',
+      telefon: '06432 6638',
+      website: 'tierschutzverein-diez.de',
+      beschreibung: 'Tierheim im Raum Diez (Rhein-Lahn-Kreis).',
+    },
+    {
+      name: 'Tierauffangstation Weitefeld',
+      adresse: 'Sandstraße 29, 57586 Weitefeld',
+      telefon: '02747 9153950',
+      website: 'tierschutz-altenkirchen.de',
+      beschreibung: 'Auffangstation im Kreis Altenkirchen.',
     },
   ],
-
-  hundestrand: {
-    name: 'Uferwiesen Boppard am Rhein',
-    beschreibung:
-      'Die ausgedehnten Rheinuferwiesen in Boppard bieten Hunden viel Platz zum Toben und Schwimmen. Flacher Rheinstrand, weitläufig und ruhig.',
-    adresse: 'Rheinuferstraße, 56154 Boppard',
-    entfernung: 'ca. 50 Min. von Koblenz',
-    details: [
-      'Flacher Zugang zum Rhein, kiesiger Strand',
-      'Große Uferwiesen zum Freilaufen',
-      'Beste Zeiten: früh morgens oder Spätnachmittag',
-      'Kein offizieller Hundestrand — naturbelassenes Ufer',
-      'Leine in Ortsnähe und auf Promenade',
-    ],
-  },
 
   anlaufstellen: [
     {
@@ -115,24 +94,10 @@ export const koblenzContent: RegionContent = {
       typ: 'notfall',
       adresse: 'Birresborn (Vulkaneifel)',
       beschreibung:
-        'Gemeinnütziger Verein aus der Vulkaneifel/Südeifel. Ob ein Einsatz in der Region Koblenz/Hunsrück möglich ist, bitte telefonisch klären. Hilfe bei entlaufenen Hunden: Suchflyer, Futterstellen, Suchhunde, Wärmebilddrohnen und Lebendfallen. Notfall-Hotline: 0170 7350767.',
+        'Gemeinnütziger Verein aus der Vulkaneifel/Südeifel. Ob ein Einsatz in Deinem Ort möglich ist, bitte telefonisch klären. Hilfe bei entlaufenen Hunden: Suchflyer, Futterstellen, Suchhunde, Wärmebilddrohnen und Lebendfallen. Notfall-Hotline: 0170 7350767.',
       website: 'hundesuchhilfe.de',
     },
-    {
-      name: 'Tierschutzverein Koblenz und Umgebung e.V.',
-      typ: 'verein',
-      adresse: 'Koblenz',
-      beschreibung:
-        'Träger des Tierheims Koblenz. Tierschutz, Fundtiere, Kastrationsprojekte für die Region.',
-      website: 'tierheim-koblenz.de',
-    },
-    {
-      name: 'Tierschutzverein Cochem-Zell e.V.',
-      typ: 'verein',
-      adresse: 'Cochem',
-      beschreibung:
-        'Tierschutz für den Landkreis Cochem-Zell. Fundtier-Aufnahme und Vermittlung.',
-    },
+    ...BUNDESWEIT_ANLAUFSTELLEN,
   ],
 
   unterkuenfte: [
@@ -147,14 +112,7 @@ export const koblenzContent: RegionContent = {
       beschreibung: 'Hunde sind laut Anbieter willkommen. Zu Zaun und Garten bitte direkt beim Vermieter nachfragen.',
     },
   ],
-  unterkunftTipps: [
-    {
-      icon: '🏡',
-      titel: 'Ferienhäuser in der Region',
-      text: 'Viele Ferienwohnungen und -häuser in der Region akzeptieren Hunde. Oft mit eingezäuntem Garten.',
-      tipp: 'Nach „eingezäuntes Grundstück" filtern auf Buchungsplattformen',
-    },
-  ],
+  unterkunftTipps: [UNTERKUNFT_TIPP_ALLGEMEIN],
   futterstationen: [
     {
       name: 'Tierhilfe Rhein-Hunsrück e.V. – Tiertafel / Futtertonne',

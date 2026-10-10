@@ -1,6 +1,6 @@
 # Regionen-Rollout Rheinland-Pfalz (+ NRW)
 
-Stand: 10.10.2026 · Status: **Zuschnitt v2, wartet auf letzte Freigabe**
+Stand: 10.10.2026 · Status: **umgesetzt auf Branch `feat/regionen-rollout`, wartet auf Preview-Prüfung**
 
 ## Ziel
 Komplette Abdeckung von Rheinland-Pfalz (24 Landkreise + 12 kreisfreie Städte) sowie mehrere NRW-Regionen.
@@ -50,7 +50,7 @@ Gesamt: 13 Regionen (7 neue RLP, 2 neue NRW, 4 bestehende, davon 2 erweitert).
 
 ## PLZ-Zuordnung ("Nicht sicher? Gib Deine PLZ ein")
 Neue Funktion auf der Einstiegsseite und in der Registrierung.
-- Tabelle `plz_region` (plz, ort, kreis, region_slug), einmalig aus offenen Daten befüllt (Kreis je PLZ/Ort), Kreis → Region nach obiger Tabelle.
+- Umgesetzt als statische JSON-Dateien (`src/lib/data/plz-regionen.json`, `plz-naehe.json`), erzeugt mit `scripts/build-plz-regionen.mjs` aus offenen Daten (AGS-Kreisschlüssel → Region via `region-kreise.json`). Keine DB-Tabelle.
 - Eingabe PLZ → Region wird gefunden und angezeigt, mit Weiterleitung zu `/[region]`. In der Registrierung wird die Region vorbelegt.
 - PLZ in mehreren Kreisen: Auswahl der Ortschaft, dann Zuordnung.
 - PLZ außerhalb der Abdeckung: nächstgelegene Region vorschlagen (Entfernung über vorhandenes Geocoding) und ehrlicher Hinweis, dass der Ort noch nicht abgedeckt ist.

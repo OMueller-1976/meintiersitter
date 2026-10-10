@@ -5,6 +5,8 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { REGIONS, getRegionSlugByDbRegion } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
+import PlzRegionFinder from '@/components/shared/PlzRegionFinder'
+import LegalFooter from '@/components/shared/LegalFooter'
 
 export const metadata = {
   title: 'Tiersitti – Tiersitter-Vermittlung in Deiner Region',
@@ -36,6 +38,7 @@ export default async function Home() {
   }
 
   const regionList = Object.entries(REGIONS) as [RegionSlug, (typeof REGIONS)[RegionSlug]][]
+  const bundeslaender = Array.from(new Set(regionList.map(([, cfg]) => cfg.bundesland)))
 
   return (
     <main className="min-h-screen bg-[#F0F5FB] px-6 py-16">
@@ -46,27 +49,35 @@ export default async function Home() {
         </h1>
         <p className="text-[#4E779F] text-lg leading-relaxed max-w-xl mx-auto">
           Tiersitti verbindet Tierhalter und Tiersitter in Deiner Region — kostenlos,
-          werbefrei und ehrenamtlich betrieben. Wähle Deinen Landkreis, um loszulegen.
+          werbefrei und ehrenamtlich betrieben. Gib Deine PLZ ein oder wähle Deine Region, um loszulegen.
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {regionList.map(([slug, cfg]) => (
-          <Link
-            key={slug}
-            href={`/${slug}`}
-            className="bg-white border border-[#C8D8EC] rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[#2D6A4F] transition-all"
-          >
-            <div className="text-sm font-semibold text-[#7A9DBF] uppercase tracking-wide mb-1">
-              {cfg.bundesland}
-            </div>
-            <div className="text-xl font-bold text-[#1E3249] mb-2">{cfg.name}</div>
-            <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#2D6A4F]">
-              Zur Region {cfg.kurzname} →
-            </span>
-          </Link>
-        ))}
-      </div>
+      <PlzRegionFinder />
+
+      {bundeslaender.map((bl) => (
+        <section key={bl} className="max-w-3xl mx-auto mb-8" aria-labelledby={`bl-${bl}`}>
+          <h2 id={`bl-${bl}`} className="text-sm font-semibold text-[#7A9DBF] uppercase tracking-wide mb-3">
+            {bl}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {regionList
+              .filter(([, cfg]) => cfg.bundesland === bl)
+              .map(([slug, cfg]) => (
+                <Link
+                  key={slug}
+                  href={`/${slug}`}
+                  className="bg-white border border-[#C8D8EC] rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[#2D6A4F] transition-all"
+                >
+                  <div className="text-xl font-bold text-[#1E3249] mb-2">{cfg.name}</div>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#2D6A4F]">
+                    Zur Region {cfg.kurzname} →
+                  </span>
+                </Link>
+              ))}
+          </div>
+        </section>
+      ))}
 
       <p className="max-w-3xl mx-auto text-center text-sm text-[#7A9DBF] mt-12">
         Deine Region ist noch nicht dabei?{' '}
@@ -75,6 +86,7 @@ export default async function Home() {
         </a>{' '}
         — wir wachsen stetig weiter.
       </p>
+      <LegalFooter className="mt-4" />
     </main>
   )
 }

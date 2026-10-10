@@ -1,0 +1,16 @@
+{
+  "_hinweis": "Zuordnung Kreisschlüssel (AGS, 5-stellig) zu Regions-Slug. Quelle der Schlüssel: Statistische Ämter. Wird von regions.ts und scripts/build-plz-regionen.mjs genutzt.",
+  "daun": ["07233"],
+  "wittlich": ["07231", "07135"],
+  "koblenz": ["07111", "07137", "07140", "07141", "07143", "07132"],
+  "trier": ["07211", "07235", "07232"],
+  "ahr": ["07131", "07138"],
+  "nahe": ["07133", "07134", "07331", "07319"],
+  "mainz": ["07315", "07339"],
+  "vorderpfalz": ["07314", "07311", "07318", "07338", "07332"],
+  "suedpfalz": ["07316", "07313", "07337", "07334"],
+  "westpfalz": ["07312", "07335", "07336", "07333", "07317", "07320", "07340"],
+  "euskirchen": ["05366"],
+  "aachen": ["05334", "05358"],
+  "rheinsieg": ["05382", "05314"]
+}

@@ -2,6 +2,15 @@ import { daunContent } from './daun'
 import { wittlichContent } from './wittlich'
 import { koblenzContent } from './koblenz'
 import { euskirchenContent } from './euskirchen'
+import { trierContent } from './trier'
+import { ahrContent } from './ahr'
+import { naheContent } from './nahe'
+import { mainzContent } from './mainz'
+import { vorderpfalzContent } from './vorderpfalz'
+import { suedpfalzContent } from './suedpfalz'
+import { westpfalzContent } from './westpfalz'
+import { aachenContent } from './aachen'
+import { rheinsiegContent } from './rheinsieg'
 import type { RegionContent } from './types'
 
 export type { RegionContent }
@@ -17,4 +26,13 @@ export const REGION_CONTENT: Record<string, RegionContent> = {
   wittlich: wittlichContent,
   koblenz: koblenzContent,
   euskirchen: euskirchenContent,
+  trier: trierContent,
+  ahr: ahrContent,
+  nahe: naheContent,
+  mainz: mainzContent,
+  vorderpfalz: vorderpfalzContent,
+  suedpfalz: suedpfalzContent,
+  westpfalz: westpfalzContent,
+  aachen: aachenContent,
+  rheinsieg: rheinsiegContent,
 }

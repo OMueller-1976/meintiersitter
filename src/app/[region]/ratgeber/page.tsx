@@ -154,6 +154,7 @@ export default function RatgeberPage({ params }: Props) {
         </section>
 
         {/* ── Highlight-Box Hundestrand ──────────────────────── */}
+        {content.hundestrand && (
         <section className="py-16 px-4 bg-[#EEF2F8]">
           <div className="max-w-4xl mx-auto">
             <div className="border-2 border-[#2E4A6B] rounded-2xl p-8 bg-[#EEF2F8]">
@@ -172,6 +173,7 @@ export default function RatgeberPage({ params }: Props) {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── Wanderrouten ──────────────────────────────────────── */}
         <section className="py-16 px-4 bg-white/70 backdrop-blur-sm">
