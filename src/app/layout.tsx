@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import ConsentGtm from "@/components/shared/ConsentGtm";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -58,6 +59,7 @@ export default function RootLayout({
       <body className={`${nunito.className} antialiased`}>
         {children}
         <Toaster position="top-right" />
+        <ConsentGtm />
       </body>
     </html>
   );

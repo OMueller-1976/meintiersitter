@@ -168,6 +168,22 @@ export default function DatenschutzPage() {
             Zuständig ist der Landesbeauftragte für Datenschutz und Informationsfreiheit
             Rheinland-Pfalz.
           </p>
+
+          <div className="border-t border-[#C8D8EC] my-6" />
+
+          {/* 7 */}
+          <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">
+            7. Google Tag Manager (nur mit Einwilligung)
+          </h2>
+          <p className="text-[#2E4A6B] leading-relaxed">
+            Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) setzen wir den Google Tag Manager
+            der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, ein. Der Tag Manager verwaltet
+            Dienste zur Reichweitenmessung. Beim Laden werden Ihre IP-Adresse und Geräteinformationen an Google
+            übertragen; eine Übermittlung in Drittländer, insbesondere die USA, ist möglich. Ohne Ihre Einwilligung
+            wird der Dienst nicht geladen. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über den
+            Link „Cookie-Einstellungen“ im Footer widerrufen. Welche Dienste im Tag Manager aktiv sind, wird hier
+            ergänzt, sobald sie eingerichtet sind.
+          </p>
         </div>
     </main>
   );

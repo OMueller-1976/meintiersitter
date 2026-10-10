@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import ConsentOpenButton from './ConsentOpenButton'
 
 const LEGAL_LINKS = [
   { label: 'Impressum', href: '/impressum' },
@@ -24,6 +25,8 @@ export default function LegalFooter({ className = '' }: { className?: string }) 
           {i < LEGAL_LINKS.length - 1 && <span aria-hidden="true">·</span>}
         </span>
       ))}
+      <span aria-hidden="true">·</span>
+      <ConsentOpenButton />
     </footer>
   )
 }
