@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import DashboardNav from '@/components/layout/DashboardNav';
+import LegalFooter from '@/components/shared/LegalFooter';
 import type { Profile } from '@/types';
 
 export default async function DashboardLayout({
@@ -81,6 +82,7 @@ export default async function DashboardLayout({
       />
       <main className="flex-1 overflow-y-auto pb-20 md:pb-0" style={{ background: 'var(--content-bg)' }}>
         {children}
+        <LegalFooter />
       </main>
     </div>
   );

@@ -5,6 +5,12 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { buildNavGroups, loggedInGroup } from './LeftSidebar'
 
+const LEGAL_LINKS = [
+  { label: 'Impressum', href: '/impressum' },
+  { label: 'Datenschutz', href: '/datenschutz' },
+  { label: 'AGB', href: '/agb' },
+]
+
 interface Props {
   isLoggedIn?: boolean
   region: string
@@ -87,9 +93,42 @@ export default function MobileNav({ isLoggedIn, region }: Props) {
                 ))}
               </div>
             ))}
+            <div className="mb-4">
+              <p className="text-xs font-bold tracking-wide text-[#4E779F] mb-1">Rechtliches</p>
+              {LEGAL_LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="flex items-center min-h-[44px] px-2 rounded-lg text-sm text-[#1E3249] hover:bg-[#F0F6FC]"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </>
       )}
+
+      {/* Rechtliche Pflichtlinks: immer sichtbar (Impressumspflicht, § 5 DDG) */}
+      <nav
+        aria-label="Rechtliches"
+        className="flex items-center justify-center gap-3 bg-white border-t border-[#d0e4f7]"
+        style={{ position: 'relative', zIndex: 62 }}
+      >
+        {LEGAL_LINKS.map((l, i) => (
+          <span key={l.href} className="flex items-center gap-3">
+            <Link
+              href={l.href}
+              className="inline-flex items-center min-h-[32px] px-1 text-[11px] text-[#4E779F] underline-offset-2 hover:underline"
+            >
+              {l.label}
+            </Link>
+            {i < LEGAL_LINKS.length - 1 && (
+              <span aria-hidden="true" className="text-[10px] text-[#4E779F]">·</span>
+            )}
+          </span>
+        ))}
+      </nav>
 
       <nav
         aria-label="Hauptnavigation"
