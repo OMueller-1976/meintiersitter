@@ -197,6 +197,14 @@ export default function LeftSidebar({ isLoggedIn, region = 'daun' }: LeftSidebar
             )}
           </span>
         ))}
+        <span style={{ fontSize: 10, color: 'var(--vke-text-secondary)' }}>·</span>
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new Event('tiersitti:consent-open'))}
+          style={{ fontSize: 12, color: 'var(--vke-text-secondary)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit' }}
+        >
+          Cookie-Einstellungen
+        </button>
       </div>
     </nav>
   );

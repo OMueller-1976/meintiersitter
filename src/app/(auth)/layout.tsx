@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import LegalFooter from '@/components/shared/LegalFooter'
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#EEF2F8] to-[#D4E3F0]">

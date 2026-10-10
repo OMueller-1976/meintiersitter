@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import ConsentGtm from "@/components/shared/ConsentGtm";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -15,10 +16,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Tiersitti – Tiersitter finden in Deiner Region",
+  title: {
+    default: "Tiersitti – Tiersitter finden in Deiner Region",
+    template: "%s | Tiersitti",
+  },
   description:
     "Finde vertrauensvolle Tiersitter in Deiner Nähe. Kostenlos für Sitter, fair für Tierhalter.",
   metadataBase: new URL("https://tiersitti.de"),
+  alternates: { canonical: "/" },
+  keywords: ["Tiersitter", "Hundesitter", "Katzensitter", "Tierbetreuung", "Tierheim", "Rheinland-Pfalz", "NRW"],
   openGraph: {
     title: "Tiersitti",
     description: "Tierbetreuung und Tierhilfe in Deiner Region",
@@ -26,6 +32,7 @@ export const metadata: Metadata = {
     siteName: "Tiersitti",
     locale: "de_DE",
     type: "website",
+    images: ["/icons/icon-512.png"],
   },
   manifest: "/manifest.json",
   icons: {
@@ -52,6 +59,7 @@ export default function RootLayout({
       <body className={`${nunito.className} antialiased`}>
         {children}
         <Toaster position="top-right" />
+        <ConsentGtm />
       </body>
     </html>
   );

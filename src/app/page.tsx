@@ -7,11 +7,14 @@ import { REGIONS, getRegionSlugByDbRegion } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 import PlzRegionFinder from '@/components/shared/PlzRegionFinder'
 import LegalFooter from '@/components/shared/LegalFooter'
+import JsonLd from '@/components/shared/JsonLd'
+import { websiteLd } from '@/lib/seo'
 
 export const metadata = {
-  title: 'Tiersitti – Tiersitter-Vermittlung in Deiner Region',
+  title: { absolute: 'Tiersitti – Tiersitter finden in Rheinland-Pfalz & NRW' },
   description:
-    'Tiersitti verbindet Tierhalter und Tiersitter in der Region. Wähle Deinen Landkreis und leg direkt los.',
+    'Tiersitter, Hundesitter und Tierhilfe in Rheinland-Pfalz und NRW: Region wählen oder PLZ eingeben, Tierheime, Wanderwege und Ratgeber für Tierhalter.',
+  alternates: { canonical: 'https://tiersitti.de' },
 }
 
 export default async function Home() {
@@ -42,6 +45,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#F0F5FB] px-6 py-16">
+      <JsonLd data={websiteLd} />
       <div className="max-w-3xl mx-auto text-center mb-12">
         <div className="text-5xl mb-4">🐾</div>
         <h1 className="text-3xl md:text-4xl font-bold text-[#1E3249] mb-3">

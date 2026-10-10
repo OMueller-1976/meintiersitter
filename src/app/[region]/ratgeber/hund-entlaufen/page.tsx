@@ -3,15 +3,17 @@ import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 import { SAVING_PAWS, savingPawsRegionHinweis } from '@/lib/saving-paws'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
+import KiHinweis from '@/components/shared/KiHinweis'
 
-export const metadata = {
-  title: 'Hund entlaufen – das hilft jetzt – Tiersitti Ratgeber',
-  description:
-    'Was tun, wenn ein Hund entläuft? Erste Schritte, Vorsorge beim Hundesitter und die Hundesuchhilfe Saving Paws.',
-}
 
 interface Props {
   params: { region: string }
+}
+
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'hund-entlaufen')
 }
 
 const ersteSchritte = [
@@ -38,6 +40,7 @@ export default function HundEntlaufenPage({ params }: Props) {
 
   return (
     <main className="min-h-screen">
+      <JsonLd data={[breadcrumbLd(params.region, 'hund-entlaufen')]} />
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">🚨 Hund entlaufen – das hilft jetzt</h1>
         <p className="text-[#A8C0DC] text-lg">
@@ -137,6 +140,7 @@ export default function HundEntlaufenPage({ params }: Props) {
           </p>
         </div>
       </div>
+      <div className="max-w-4xl mx-auto px-4 pb-10"><KiHinweis /></div>
     </main>
   )
 }

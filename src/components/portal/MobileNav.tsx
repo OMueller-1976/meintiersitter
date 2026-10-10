@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import ConsentOpenButton from '@/components/shared/ConsentOpenButton'
 import { usePathname } from 'next/navigation'
 import { buildNavGroups, loggedInGroup } from './LeftSidebar'
 
@@ -128,6 +129,8 @@ export default function MobileNav({ isLoggedIn, region }: Props) {
             )}
           </span>
         ))}
+        <span aria-hidden="true" className="text-[10px] text-[#4E779F]">·</span>
+        <ConsentOpenButton compact />
       </nav>
 
       <nav

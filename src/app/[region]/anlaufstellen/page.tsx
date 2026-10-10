@@ -3,9 +3,16 @@ import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 import { getRegionContent } from '@/lib/region-content'
+import { regionMetadata, breadcrumbLd, tierheimeLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
+import KiHinweis from '@/components/shared/KiHinweis'
 
 interface Props {
   params: { region: string }
+}
+
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'anlaufstellen')
 }
 
 export default function AnlaufstellenPage({ params }: Props) {
@@ -26,6 +33,7 @@ export default function AnlaufstellenPage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
+      <JsonLd data={[breadcrumbLd(params.region, 'anlaufstellen'), ...tierheimeLd(params.region)]} />
 
       {/* Hero */}
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
@@ -200,6 +208,7 @@ export default function AnlaufstellenPage({ params }: Props) {
         </section>
 
       </div>
+      <div className="max-w-4xl mx-auto px-4 pb-10"><KiHinweis /></div>
     </main>
   )
 }

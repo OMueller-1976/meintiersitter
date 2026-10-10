@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Tiersitti – Nachrichten' }
+export const metadata: Metadata = { title: 'Nachrichten', robots: { index: false, follow: false } }
 
 export default async function ChatPage() {
   const cookieStore = await cookies()
