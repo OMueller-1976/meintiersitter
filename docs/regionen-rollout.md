@@ -10,7 +10,7 @@ Je Region: Beispiel-Einträge + individuell recherchierte Inhalte.
 - Zuschnitt: **gebündelte Regionen** nach Naturraum
 - Datenqualität: **nur belegte Angaben** (Quelle je Eintrag, Lücken bleiben leer)
 - Rollout: **alles in einem Rutsch** (ein Branch, ein Review, ein Merge)
-- NRW: **Aachen, Düren, Rhein-Sieg/Bonn** (bestätigt)
+- NRW: **Aachen & Düren (gebündelt), Rhein-Sieg/Bonn** (bestätigt)
 
 ## Zuschnitt (Version 2, ländliche Räume stärker gebündelt)
 
@@ -34,19 +34,28 @@ Prüfung der Zählung: 1 + 2 + 6 + 3 + 2 + 4 + 2 + 5 + 4 + 7 = 36. Jede Einheit 
 | Slug | Region | Status |
 |---|---|---|
 | euskirchen | Kreis Euskirchen | bestehend |
-| aachen | Städteregion Aachen | neu |
-| dueren | Kreis Düren | neu |
+| aachen | Aachen & Düren (Städteregion Aachen + Kreis Düren) | neu |
 | rheinsieg | Rhein-Sieg-Kreis & Bonn | neu |
 
-Gesamt: 14 Regionen (7 neue RLP, 3 neue NRW, 4 bestehende, davon 2 erweitert).
+Gesamt: 13 Regionen (7 neue RLP, 2 neue NRW, 4 bestehende, davon 2 erweitert).
 
 ### Begründung der Bündelung
+- Stadt und Umland gehören bewusst in eine Region: Städter wollen helfen, der Betreuungsmangel ist im ländlichen Raum am größten (Aachen mit Eifel/Düren, Mainz mit Mainz-Bingen, Trier mit Trier-Saarburg, Koblenz mit dem Umland).
 - Westerwald, Rhein-Lahn und Altenkirchen grenzen an Koblenz und teilen Mittelrhein/Lahn als Naturraum.
 - Cochem-Zell gehört geografisch zur Mosel, daher zu Bernkastel-Wittlich statt zu Nahe/Lahn.
 - Nahe und Rheinhessen sind touristisch eine gemeinsame Region ("Rheinhessen-Nahe").
 - Bitburg-Prüm liegt in der Planungsregion Trier.
 - Pfälzerwald-Kreise im Westen und Südwesten sind ländlich und dünn besiedelt, daher eine Region.
 - Offene Frage: Nutzer, die sich in einem gebündelten Kreis registrieren (z. B. Cochem), bekommen die Region "Mosel" als Auswahl. Die Ortschaft bleibt frei wählbar.
+
+## PLZ-Zuordnung ("Nicht sicher? Gib Deine PLZ ein")
+Neue Funktion auf der Einstiegsseite und in der Registrierung.
+- Tabelle `plz_region` (plz, ort, kreis, region_slug), einmalig aus offenen Daten befüllt (Kreis je PLZ/Ort), Kreis → Region nach obiger Tabelle.
+- Eingabe PLZ → Region wird gefunden und angezeigt, mit Weiterleitung zu `/[region]`. In der Registrierung wird die Region vorbelegt.
+- PLZ in mehreren Kreisen: Auswahl der Ortschaft, dann Zuordnung.
+- PLZ außerhalb der Abdeckung: nächstgelegene Region vorschlagen (Entfernung über vorhandenes Geocoding) und ehrlicher Hinweis, dass der Ort noch nicht abgedeckt ist.
+- Keine Speicherung der Eingaben ohne Einwilligung (DSGVO). Eine Warteliste nur mit Opt-in.
+- Rate-Limit für die Abfrage-Route, damit sie nicht missbraucht werden kann.
 
 ## Umfang je Region (Inhalt nach `region-content/types.ts`)
 - Wanderrouten (3–4, mit Hunde-Info, Länge, Startpunkt)
@@ -67,7 +76,8 @@ Gesamt: 14 Regionen (7 neue RLP, 3 neue NRW, 4 bestehende, davon 2 erweitert).
 4. `seed-beispiele.mjs` regional parametrisieren (Orte, PLZ, Namen)
 5. Marktplatz-Seed je Region (Migration)
 6. Sitemap + Region-Auswahl auf der Startseite (aktuell 4 Kacheln, dann ~20: Gruppierung nach Bundesland nötig)
-7. Typecheck, Lint, Build, Preview-Prüfung, danach Merge
+7. PLZ-Zuordnung bauen (Tabelle, API-Route, Einstiegsseite, Registrierung)
+8. Typecheck, Lint, Build, Preview-Prüfung, danach Merge
 
 ## Risiken
 - **Datenqualität:** Bestehende Einträge sind teils unvollständig (z. B. Tierheim Mayen ohne Straße). Diese werden mit überprüft.
