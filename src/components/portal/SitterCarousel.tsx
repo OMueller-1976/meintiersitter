@@ -230,7 +230,7 @@ function CarouselView({ sitter, isLoggedIn, userRole, matchProzente, region = 'd
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-3">
           {sitter.map((s) => (
-            <div key={s.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
+            <div key={s.id} className="flex-none portal-carousel-slide" style={{ minWidth: 0 }}>
               <SitterCardInner s={s} isLoggedIn={isLoggedIn} userRole={userRole} matchProzent={matchProzente?.[s.id]} region={region} />
             </div>
           ))}

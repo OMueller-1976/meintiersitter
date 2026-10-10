@@ -66,8 +66,8 @@ export default function SitterCard({
           </div>
         )}
         <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
-            <span className="font-bold text-sm truncate">{name}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px 6px', flexWrap: 'wrap' }}>
+            <span className="font-bold text-sm truncate" style={{ maxWidth: '100%' }}>{name}</span>
             {isDummy && <span style={BADGE_STYLE}>📌 Beispiel</span>}
           </div>
           <div className="text-xs text-muted truncate">📍 {ortschaft}</div>
@@ -121,7 +121,7 @@ export default function SitterCard({
         </div>
       )}
 
-      <div className="flex items-center gap-2 mt-auto">
+      <div className="flex items-center gap-2 mt-auto flex-wrap">
         <button
           onClick={(e) => { e.stopPropagation(); setZeigeDetail(true) }}
           className="text-xs font-bold hover:opacity-80 transition-opacity"
