@@ -173,16 +173,55 @@ export default function DatenschutzPage() {
 
           {/* 7 */}
           <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">
-            7. Google Tag Manager (nur mit Einwilligung)
+            7. Einwilligung (Cookie-Banner)
           </h2>
           <p className="text-[#2E4A6B] leading-relaxed">
-            Mit Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG) setzen wir den Google Tag Manager
-            der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, ein. Der Tag Manager verwaltet
-            Dienste zur Reichweitenmessung. Beim Laden werden Ihre IP-Adresse und Geräteinformationen an Google
-            übertragen; eine Übermittlung in Drittländer, insbesondere die USA, ist möglich. Ohne Ihre Einwilligung
-            wird der Dienst nicht geladen. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft über den
-            Link „Cookie-Einstellungen“ im Footer widerrufen. Welche Dienste im Tag Manager aktiv sind, wird hier
-            ergänzt, sobald sie eingerichtet sind.
+            Beim ersten Besuch fragen wir Sie über einen Hinweis („Cookie-Banner“), ob Sie der Messung der Nutzung
+            zustimmen. Notwendige Funktionen (z. B. Anmeldung) funktionieren auch ohne Einwilligung. Google-Dienste
+            werden erst nach Ihrer Zustimmung geladen (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG). Ihre Wahl wird
+            lokal in Ihrem Browser gespeichert. Sie können sie jederzeit über „Cookie-Einstellungen“ im Footer
+            ändern oder widerrufen; der Widerruf gilt für die Zukunft.
+          </p>
+
+          <div className="border-t border-[#C8D8EC] my-6" />
+
+          {/* 8 */}
+          <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">
+            8. Google Tag Manager
+          </h2>
+          <p className="text-[#2E4A6B] leading-relaxed">
+            Mit Ihrer Einwilligung setzen wir den Google Tag Manager der Google Ireland Limited, Gordon House, Barrow
+            Street, Dublin 4, Irland, ein. Der Tag Manager verwaltet Skripte (Tags) für Reichweitenmessung. Er selbst
+            erstellt keine Nutzerprofile, kann aber beim Laden Ihre IP-Adresse und Geräteinformationen an Google
+            übertragen und löst die in ihm hinterlegten Dienste aus.
+          </p>
+
+          <div className="border-t border-[#C8D8EC] my-6" />
+
+          {/* 9 */}
+          <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">
+            9. Google Analytics
+          </h2>
+          <p className="text-[#2E4A6B] leading-relaxed">
+            Sofern über den Tag Manager eingerichtet, nutzen wir Google Analytics (Google Ireland Limited) zur
+            statistischen Auswertung der Nutzung unserer Seiten, z. B. aufgerufene Seiten, Verweildauer, Herkunftsregion
+            und Gerätetyp. Dabei können Cookies und ähnliche Technologien eingesetzt werden. Die Daten werden pseudonym
+            verarbeitet. Eine Übermittlung an Google LLC in die USA ist möglich; Google ist unter dem EU-US Data Privacy
+            Framework zertifiziert. Rechtsgrundlage ist Ihre Einwilligung. Die Speicherdauer richtet sich nach den in
+            Google Analytics eingestellten Aufbewahrungsfristen. Weitere Informationen:
+            policies.google.com/privacy. Eine Opt-out-Möglichkeit ist der Widerruf der Einwilligung im Footer.
+          </p>
+
+          <div className="border-t border-[#C8D8EC] my-6" />
+
+          {/* 10 */}
+          <h2 className="text-lg font-semibold text-[#2E4A6B] mt-8 mb-3">
+            10. Weitere Google-Dienste
+          </h2>
+          <p className="text-[#2E4A6B] leading-relaxed">
+            Weitere Google-Dienste (z. B. Google Ads, Conversion-Tracking, Google Search Console) setzen wir nur ein,
+            soweit sie hier aufgeführt sind oder Sie ihnen zugestimmt haben. Aktuell sind über den Tag Manager nur die
+            oben genannten Dienste vorgesehen. Dieser Abschnitt wird bei Änderungen angepasst.
           </p>
         </div>
     </main>
