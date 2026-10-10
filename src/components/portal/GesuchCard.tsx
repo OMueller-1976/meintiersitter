@@ -112,7 +112,7 @@ export default function GesuchCard({
         </div>
       )}
 
-      <div className="flex items-start gap-3 mb-3" style={{ minWidth: 0 }}>
+      <div className="flex items-start gap-3 mb-3 flex-wrap" style={{ minWidth: 0 }}>
         <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-[#d0e4f7] flex items-center justify-center bg-[#f0f4f8]">
           {fotoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -175,8 +175,8 @@ export default function GesuchCard({
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid #e2e8f0' }}>
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-between gap-2 pt-2" style={{ borderTop: '1px solid #e2e8f0' }}>
+        <div className="flex items-center gap-1.5 min-w-0 flex-1">
           <div
             className="w-5 h-5 rounded-full flex items-center justify-center text-slate-900 text-[9px] font-bold flex-shrink-0"
             style={{ background: 'var(--accent-green)' }}

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import LegalFooter from '@/components/shared/LegalFooter'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +17,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </Link>
       </header>
       <main>{children}</main>
+      <LegalFooter />
     </div>
   )
 }

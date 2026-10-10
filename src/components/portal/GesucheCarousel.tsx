@@ -56,7 +56,7 @@ function CarouselView({ postings, isLoggedIn, userRole, matchProzente }: { posti
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-3">
           {postings.map((p) => (
-            <div key={p.id} className="flex-none" style={{ width: 'calc(50% - 6px)', minWidth: 0 }}>
+            <div key={p.id} className="flex-none portal-carousel-slide" style={{ minWidth: 0 }}>
               <GesuchCard
                 posting={p}
                 isLoggedIn={isLoggedIn}

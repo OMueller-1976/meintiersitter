@@ -148,6 +148,14 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
 }
 
+/* Karussell-Slides: 2 pro Ansicht am Desktop, 1 (mit Vorschau der nächsten) auf Mobile */
+.portal-carousel-slide {
+  width: calc(50% - 6px);
+}
+.hide-xs {
+  display: inline;
+}
+
 @media (max-width: 767px) {
   .portal-sidebar-left {
     display: none;
@@ -164,6 +172,14 @@ h1, h2, h3, h4, h5, h6 {
   .portal-mobile-nav {
     display: block;
     flex-shrink: 0;
+  }
+
+  .portal-carousel-slide {
+    width: 88%;
+  }
+
+  .hide-xs {
+    display: none;
   }
 }
 

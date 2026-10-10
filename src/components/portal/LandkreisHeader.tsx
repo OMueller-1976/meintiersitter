@@ -40,10 +40,11 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
       }}
     >
       {/* Logo */}
-      <Link href="/" style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', lineHeight: 1.2 }}>
+      <Link href="/" style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', lineHeight: 1.2, minWidth: 0, marginRight: '0.5rem' }}>
         <span style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>🐾 Tiersitti</span>
-        <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
-          {bundesland === 'rheinland-pfalz' ? 'Rheinland-Pfalz' : bundesland} · {landkreis.charAt(0).toUpperCase() + landkreis.slice(1)}
+        <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <span className="hide-xs">{bundesland === 'rheinland-pfalz' ? 'Rheinland-Pfalz' : bundesland} · </span>
+          {landkreis.charAt(0).toUpperCase() + landkreis.slice(1)}
         </span>
       </Link>
 
@@ -91,17 +92,17 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
             )}
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, whiteSpace: 'nowrap' }}>
             <Link href="/login" style={{
               border: '1px solid rgba(255,255,255,0.3)', color: 'white',
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
+              padding: '6px 12px', borderRadius: 8, fontSize: 13,
               textDecoration: 'none', fontWeight: 600,
             }}>
               Anmelden
             </Link>
             <Link href={registerHref(getRegionSlugByDbRegion(landkreis))} style={{
               background: 'var(--accent-green)', color: '#0f172a',
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
+              padding: '6px 12px', borderRadius: 8, fontSize: 13,
               textDecoration: 'none', fontWeight: 700,
             }}>
               Registrieren
