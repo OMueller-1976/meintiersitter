@@ -6,6 +6,8 @@ import DashboardNav from '@/components/layout/DashboardNav';
 import LegalFooter from '@/components/shared/LegalFooter';
 import type { Profile } from '@/types';
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export default async function DashboardLayout({
   children,
 }: {

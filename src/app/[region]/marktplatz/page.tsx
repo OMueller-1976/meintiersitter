@@ -3,11 +3,17 @@ export const dynamic = 'force-dynamic'
 import { getMarktplatzEintraege, KATEGORIE_LABELS } from '@/lib/queries/marktplatz'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
 
 type Eintrag = Awaited<ReturnType<typeof getMarktplatzEintraege>>[number]
 
 interface Props {
   params: { region: string }
+}
+
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'marktplatz')
 }
 
 export default async function MarktplatzPage({ params }: Props) {
@@ -24,6 +30,7 @@ export default async function MarktplatzPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <JsonLd data={[breadcrumbLd(params.region, 'marktplatz')]} />
       <h1 className="text-2xl font-bold text-[#1E3249] mb-2">Marktplatz</h1>
       <p className="text-sm text-[#4E779F] mb-8">
         Tierärzte, Tierbedarf und weitere Anbieter {cfg ? `im ${cfg.name}` : 'in Deiner Region'} — geprüft und mit aktuellen Kontaktdaten.

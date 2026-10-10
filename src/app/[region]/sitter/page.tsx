@@ -3,26 +3,24 @@ export const dynamic = 'force-dynamic'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
+
 import Link from 'next/link'
 import SitterCard from '@/components/portal/SitterCard'
 import { getAktiveSitter } from '@/lib/queries/sitter'
 import { getMatchProzenteForTierhalter } from '@/lib/queries/matching'
 import { REGIONS, registerHref } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
 
 interface Props {
   params: { region: string }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cfg = REGIONS[params.region as RegionSlug]
-  if (!cfg) return {}
-  return {
-    title: `Sitter in ${cfg.name} – Tiersitti`,
-    description: `Alle Tiersitter im ${cfg.name} auf einen Blick.`,
-  }
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'sitter')
 }
+
 
 function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -96,6 +94,7 @@ export default async function RegionSitterPage({ params }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <JsonLd data={[breadcrumbLd(params.region, 'sitter')]} />
       <div>
         <Link
           href={`/${region}`}

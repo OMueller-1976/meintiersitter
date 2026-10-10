@@ -3,7 +3,6 @@ export const dynamic = 'force-dynamic'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-import type { Metadata } from 'next'
 import GesucheCarousel from '@/components/portal/GesucheCarousel'
 import SitterCarousel from '@/components/portal/SitterCarousel'
 import MatchKacheln from '@/components/portal/MatchKacheln'
@@ -13,16 +12,17 @@ import { getBesterMatchFuerTierhalter, getBesterMatchFuerSitter, getMatchProzent
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 import type { Profile } from '@/types'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
 
 interface Props {
   params: { region: string }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cfg = REGIONS[params.region as RegionSlug]
-  if (!cfg) return {}
-  return { title: `Tiersitti – ${cfg.name}` }
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'start')
 }
+
 
 function buildSupabase(cookieStore: Awaited<ReturnType<typeof cookies>>) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -59,6 +59,7 @@ export default async function RegionPage({ params }: Props) {
   if (regionRow && !regionRow.is_active) {
     return (
       <div className="flex items-center justify-center min-h-full py-16">
+      <JsonLd data={[breadcrumbLd(params.region, 'start')]} />
         <div className="tile text-center p-12 max-w-lg">
           <div className="text-4xl mb-4">🐾</div>
           <h1 className="text-2xl font-extrabold mb-3">

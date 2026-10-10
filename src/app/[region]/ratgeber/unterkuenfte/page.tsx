@@ -2,8 +2,13 @@ import { notFound } from 'next/navigation'
 import { REGIONS } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
 import { getRegionContent } from '@/lib/region-content'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
+import KiHinweis from '@/components/shared/KiHinweis'
 
-export const metadata = { title: 'Hundefreundliche Unterkünfte – MeinTiersitter Ratgeber' };
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'unterkuenfte')
+}
 
 interface Props {
   params: { region: string }
@@ -30,6 +35,7 @@ export default function UnterkuenftePage({ params }: Props) {
 
   return (
     <main className="min-h-screen">
+      <JsonLd data={[breadcrumbLd(params.region, 'unterkuenfte')]} />
       {/* Hero */}
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">
@@ -139,6 +145,7 @@ export default function UnterkuenftePage({ params }: Props) {
           </div>
         </div>
       </div>
+      <div className="max-w-4xl mx-auto px-4 pb-10"><KiHinweis /></div>
     </main>
   );
 }

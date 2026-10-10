@@ -3,9 +3,16 @@ import { notFound } from 'next/navigation';
 import { REGIONS } from '@/lib/regions';
 import type { RegionSlug } from '@/lib/regions';
 import { getRegionContent } from '@/lib/region-content';
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
+import KiHinweis from '@/components/shared/KiHinweis'
 
 interface Props {
   params: { region: string }
+}
+
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'ratgeber')
 }
 
 export default function RatgeberPage({ params }: Props) {
@@ -23,7 +30,7 @@ export default function RatgeberPage({ params }: Props) {
       iconColor: 'text-[#2E4A6B]',
       title: 'Wandern & Gassi',
       desc: `Die schönsten Routen in ${regionConfig.name} – von der kurzen Abendrunde bis zur Tageswanderung.`,
-      badge: '4 Routen',
+      badge: content.wanderrouten.length === 1 ? '1 Route' : `${content.wanderrouten.length} Routen`,
       badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
       href: `/${region}/ratgeber/wandern`,
     },
@@ -32,8 +39,8 @@ export default function RatgeberPage({ params }: Props) {
       iconBg: 'bg-[#EEF2F8]',
       iconColor: 'text-[#2E4A6B]',
       title: 'Bademöglichkeiten',
-      desc: 'Wo Hunde planschen dürfen – Seen und Bäche in der Region mit Hundebereich.',
-      badge: '3 Spots',
+      desc: 'Wo Hunde planschen dürfen: Badestellen in der Region, soweit geprüft.',
+      badge: content.hundestrand ? '1 Spot' : 'In Prüfung',
       badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
       href: `/${region}/ratgeber/hundestrand`,
     },
@@ -43,7 +50,7 @@ export default function RatgeberPage({ params }: Props) {
       iconColor: 'text-[#F4A261]',
       title: 'Hundefreundliche Unterkünfte',
       desc: `Hotels, Pensionen und Ferienhäuser in ${regionConfig.name} und Umgebung.`,
-      badge: '3 Tipps',
+      badge: content.unterkuenfte.length > 0 ? `${content.unterkuenfte.length} Unterkünfte` : 'In Prüfung',
       badgeColor: 'bg-[#DDEAF4] text-[#2E4A6B]',
       href: `/${region}/ratgeber/unterkuenfte`,
     },
@@ -99,6 +106,7 @@ export default function RatgeberPage({ params }: Props) {
 
   return (
     <main>
+      <JsonLd data={[breadcrumbLd(params.region, 'ratgeber')]} />
         {/* ── Hero klein ────────────────────────────────────────── */}
         <section className="bg-[#EEF2F8] py-14 px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -216,6 +224,7 @@ export default function RatgeberPage({ params }: Props) {
             </Link>
           </div>
         </section>
+      <div className="max-w-4xl mx-auto px-4 pb-10"><KiHinweis /></div>
     </main>
   );
 }

@@ -4,16 +4,18 @@ import type { RegionSlug } from '@/lib/regions'
 import Link from 'next/link'
 import { SAVING_PAWS, savingPawsRegionHinweis } from '@/lib/saving-paws'
 import { getRegionContent } from '@/lib/region-content'
+import { regionMetadata, breadcrumbLd } from '@/lib/seo'
+import JsonLd from '@/components/shared/JsonLd'
+import KiHinweis from '@/components/shared/KiHinweis'
 
 interface Props {
   params: { region: string }
 }
 
-export async function generateMetadata({ params }: Props) {
-  const cfg = REGIONS[params.region as RegionSlug]
-  if (!cfg) return {}
-  return { title: `Special Hunde – ${cfg.name}` }
+export function generateMetadata({ params }: { params: { region: string } }) {
+  return regionMetadata(params.region, 'hundestrand')
 }
+
 
 export default function HundestrandPage({ params }: Props) {
   const { region } = params
@@ -26,6 +28,7 @@ export default function HundestrandPage({ params }: Props) {
 
   return (
     <main className="min-h-screen">
+      <JsonLd data={[breadcrumbLd(params.region, 'hundestrand')]} />
       {/* Hero */}
       <div className="bg-[#2E4A6B] text-white rounded-2xl py-10 px-8 mb-6">
         <h1 className="text-3xl font-bold text-white mb-2">
@@ -128,6 +131,7 @@ export default function HundestrandPage({ params }: Props) {
 
         </div>
       </div>
+      <div className="max-w-4xl mx-auto px-4 pb-10"><KiHinweis /></div>
     </main>
   )
 }
