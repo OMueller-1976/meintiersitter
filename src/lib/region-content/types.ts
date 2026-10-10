@@ -73,7 +73,8 @@ export interface RegionContent {
   wanderrouten: Wanderroute[]
   sehenswuerdigkeiten: Sehenswuerdigkeit[]
   tierheime: Tierheim[]
-  hundestrand: HundestrandHighlight
+  /** Optional: nur setzen, wenn ein Hundestrand/eine Badestelle belegt ist. */
+  hundestrand?: HundestrandHighlight
   anlaufstellen: Anlaufstelle[]
   unterkuenfte: Unterkunft[]
   unterkunftTipps: UnterkunftTipp[]

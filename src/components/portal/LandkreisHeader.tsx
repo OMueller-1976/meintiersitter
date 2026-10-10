@@ -5,15 +5,19 @@ import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 import LogoutButton from '@/components/auth/LogoutButton'
 
-import { registerHref, getRegionSlugByDbRegion } from '@/lib/regions'
+import { registerHref, getRegionSlugByDbRegion, REGIONS } from '@/lib/regions'
 interface LandkreisHeaderProps {
   user?: User | null
-  bundesland: string
+  /** Wird nicht mehr für die Anzeige genutzt, bleibt aus Kompatibilität. */
+  bundesland?: string
+  /** dbRegion der Region (z. B. 'vulkaneifel') */
   landkreis: string
 }
 
-export default function LandkreisHeader({ user, bundesland, landkreis }: LandkreisHeaderProps) {
+export default function LandkreisHeader({ user, landkreis }: LandkreisHeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const regionSlug = getRegionSlugByDbRegion(landkreis)
+  const regionCfg = REGIONS[regionSlug]
 
   const fullName = user?.user_metadata?.full_name ?? user?.email ?? ''
   const initials = fullName
@@ -43,8 +47,8 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
       <Link href="/" style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none', lineHeight: 1.2, minWidth: 0, marginRight: '0.5rem' }}>
         <span style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>🐾 Tiersitti</span>
         <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          <span className="hide-xs">{bundesland === 'rheinland-pfalz' ? 'Rheinland-Pfalz' : bundesland} · </span>
-          {landkreis.charAt(0).toUpperCase() + landkreis.slice(1)}
+          <span className="hide-xs">{regionCfg.bundesland} · </span>
+          {regionCfg.kurzname}
         </span>
       </Link>
 
@@ -100,7 +104,7 @@ export default function LandkreisHeader({ user, bundesland, landkreis }: Landkre
             }}>
               Anmelden
             </Link>
-            <Link href={registerHref(getRegionSlugByDbRegion(landkreis))} style={{
+            <Link href={registerHref(regionSlug)} style={{
               background: 'var(--accent-green)', color: '#0f172a',
               padding: '6px 12px', borderRadius: 8, fontSize: 13,
               textDecoration: 'none', fontWeight: 700,

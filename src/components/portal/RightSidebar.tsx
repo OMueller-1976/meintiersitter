@@ -41,14 +41,16 @@ function buildInfoKacheln(region: string): InfoKachel[] {
     });
   }
 
-  kacheln.push({
-    kategorie: 'Special Hunde',
-    emoji: '🐕',
-    titel: content.hundestrand.name,
-    text: content.hundestrand.beschreibung,
-    link: `/${region}/hundestrand`,
-    link_label: 'Mehr erfahren →',
-  });
+  if (content.hundestrand) {
+    kacheln.push({
+      kategorie: 'Special Hunde',
+      emoji: '🐕',
+      titel: content.hundestrand.name,
+      text: content.hundestrand.beschreibung,
+      link: `/${region}/ratgeber/hundestrand`,
+      link_label: 'Mehr erfahren →',
+    });
+  }
 
   kacheln.push({
     kategorie: 'Marktplatz',

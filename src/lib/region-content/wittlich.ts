@@ -1,4 +1,5 @@
 import type { RegionContent } from './types'
+import { BUNDESWEIT_ANLAUFSTELLEN } from './shared'
 
 export const wittlichContent: RegionContent = {
   wanderrouten: [
@@ -7,9 +8,6 @@ export const wittlichContent: RegionContent = {
       beschreibung:
         'Traumhafter Höhenweg über den Moselrücken mit Weinbergen und Ausblicken auf die Moselschlingen. Einer der schönsten Moselsteig-Abschnitte.',
       laenge: 'ca. 22 km',
-      dauer: '6–7 Stunden',
-      schwierigkeit: 'Mittel bis Anspruchsvoll',
-      hundInfo: 'Hundefreundlich, Leine in Weinbergen empfohlen',
       startpunkt: 'Traben-Trarbach Bahnhof',
     },
     {
@@ -17,9 +15,6 @@ export const wittlichContent: RegionContent = {
       beschreibung:
         'Premiumwanderweg entlang der Lieser von Manderscheid nach Wittlich. Durch Wälder, Täler und idyllische Bachabschnitte — einer der schönsten Flussrandwege der Eifel.',
       laenge: 'ca. 30 km (mehrtägig möglich)',
-      dauer: '2 Tage',
-      schwierigkeit: 'Mittel',
-      hundInfo: 'Sehr hundefreundlich, viele Wasserläufe zum Planschen',
       startpunkt: 'Manderscheid Kurpark',
     },
     {
@@ -27,19 +22,20 @@ export const wittlichContent: RegionContent = {
       beschreibung:
         'Rundweg durch die Weinberge rund um Bernkastel mit herrlichem Blick auf die Mosel und Burg Landshut. Infotafeln zur Weinkultur.',
       laenge: 'ca. 8 km',
-      dauer: '2–3 Stunden',
-      schwierigkeit: 'Leicht bis Mittel',
-      hundInfo: 'Hundefreundlich außerhalb der Lese-Saison',
       startpunkt: 'Marktplatz Bernkastel',
+    },
+    {
+      titel: 'Moselsteig (Gesamtstrecke)',
+      beschreibung:
+        'Fernwanderweg von Perl an der Obermosel bis Koblenz, führt durch Bernkastel-Kues, Traben-Trarbach und Cochem-Zell. Etappenweise als Tagestour gehbar.',
+      laenge: '365 km (Gesamtstrecke)',
+      startpunkt: 'Perl',
     },
     {
       titel: 'Moselhöhenweg',
       beschreibung:
-        'Fernwanderweg auf den Höhen beider Moselseiten. Spektakuläre Fernblicke, Burgen und Weinorte. Etappenweise ideal auch mit Hund.',
+        'Fernwanderweg auf den Höhen beider Moselseiten. Etappenweise gehbar.',
       laenge: 'variabel (Etappen 10–25 km)',
-      dauer: 'je nach Etappe',
-      schwierigkeit: 'Mittel',
-      hundInfo: 'Leine in Ortschaften und Weinbergen',
     },
   ],
 
@@ -49,7 +45,6 @@ export const wittlichContent: RegionContent = {
       emoji: '🏰',
       beschreibung:
         'Mittelalterliche Burgruine hoch über Bernkastel-Kues mit Panoramablick über die Mosel. Kostenloser Aufstieg, beeindruckende Kulisse.',
-      tipp: 'Hunde dürfen mit auf die Burg, Leine mitnehmen.',
     },
     {
       name: 'Bernkastel-Kues Marktplatz',
@@ -63,41 +58,26 @@ export const wittlichContent: RegionContent = {
       emoji: '⛪',
       beschreibung:
         'Ehemaliges Zisterzienserkloster bei Zeltingen-Rachtig, heute Wein- und Kulturgut. Historische Anlage mit Gartenbereich.',
-      tipp: 'Außengelände hundefreundlich, Besuch mit Hund möglich.',
     },
     {
-      name: 'Moselmündung Koblenz',
-      emoji: '🌊',
+      name: 'Reichsburg Cochem',
+      emoji: '🏰',
       beschreibung:
-        'Das Deutscheck, wo Mosel auf Rhein trifft — eindrucksvolles Panorama an der Spitze der Halbinsel.',
+        'Gipfelburg über Cochem an der Mosel, 1689 von französischen Truppen gesprengt und 1874–1877 im neugotischen Stil wieder aufgebaut.',
     },
   ],
 
   tierheime: [
     {
       name: 'Eifeltierheim Altrich',
-      adresse: 'Altrich, 54516 Wittlich',
+      adresse: 'Gut Kirchhof 6, 54518 Altrich',
+      telefon: '06571 9552121',
       website: 'eifeltierheim.de',
-      oeffnungszeiten: 'Mo–Fr 10–14 Uhr, Sa+So 15–17 Uhr',
+      oeffnungszeiten: 'Besuch nur nach telefonischer Terminvereinbarung (nicht montags und mittwochs). Telefon Mo–Fr 10–14 Uhr, Sa/So 15–17 Uhr.',
       beschreibung:
-        'Zuständig für den Landkreis Bernkastel-Wittlich. Fundtiere und Vermittlung.',
+        'Tierheim in Altrich bei Wittlich. Ein Zuständigkeitsgebiet nennt die Website nicht.',
     },
   ],
-
-  hundestrand: {
-    name: 'Mosel-Badestellen bei Trittenheim',
-    beschreibung:
-      'Naturbelassene Uferbereiche an der Mosel bei Trittenheim eignen sich hervorragend als Badestelle für Hunde — flacher Zugang, ruhige Strömung.',
-    adresse: 'Moseldamm, 54349 Trittenheim',
-    entfernung: 'ca. 20 Min. von Wittlich',
-    details: [
-      'Flacher, kiesiger Einstieg ins Wasser',
-      'Kaum Bootsverkehr am frühen Morgen',
-      'Schattige Uferwiese vorhanden',
-      'Kein offizieller Hundestrand — natürliche Badestelle',
-      'Leine außerhalb des Wassers empfohlen',
-    ],
-  },
 
   anlaufstellen: [
     {
@@ -125,6 +105,7 @@ export const wittlichContent: RegionContent = {
         'Gemeinnütziger Tierschutzverein. Tiertafel für einkommensschwache Tierhalter in der Region.',
       website: 'tiertellereifel.jimdofree.com',
     },
+    ...BUNDESWEIT_ANLAUFSTELLEN,
   ],
 
   unterkuenfte: [
@@ -149,6 +130,11 @@ export const wittlichContent: RegionContent = {
     },
   ],
   unterkunftTipps: [
+    {
+      icon: '🔎',
+      titel: 'Cochem-Zell: Tierheim erfragen',
+      text: 'Für den Landkreis Cochem-Zell haben wir kein belegtes Tierheim gefunden. Fundtiere meldest Du am besten bei der Kreisverwaltung Cochem-Zell oder dem Ordnungsamt Deiner Gemeinde.',
+    },
     {
       icon: '🏡',
       titel: 'Ferienhäuser in der Region',

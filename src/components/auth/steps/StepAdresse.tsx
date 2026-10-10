@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { WizardFormData, WizardErrors } from '../OnboardingWizard'
 import { REGIONS, isRegionSlug } from '@/lib/regions'
 import type { RegionSlug } from '@/lib/regions'
@@ -16,6 +17,24 @@ export default function StepAdresse({ data, onChange, onBlurField, errors, regio
     `w-full border rounded-xl px-3 py-2.5 text-base sm:text-sm outline-none focus:ring-2 focus:ring-[#2E4A6B]/40 ${
       hasError ? 'border-red-500 bg-red-50' : 'border-[#C8D8EC]'
     }`
+
+  // Region zur PLZ vorschlagen (nur wenn eindeutig). Übernimmt automatisch, solange noch keine Region gewählt ist.
+  const [vorschlag, setVorschlag] = useState<RegionSlug | null>(null)
+  useEffect(() => {
+    setVorschlag(null)
+    if (!/^\d{5}$/.test(data.plz)) return
+    let abgebrochen = false
+    fetch(`/api/plz-region?plz=${data.plz}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((antwort) => {
+        if (abgebrochen || !antwort || antwort.status !== 'ok' || !isRegionSlug(antwort.region)) return
+        if (!regionSlug) onRegionChange(antwort.region)
+        else if (antwort.region !== regionSlug) setVorschlag(antwort.region)
+      })
+      .catch(() => {})
+    return () => { abgebrochen = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.plz])
 
   return (
     <div>
@@ -41,6 +60,14 @@ export default function StepAdresse({ data, onChange, onBlurField, errors, regio
               <option key={slug} value={slug}>{cfg.name}</option>
             ))}
           </select>
+          {vorschlag && (
+            <p className="text-xs text-[#4E779F] mt-1">
+              Zu Deiner PLZ passt: <strong>{REGIONS[vorschlag].name}</strong>.{' '}
+              <button type="button" className="underline font-semibold text-[#2D6A4F]" onClick={() => { onRegionChange(vorschlag); setVorschlag(null) }}>
+                Übernehmen
+              </button>
+            </p>
+          )}
           {errors.region && <p id="reg-region-error" role="alert" className="text-red-600 text-xs mt-1">{errors.region}</p>}
         </div>
         <div className="grid grid-cols-2 gap-3">
