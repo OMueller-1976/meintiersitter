@@ -1,6 +1,6 @@
 # Regionen-Rollout Rheinland-Pfalz (+ NRW)
 
-Stand: 10.10.2026 · Status: **Plan, wartet auf Freigabe**
+Stand: 10.10.2026 · Status: **Zuschnitt v2, wartet auf letzte Freigabe**
 
 ## Ziel
 Komplette Abdeckung von Rheinland-Pfalz (24 Landkreise + 12 kreisfreie Städte) sowie mehrere NRW-Regionen.
@@ -10,43 +10,43 @@ Je Region: Beispiel-Einträge + individuell recherchierte Inhalte.
 - Zuschnitt: **gebündelte Regionen** nach Naturraum
 - Datenqualität: **nur belegte Angaben** (Quelle je Eintrag, Lücken bleiben leer)
 - Rollout: **alles in einem Rutsch** (ein Branch, ein Review, ein Merge)
-- NRW: **Aachen + weitere** (Liste unten, bitte bestätigen)
+- NRW: **Aachen, Düren, Rhein-Sieg/Bonn** (bestätigt)
 
-## Vorschlag Zuschnitt (Slug · Name · enthaltene Kreise)
+## Zuschnitt (Version 2, ländliche Räume stärker gebündelt)
 
-### Bestehend
-| Slug | Region | Enthält |
+### Rheinland-Pfalz: 10 Regionen für 36 Einheiten
+| Slug | Region | Enthält | Status |
+|---|---|---|---|
+| daun | Vulkaneifel | Vulkaneifel | bestehend |
+| wittlich | Mosel | Bernkastel-Wittlich, Cochem-Zell | bestehend, erweitert |
+| koblenz | Koblenz, Hunsrück & Westerwald | Koblenz, Mayen-Koblenz, Rhein-Hunsrück, Rhein-Lahn, Westerwaldkreis, Altenkirchen | bestehend, erweitert |
+| trier | Region Trier | Trier, Trier-Saarburg, Eifelkreis Bitburg-Prüm | neu |
+| ahr | Ahr & Rhein | Ahrweiler, Neuwied | neu |
+| nahe | Nahe & Rheinhessen | Bad Kreuznach, Birkenfeld, Alzey-Worms, Worms | neu |
+| mainz | Mainz & Umgebung | Mainz, Mainz-Bingen | neu |
+| vorderpfalz | Vorderpfalz | Ludwigshafen, Frankenthal, Speyer, Rhein-Pfalz-Kreis, Bad Dürkheim | neu |
+| suedpfalz | Südpfalz | Neustadt a. d. W., Landau, Südliche Weinstraße, Germersheim | neu |
+| westpfalz | Westpfalz | Kaiserslautern (Stadt + Kreis), Kusel, Donnersbergkreis, Pirmasens, Zweibrücken, Südwestpfalz | neu |
+
+Prüfung der Zählung: 1 + 2 + 6 + 3 + 2 + 4 + 2 + 5 + 4 + 7 = 36. Jede Einheit steht genau einmal drin.
+
+### NRW (bestätigt)
+| Slug | Region | Status |
 |---|---|---|
-| daun | Vulkaneifel | Vulkaneifel |
-| wittlich | Bernkastel-Wittlich | Bernkastel-Wittlich |
-| koblenz | Koblenz & Hunsrück | Koblenz, Mayen-Koblenz, Rhein-Hunsrück (Umfang vor Start prüfen) |
-| euskirchen | Kreis Euskirchen (NRW) | Euskirchen |
+| euskirchen | Kreis Euskirchen | bestehend |
+| aachen | Städteregion Aachen | neu |
+| dueren | Kreis Düren | neu |
+| rheinsieg | Rhein-Sieg-Kreis & Bonn | neu |
 
-### Neu RLP (13)
-| Slug | Region | Enthält |
-|---|---|---|
-| bitburg | Eifel Bitburg-Prüm | Eifelkreis Bitburg-Prüm |
-| trier | Trier & Saarburg | Trier, Trier-Saarburg |
-| cochem | Cochem-Zell | Cochem-Zell |
-| ahr | Ahr & Mittelrhein | Ahrweiler, Neuwied |
-| westerwald | Westerwald | Westerwaldkreis, Altenkirchen |
-| lahn | Rhein-Lahn | Rhein-Lahn-Kreis |
-| nahe | Nahe & Hunsrück-Süd | Bad Kreuznach, Birkenfeld |
-| mainz | Mainz & Umgebung | Mainz, Mainz-Bingen |
-| rheinhessen | Rheinhessen | Alzey-Worms, Worms |
-| vorderpfalz | Vorderpfalz | Ludwigshafen, Frankenthal, Speyer, Rhein-Pfalz-Kreis, Bad Dürkheim |
-| suedpfalz | Südpfalz | Neustadt a. d. W., Landau, Südliche Weinstraße, Germersheim |
-| westpfalz | Westpfalz | Kaiserslautern (Stadt + Kreis), Kusel, Donnersbergkreis |
-| suedwestpfalz | Südwestpfalz | Pirmasens, Zweibrücken, Südwestpfalz |
+Gesamt: 14 Regionen (7 neue RLP, 3 neue NRW, 4 bestehende, davon 2 erweitert).
 
-Prüfung: 3 bestehende RLP-Regionen (5 Kreise) + 13 neue = alle 36 Einheiten abgedeckt.
-
-### NRW (Vorschlag, bitte bestätigen oder ändern)
-| Slug | Region |
-|---|---|
-| aachen | Städteregion Aachen |
-| dueren | Kreis Düren |
-| rheinsieg | Rhein-Sieg-Kreis & Bonn |
+### Begründung der Bündelung
+- Westerwald, Rhein-Lahn und Altenkirchen grenzen an Koblenz und teilen Mittelrhein/Lahn als Naturraum.
+- Cochem-Zell gehört geografisch zur Mosel, daher zu Bernkastel-Wittlich statt zu Nahe/Lahn.
+- Nahe und Rheinhessen sind touristisch eine gemeinsame Region ("Rheinhessen-Nahe").
+- Bitburg-Prüm liegt in der Planungsregion Trier.
+- Pfälzerwald-Kreise im Westen und Südwesten sind ländlich und dünn besiedelt, daher eine Region.
+- Offene Frage: Nutzer, die sich in einem gebündelten Kreis registrieren (z. B. Cochem), bekommen die Region "Mosel" als Auswahl. Die Ortschaft bleibt frei wählbar.
 
 ## Umfang je Region (Inhalt nach `region-content/types.ts`)
 - Wanderrouten (3–4, mit Hunde-Info, Länge, Startpunkt)
